@@ -1,0 +1,69 @@
+﻿@using Fanex.Affiliate.WebServices.Resources
+<table cellspacing="0" cellpadding="0" class="tblBetList">
+    <thead>
+        <tr>
+            <th style="width: 20px">
+                #
+            </th>
+            @if (Model.IsShowSystemIdAndExternalId)
+            {
+            <th style="width: 120px">
+                @Lang.SystemID
+            </th>
+            <th style="width: 120px">
+                @Lang.ExternalID
+            </th>
+            }
+            <th style="width: 140px">
+                @Lang.TransTime
+            </th>
+            <th style="width: 470px">
+                @Lang.Choice
+            </th>
+            <th style="width: 80px">
+                @Lang.Odds
+            </th>
+            <th style="width: 70px">
+                @Lang.Stake
+            </th>
+            <th style="width: 90px">
+                @Lang.WinLoss
+            </th>
+            <th style="width: 90px">
+                @Lang.Status
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ticket in Model.TicketTextList)
+        {
+            <tr><td class="w-order calign">@Raw(ticket.Index.ToString())</td>
+                @if (Model.IsShowSystemIdAndExternalId)
+                {
+                    <td class="w-order calign">@Raw(ticket.SystemId)</td>
+                    <td class="w-order calign">@Raw(ticket.ExternalId)</td>
+                }
+                <td class="c">@Raw(ticket.TransTime)
+                </td><td>@Raw(ticket.Choice)
+                </td><td class="bl_underdog">@Raw(ticket.Odds)
+                </td><td class="bl_underdog">@Raw(ticket.Stake)
+                </td><td class="r bl_underdog">@Raw(ticket.WinLoss)
+                </td><td class="c">@Raw(ticket.Status)
+                </td>
+            </tr>
+        }
+        @if (Model.IsShowWinLoss)
+        {        
+            <tr id="tr_footer" class="bl_footertotal footer">
+                <td colspan=@(Model.IsShowSystemIdAndExternalId ? "7" : " 5") class="r">
+                    @Lang.Total
+                </td>
+                <td class="r">
+                    @Raw(Model.SumWinLoss)
+                </td>
+                <td>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

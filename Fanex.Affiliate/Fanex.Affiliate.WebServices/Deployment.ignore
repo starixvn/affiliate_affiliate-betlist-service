@@ -1,0 +1,8 @@
+﻿\\*.local.config
+\\*.sandbox.config
+\\*.uat.config
+\\*.production.config
+\\*.local.xml
+\\*.sandbox.xml
+\\*.uat.xml
+\\*.production.xml
