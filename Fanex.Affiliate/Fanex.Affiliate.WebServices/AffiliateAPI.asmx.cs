@@ -207,19 +207,43 @@ namespace Fanex.Affiliate.WebServices
                     break;
 
                 case "RNG Casino":
-                    criteria.ShowCasino = true;
+                    criteria.ShowCS = true;
+                    break;
+
+                case "Racing":
+                    criteria.ShowRB = true;
                     break;
 
                 case "Number Game":
                     criteria.ShowNG = true;
                     break;
 
-                case "Live Casino":
-                    criteria.ShowLiveCasino = true;
+                case "Keno":
+                    criteria.ShowKN = true;
                     break;
 
                 case "Virtual Sports":
                     criteria.ShowVS = true;
+                    break;
+
+                case "Live Casino":
+                    criteria.ShowLC = true;
+                    break;
+
+                case "AG Casino":
+                    criteria.ShowAG = true;
+                    break;
+
+                case "Gold Delux":
+                    criteria.ShowGD = true;
+                    break;
+
+                case "Colossus Bets":
+                    criteria.ShowCB = true;
+                    break;
+
+                case "Cock Fighting":
+                    criteria.ShowCF = true;
                     break;
 
                 default:
