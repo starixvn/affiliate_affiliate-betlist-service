@@ -200,49 +200,49 @@ namespace Fanex.Affiliate.WebServices
         /// <param name="product">Selected product.</param>
         public void ViewBetListBySpecificProduct(BetListCriteria criteria, string product)
         {
-            switch (product)
+            switch (product.ToLower())
             {
-                case "Sportsbook":
+                case "sportsbook":
                     criteria.ShowSB = true;
                     break;
 
-                case "RNG Casino":
+                case "rng casino":
                     criteria.ShowCS = true;
                     break;
 
-                case "Racing":
+                case "racing":
                     criteria.ShowRB = true;
                     break;
 
-                case "Number Game":
+                case "number game":
                     criteria.ShowNG = true;
                     break;
 
-                case "Keno":
+                case "keno":
                     criteria.ShowKN = true;
                     break;
 
-                case "Virtual Sports":
+                case "virtual sports":
                     criteria.ShowVS = true;
                     break;
 
-                case "Live Casino":
+                case "live casino":
                     criteria.ShowLC = true;
                     break;
 
-                case "AG Casino":
+                case "ag casino":
                     criteria.ShowAG = true;
                     break;
 
-                case "Gold Delux":
+                case "gold delux":
                     criteria.ShowGD = true;
                     break;
 
-                case "Colossus Bets":
+                case "colossus bets":
                     criteria.ShowCB = true;
                     break;
 
-                case "Cock Fighting":
+                case "cock fighting":
                     criteria.ShowCF = true;
                     break;
 
