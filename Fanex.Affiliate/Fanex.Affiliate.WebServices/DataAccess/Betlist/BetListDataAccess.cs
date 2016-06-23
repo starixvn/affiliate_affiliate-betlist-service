@@ -68,6 +68,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess
             var containsOddsType = columnCollection.Contains("oddstype");
             var containsExternalId = columnCollection.Contains("nickname");
             var containsRace = columnCollection.Contains("race");
+            var containTransDesc = columnCollection.Contains("transdesc");
 
             // Boolean
             var containsLiveIndicator = columnCollection.Contains("liveindicator");
@@ -123,6 +124,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess
                 ticket.OddsType = containsOddsType ? Converter.ToString2(dataRow["oddstype"]) : "0";
                 ticket.ExternalId = containsExternalId ? Converter.ToString2(dataRow["nickname"]) : string.Empty;
                 ticket.Race = containsRace ? Converter.ToString2(dataRow["race"]) : string.Empty;
+                ticket.TransDesc = containTransDesc ? Converter.ToString2(dataRow["transdesc"]) : string.Empty;
 
                 // Boolean
                 ticket.IsLive = containsLiveIndicator ? ReadBoolean(dataRow["liveindicator"]) : false;
