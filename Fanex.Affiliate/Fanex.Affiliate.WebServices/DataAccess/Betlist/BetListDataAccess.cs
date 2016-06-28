@@ -41,7 +41,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess
         /// <param name="baseCurrency"> Parameter value.</param>
         /// <returns>Result value.</returns>
         [SuppressMessage(
-            "StyleCop.CSharp.Nexcel.NexcelCustomRules",
+            "StyleCop.CSharp.StylecopPlus.Rules",
             "SP2101:MethodMustNotContainMoreLinesThan",
             Justification = "Reviewed. Suppression is OK here.")]
         [SuppressMessage(
@@ -496,7 +496,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess
         /// </summary>
         /// <param name="refNo">Reference Number value.</param>
         /// <returns>The Parlay's results.</returns>
-        [SuppressMessage("StyleCop.CSharp.Nexcel.NexcelCustomRules", "SP2101:MethodMustNotContainMoreLinesThan",
+        [SuppressMessage("StyleCop.CSharp.StylecopPlus.Rules", "SP2101:MethodMustNotContainMoreLinesThan",
      Justification = "Reviewed. Suppression is OK here.")]
         public IEnumerable<Parlay> GetParlayResults(long refNo)
         {
