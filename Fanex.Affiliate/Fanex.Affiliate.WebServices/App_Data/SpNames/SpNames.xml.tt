@@ -1,0 +1,22 @@
+﻿<#@ output extension=".txt" #>
+<#@ include file="$(SolutionDir)\Fanex.Affiliate.WebServices\App_Data\TemplateFilemanager.CS.ttinclude" #>
+<#@ include file="SpNameConfiguration.ttinclude" #>
+<#
+	string path = SpNameGenerator.Host.ResolveAssemblyReference("$(SolutionDir)");
+	Directory.SetCurrentDirectory(path);
+	var manager = TemplateFileManager.Create(this);	
+	var allSpName = Helper.GetAllSpName();
+	var listOfConfig = Helper.GetListOfSpConfig();
+	var environments = new string[] { "dev", "sandbox", "uat", "production" };
+
+	foreach(var environment in environments)
+	{        
+		var spNameGenerator = new SpNameGenerator(environment);
+		var fileName = environment == "dev" ? "SpNames.xml" : string.Format("SpNames.{0}.xml", environment);
+		manager.StartNewFile(fileName);		
+		#>
+<#=spNameGenerator.Generate(allSpName, listOfConfig)#>
+		<#
+	}
+	manager.Process();
+#>
