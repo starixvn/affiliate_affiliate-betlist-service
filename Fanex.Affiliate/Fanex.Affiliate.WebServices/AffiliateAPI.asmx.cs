@@ -30,6 +30,7 @@ namespace Fanex.Affiliate.WebServices
     using RazorEngine.Templating;
     using Result.Core;
     using Services;
+    using Services.Betlist;
     using Utilities;
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line.
     // [System.Web.Script.Services.ScriptService]
@@ -48,6 +49,8 @@ namespace Fanex.Affiliate.WebServices
 
         private readonly IBetListService _betlistService;
 
+        private readonly IRNGCasinoSingleWalletService _rngCasinoSingleWalletService;
+
         private List<string> _resultsSupportedLanguages = new List<string>() { "en-US", "zh-TW", "zh-CN", "ja-JP", "th-TH", "ko-KR", "vi-VN" };
 
         private LanguageManager _langManager = new LanguageManager();
@@ -64,6 +67,7 @@ namespace Fanex.Affiliate.WebServices
             DbSettingProviderManager.Current.Start();
             _affiliateService = new AffiliateService();
             _betlistService = new BetListService();
+            _rngCasinoSingleWalletService = new RNGCasinoSingleWalletService();
         }
 
         #endregion Constructor
@@ -491,6 +495,12 @@ namespace Fanex.Affiliate.WebServices
             var rngCasinoHtmlString = BindDataToTemplate(templatePath, content);
 
             return rngCasinoHtmlString;
+        }
+
+        [WebMethod]
+        public string GetRngCasinoSingleWalletResult(string refNo)
+        {
+            return _rngCasinoSingleWalletService.GetRngCasinoSingleWalletResult(refNo);
         }
 
         #endregion Affiliate's Betlist - Web Methods

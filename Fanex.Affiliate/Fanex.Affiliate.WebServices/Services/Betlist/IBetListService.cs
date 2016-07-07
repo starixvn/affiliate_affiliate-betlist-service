@@ -63,6 +63,8 @@ namespace Fanex.Affiliate.WebServices.Services
 
         TicketResult GetBetListRngCasinoDetail(BetListRngCasinoDetailCriteria criteria);
 
+        dynamic GetRngCasinoSingleWalletResult(string refNo);
+
         #endregion
 
         #region BetList.Results

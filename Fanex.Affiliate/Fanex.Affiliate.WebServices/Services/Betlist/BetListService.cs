@@ -121,6 +121,11 @@ namespace Fanex.Affiliate.WebServices.Services
             return _betlistDataAccess.GetBetListRngCasinoDetail(criteria);
         }
 
+        public dynamic GetRngCasinoSingleWalletResult(string refNo)
+        {
+            return string.Empty;
+        }
+
         #endregion
 
         #region BetList.Results
