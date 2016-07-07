@@ -27,11 +27,10 @@ namespace Fanex.Affiliate.WebServices
     using Enumerations;
     using Fanex.Result.Core.Base;
     using RazorEngine;
+    using RazorEngine.Templating;
     using Result.Core;
     using Services;
     using Utilities;
-    using RazorEngine.Templating;
-
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line.
     // [System.Web.Script.Services.ScriptService]
 
@@ -459,6 +458,39 @@ namespace Fanex.Affiliate.WebServices
             var builder = new BetListHTMLBuilder();
 
             return builder.BuildSystemParlayDetail(new TicketHelper(), systemParlayData);
+        }
+
+        [WebMethod]
+        public string GetBetListRngCasinoDetail(string userName, BetListRngCasinoDetailCriteria criteria)
+        {
+            var ticketResults = _betlistService.GetBetListRngCasinoDetail(criteria);
+
+            if (ticketResults.MainTicketList == null)
+            {
+                return string.Empty;
+            }
+
+            var templatePath = Server.MapPath("~/Views/BetList.cshtml");
+            var exchangeRate = 1m;
+            var ticketTextList = Ticket(ticketResults, criteria, userName, exchangeRate);
+
+            foreach (var ticket in ticketTextList)
+            {
+                ticket.Stake = FormaterCurrency.Format(ticket.Stake);
+                ticket.WinLoss = FormaterCurrency.Format(ticket.WinLoss);
+            }
+
+            var content = new
+            {
+                IsShowSystemIdAndExternalId = false,
+                IsShowWinLoss = true,
+                TicketTextList = ticketTextList,
+                SumWinLoss = FormaterCurrency.Format(ticketResults.SumWinLoss * exchangeRate)
+            };
+
+            var rngCasinoHtmlString = BindDataToTemplate(templatePath, content);
+
+            return rngCasinoHtmlString;
         }
 
         #endregion Affiliate's Betlist - Web Methods

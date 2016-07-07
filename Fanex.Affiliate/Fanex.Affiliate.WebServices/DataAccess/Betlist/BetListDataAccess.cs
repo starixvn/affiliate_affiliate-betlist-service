@@ -372,6 +372,23 @@ namespace Fanex.Affiliate.WebServices.DataAccess
             };
         }
 
+        public TicketResult GetBetListRngCasinoDetail(BetListRngCasinoDetailCriteria criteria)
+        {
+            var result = new TicketResult();
+
+            using (var objectDb = new ObjectDb(criteria.GetSettingKey()))
+            {
+                objectDb.AddInParameter("RefNo", DbType.Int64, criteria.RefNo);
+                objectDb.AddInParameter("CustId", DbType.Int32, criteria.CustId);
+                var ds = objectDb.ExecuteDataSet();
+
+                var mainTable = ds.Tables.Count > 0 ? ds.Tables[0] : new DataTable();
+                result.MainTicketList = ReadMainTicketData(mainTable, string.Empty);
+            }
+
+            return result;
+        }
+
         #endregion BetList
 
         #region Betlist.Results

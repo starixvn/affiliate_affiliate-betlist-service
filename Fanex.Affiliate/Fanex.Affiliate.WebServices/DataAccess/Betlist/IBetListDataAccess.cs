@@ -61,6 +61,8 @@ namespace Fanex.Affiliate.WebServices.DataAccess
         /// <returns>Return player's Info.</returns>
         CustomerInfoBetList GetPlayerIbcInfo(string affiliateGroup, string playerUsername);
 
+        TicketResult GetBetListRngCasinoDetail(BetListRngCasinoDetailCriteria criteria);
+
         #endregion
 
         #region BetList.Results

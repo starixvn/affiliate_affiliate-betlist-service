@@ -115,6 +115,12 @@ namespace Fanex.Affiliate.WebServices.Services
             return _betlistDataAccess.GetPlayerIbcInfo(affiliateGroup, playerUsername);
         }
 
+        public TicketResult GetBetListRngCasinoDetail(BetListRngCasinoDetailCriteria criteria)
+        {
+            Check.Argument.IsNotNull(criteria, "criteria");
+            return _betlistDataAccess.GetBetListRngCasinoDetail(criteria);
+        }
+
         #endregion
 
         #region BetList.Results
