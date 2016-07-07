@@ -465,10 +465,31 @@ namespace Fanex.Affiliate.WebServices
         }
 
         [WebMethod]
-        public string GetBetListRngCasinoDetail(string userName, BetListRngCasinoDetailCriteria criteria)
+        public string GetBetListRngCasinoDetail(string userName, BetListDetailCriteria criteria)
         {
-            var ticketResults = _betlistService.GetBetListRngCasinoDetail(criteria);
+            const string spKey = "Aff_BetList_RNG_Detail";
+            var ticketResults = _betlistService.GetBetListDetail(criteria, spKey);
 
+            return GetTicketDetailHtml(ticketResults, criteria, userName);
+        }
+
+        [WebMethod]
+        public string GetRngCasinoSingleWalletResult(string refNo)
+        {
+            return _rngCasinoSingleWalletService.GetRngCasinoSingleWalletResult(refNo);
+        }
+
+        [WebMethod]
+        public string GetBetListAgCasinoDetail(string userName, BetListDetailCriteria criteria)
+        {
+            const string spKey = "Aff_BetList_LC_Detail";
+            var ticketResults = _betlistService.GetBetListDetail(criteria, spKey);
+
+            return GetTicketDetailHtml(ticketResults, criteria, userName);
+        }
+
+        private string GetTicketDetailHtml(TicketResult ticketResults, BetListDetailCriteria criteria, string userName)
+        {
             if (ticketResults.MainTicketList == null)
             {
                 return string.Empty;
@@ -492,15 +513,7 @@ namespace Fanex.Affiliate.WebServices
                 SumWinLoss = FormaterCurrency.Format(ticketResults.SumWinLoss * exchangeRate)
             };
 
-            var rngCasinoHtmlString = BindDataToTemplate(templatePath, content);
-
-            return rngCasinoHtmlString;
-        }
-
-        [WebMethod]
-        public string GetRngCasinoSingleWalletResult(string refNo)
-        {
-            return _rngCasinoSingleWalletService.GetRngCasinoSingleWalletResult(refNo);
+            return BindDataToTemplate(templatePath, content);
         }
 
         #endregion Affiliate's Betlist - Web Methods

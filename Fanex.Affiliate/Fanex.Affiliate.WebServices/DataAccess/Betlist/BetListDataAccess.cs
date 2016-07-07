@@ -372,11 +372,11 @@ namespace Fanex.Affiliate.WebServices.DataAccess
             };
         }
 
-        public TicketResult GetBetListRngCasinoDetail(BetListRngCasinoDetailCriteria criteria)
+        public TicketResult GetBetListDetail(BetListDetailCriteria criteria, string spkey)
         {
             var result = new TicketResult();
 
-            using (var objectDb = new ObjectDb(criteria.GetSettingKey()))
+            using (var objectDb = new ObjectDb(spkey))
             {
                 objectDb.AddInParameter("RefNo", DbType.Int64, criteria.RefNo);
                 objectDb.AddInParameter("CustId", DbType.Int32, criteria.CustId);

@@ -58,7 +58,7 @@ namespace Fanex.Affiliate.WebServices.Services
         }
 
         #endregion Constructor
-        
+
         #region BetList
 
         /// <summary>
@@ -115,18 +115,13 @@ namespace Fanex.Affiliate.WebServices.Services
             return _betlistDataAccess.GetPlayerIbcInfo(affiliateGroup, playerUsername);
         }
 
-        public TicketResult GetBetListRngCasinoDetail(BetListRngCasinoDetailCriteria criteria)
+        public TicketResult GetBetListDetail(BetListDetailCriteria criteria, string spkey)
         {
             Check.Argument.IsNotNull(criteria, "criteria");
-            return _betlistDataAccess.GetBetListRngCasinoDetail(criteria);
+            return _betlistDataAccess.GetBetListDetail(criteria, spkey);
         }
 
-        public dynamic GetRngCasinoSingleWalletResult(string refNo)
-        {
-            return string.Empty;
-        }
-
-        #endregion
+        #endregion BetList
 
         #region BetList.Results
 
@@ -186,14 +181,6 @@ namespace Fanex.Affiliate.WebServices.Services
             _betlistDataAccess.ValidatePermission(criteria);
         }
 
-        #endregion
-
-        #region BetList.Results.RNGCasino
-        
-        #endregion
-        
-        #region BetList.Results.RNGCasino.Utilities
-        
-        #endregion
+        #endregion BetList.Results
     }
 }

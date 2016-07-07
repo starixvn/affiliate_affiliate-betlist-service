@@ -367,7 +367,7 @@
     <Compile Include="Criteria\BetList\BetListResultsCriteria.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Criteria\BetList\BetListRngCasinoDetailCriteria.cs" />
+    <Compile Include="Criteria\BetList\BetListDetailCriteria.cs" />
     <Compile Include="Criteria\BetList\BetListSystemParlayDetailCriteria.cs">
       <SubType>Code</SubType>
     </Compile>

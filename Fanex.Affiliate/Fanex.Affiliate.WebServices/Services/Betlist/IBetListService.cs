@@ -46,7 +46,7 @@ namespace Fanex.Affiliate.WebServices.Services
         /// <param name="criteria">The metal model.</param>
         /// <returns>The system parlay.</returns>
         SystemParlayData GetSystemParlayDetail(BetListSystemParlayDetailCriteria criteria);
-        
+
         /// <summary>
         /// Get balance up and move bet dates.
         /// </summary>
@@ -61,11 +61,9 @@ namespace Fanex.Affiliate.WebServices.Services
         /// <returns>Return player's Info.</returns>
         CustomerInfoBetList GetPlayerIbcInfo(string affiliateGroup, string playerUsername);
 
-        TicketResult GetBetListRngCasinoDetail(BetListRngCasinoDetailCriteria criteria);
+        TicketResult GetBetListDetail(BetListDetailCriteria criteria, string spkey);
 
-        dynamic GetRngCasinoSingleWalletResult(string refNo);
-
-        #endregion
+        #endregion BetList
 
         #region BetList.Results
 
@@ -105,16 +103,12 @@ namespace Fanex.Affiliate.WebServices.Services
         /// <returns>The Parlay's results.</returns>
         IList<Parlay> GetParlayResults(long refNo);
 
-        #endregion
-
-        #region BetList.Results.RNGCasino
-
-        #endregion
+        #endregion BetList.Results
 
         #region Constraint Permission
 
         void ValidatePermission(ValidationCriteria criteria);
 
-        #endregion
+        #endregion Constraint Permission
     }
 }
