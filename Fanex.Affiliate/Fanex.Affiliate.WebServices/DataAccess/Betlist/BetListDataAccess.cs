@@ -107,6 +107,8 @@ namespace Fanex.Affiliate.WebServices.DataAccess
             var containsHandicap1 = columnCollection.Contains("hdp1");
             var containsHandicap2 = columnCollection.Contains("hdp2");
             var containsBetCheck = columnCollection.Contains("betcheck");
+            var hasStake = columnCollection.Contains("stake");
+            var hasCurrency = columnCollection.Contains("currency");
 
             var result = new List<AffTicket>();
             foreach (DataRow dataRow in dataTable.Rows)
@@ -163,6 +165,9 @@ namespace Fanex.Affiliate.WebServices.DataAccess
                 ticket.Handicap1 = containsHandicap1 ? Converter.ToDecimal(dataRow["hdp1"]) : 0;
                 ticket.Handicap2 = containsHandicap2 ? Converter.ToDecimal(dataRow["hdp2"]) : 0;
                 ticket.BetCheck = containsBetCheck ? Converter.ToString2(dataRow["BetCheck"]) : string.Empty;
+
+                ticket.Stake = hasStake ? Converter.ToDecimal(dataRow["stake"]) : 0;
+                ticket.Currency = hasCurrency ? Converter.ToString2(dataRow["currency"]) : string.Empty;
 
                 result.Add(ticket);
             }
