@@ -312,7 +312,7 @@ namespace Fanex.Affiliate.WebServices
                     Choice = builder.BuildChoice(ticket, ticketHelper, ticketResult.TicketDataList, false),
                     Odds = builder.BuildOdds(ticket, ticketResult.TicketDataList, CacheRef.GetOddsTypeName),
                     Stake = builder.BuildStake(ticket),
-                    WinLoss = string.Format("{0:#,##0.00}", ticket.Winlost * exchangeRate)
+                    WinLoss = builder.BuildCustomerWL(ticket, exchangeRate)
                 };
 
                 sumWinloss += ticket.Winlost;
