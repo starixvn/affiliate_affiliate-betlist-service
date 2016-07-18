@@ -71,13 +71,18 @@ namespace Fanex.Affiliate.WebServices.Utilities
         public static string BuildCustomerWL(this BetListHTMLBuilder builder, Ticket ticket, decimal exchangeRate)
         {
             var running = string.Compare(ticket.Status, "running", StringComparison.OrdinalIgnoreCase) == 0;
+            var positiveNumberFormat = "<div class='underdog'>{0:#,##0.00}</div>";
+            var negativeNumberFormat = "<div class='underdog' style='color:red;'>({0:#,##0.00})</div>";
+
+            var winlostNumberFormat = ticket.Winlost < 0 ? negativeNumberFormat : positiveNumberFormat;
             var winloss = running
                             ? "-"
-                            : string.Format("<div class='underdog'>{0:#,##0.00}</div>", ticket.Winlost * exchangeRate);
+                            : string.Format(winlostNumberFormat, Math.Abs(ticket.Winlost) * exchangeRate);
 
+            var playerCommNumberFormat = ticket.PlayerComm < 0 ? negativeNumberFormat : positiveNumberFormat;
             winloss += running
                 ? string.Empty
-                : string.Format("<div class='underdog'>{0:#,##0.00}</div>", ticket.PlayerComm * exchangeRate);
+                : string.Format(playerCommNumberFormat, Math.Abs(ticket.PlayerComm) * exchangeRate);
 
             return winloss;
         }
