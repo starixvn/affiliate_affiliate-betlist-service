@@ -286,16 +286,7 @@ namespace Fanex.Affiliate.WebServices
                 if (ticket.BetTypeId == (int)BetType.CombinationMixParlay)
                 {
                     var custid = ticket.CustId != 0 ? ticket.CustId : criteria.CustId;
-                    var formatDetail = @"showCombMPDetail({0},{1},{2},{3},&quot;{4}&quot;,&quot;{5}&quot;)";
-                    var betTeam = ticketHelper.GetBetTypeNameById(ticket.BetTypeId) + " - " + ticketHelper.GetCombinationMPOfferName(ticket.BetTeam);
-                    ticketHelper.ClientDetailSystemParlayFunction = string.Format(
-                        formatDetail,
-                        ticket.TransId,
-                        ticket.RefNo,
-                        ticket.BetId,
-                        custid,
-                        betTeam,
-                        baseCurrency);
+                    ticketHelper.ClientDetailSystemParlayFunction = GenerateClientDetailSystemParlayFunction(ticketHelper, baseCurrency, ticket, custid);
                 }
 
                 ticketHelper.IsShowOddsWithChoice = showOdds;
@@ -660,6 +651,26 @@ namespace Fanex.Affiliate.WebServices
             }
 
             return result.ToString();
+        }
+
+        private static string GenerateClientDetailSystemParlayFunction(ITicketHelper tickerHelper, string baseCurrency, AffTicket ticket, long custid)
+        {
+            const string FormatDetail = @"showCombMPDetail({0},{1},{2},{3},&quot;{4}&quot;,&quot;{5}&quot;)";
+            var comboName = tickerHelper.GetCombinationMPOfferName(ticket.BetTeam);
+            var betTeam = tickerHelper.GetBetTypeNameById(ticket.BetTypeId);
+            if (!string.IsNullOrEmpty(comboName))
+            {
+                betTeam += " - " + comboName;
+            }
+
+            return string.Format(
+                FormatDetail,
+                ticket.TransId,
+                ticket.RefNo,
+                ticket.BetId,
+                custid,
+                betTeam,
+                baseCurrency);
         }
     }
 }
