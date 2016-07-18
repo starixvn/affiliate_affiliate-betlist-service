@@ -1,6 +1,6 @@
 ﻿// ----------------------------------------------------------------------
-// <copyright file="BetListCriteria.cs" company="Nexcel Solutions Vietnam">
-//     Copyright (c) Nexcel Solutions Vietnam. All rights reserved.
+// <copyright file="BetListCriteria.cs" company="">
+//     Copyright (c) . All rights reserved.
 // </copyright>
 // ------------------------------------------------------------------------
 // <history>
@@ -24,13 +24,16 @@ namespace Fanex.Affiliate.WebServices.Criteria
             BaseCurrency = "EUR";
             Language = "E";
             ShowSB = false;
-            ShowCasino = false;
+            ShowCS = false;
             ShowRB = false;
             ShowNG = false;
-            ShowLiveCasino = false;
+            ShowLC = false;
             ShowVS = false;
-            ShowProgressiveBonus = false;
-            ShowKeno = false;
+            ShowKN = false;
+            ShowAG = false;
+            ShowGD = false;
+            ShowCB = false;
+            ShowCF = false;
         }
 
         [SpParam(Ignored = true)]
@@ -55,20 +58,26 @@ namespace Fanex.Affiliate.WebServices.Criteria
 
         public bool ShowSB { get; set; }
 
-        public bool ShowCasino { get; set; }
+        public bool ShowCS { get; set; }
 
         public bool ShowRB { get; set; }
 
         public bool ShowNG { get; set; }
 
-        public bool ShowLiveCasino { get; set; }
+        public bool ShowLC { get; set; }
 
         public bool ShowVS { get; set; }
 
-        public bool ShowProgressiveBonus { get; set; }
+        public bool ShowKN { get; set; }
 
-        public bool ShowKeno { get; set; }
-        
+        public bool ShowAG { get; set; }
+
+        public bool ShowGD { get; set; }
+
+        public bool ShowCB { get; set; }
+
+        public bool ShowCF { get; set; }
+
         // Output parameters
         public int Error { get; set; }
 

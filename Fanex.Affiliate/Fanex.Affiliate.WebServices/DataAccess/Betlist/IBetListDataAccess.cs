@@ -1,6 +1,6 @@
 ﻿// ----------------------------------------------------------------------
-// <copyright file="IBetListDataAccess.cs" company="Nexcel Solutions Vietnam">
-//     Copyright (c) Nexcel Solutions Vietnam. All rights reserved.
+// <copyright file="IBetListDataAccess.cs" company="">
+//     Copyright (c) . All rights reserved.
 // </copyright>
 // ------------------------------------------------------------------------
 // <history>
@@ -60,6 +60,8 @@ namespace Fanex.Affiliate.WebServices.DataAccess
         /// <param name="playerUsername">Affiliate username.</param>
         /// <returns>Return player's Info.</returns>
         CustomerInfoBetList GetPlayerIbcInfo(string affiliateGroup, string playerUsername);
+
+        TicketResult GetBetListDetail(BetListDetailCriteria criteria, string spkey);
 
         #endregion
 

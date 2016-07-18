@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Functions>
+  <Function Name="Aff-Email">
+    <Setting Key="affiliate_aoncash_GetAffiliateInfo" SpName="Aff_API_GetAffInfoByID" DbName="DBAFFAONCASH.Affiliate_Aoncash.bodbDownlineNet" Plain="0" />
+    <Setting Key="affiliate_athena000_GetAffiliateInfo" SpName="Aff_API_GetAffInfoByID" DbName="DBAFFATHENA000.Affiliate_Athena000.bodbDownlineNet" Plain="0" />
+    <Setting Key="affiliate_bwinning_GetAffiliateInfo" SpName="Aff_API_GetAffInfoByID" DbName="DBAFFBWINNING.Affiliate_Bwinning.bodbDownlineNet" Plain="0" />
+    <Setting Key="affiliate_i668bet_GetAffiliateInfo" SpName="Aff_API_GetAffInfoByID" DbName="DBAFFI668BET.Affiliate_I668Bet.bodbDownlineNet" Plain="0" />
+    <Setting Key="affiliate_itcbet_GetAffiliateInfo" SpName="Aff_API_GetAffInfoByID" DbName="DBAFFITCBET.Affiliate_itcbet.bodbDownlineNet" Plain="0" />
+    <Setting Key="affiliate_livebet365_GetAffiliateInfo" SpName="Aff_API_GetAffInfoByID" DbName="DBAFFLB365.Affiliate_LB365.bodbDownlineNet" Plain="0" />
+    <Setting Key="affiliate_macaubet_GetAffiliateInfo" SpName="Aff_API_GetAffInfoByID" DbName="DBAFFMACAUBET.Affiliate_MacauBet.bodbDownlineNet" Plain="0" />
+    <Setting Key="affiliate_mymbet_GetAffiliateInfo" SpName="Aff_API_GetAffInfoByID" DbName="DBAFFMYMBET.Affiliate_MYMBet.bodbDownlineNet" Plain="0" />
+    <Setting Key="affiliate_livebetidr_GetAffiliateInfo" SpName="Aff_API_GetAffInfoByID" DbName="DBAFFLIVEBETIDR.Affiliate_LivebetIDR.bodbDownlineNet" Plain="0" />
+    <Setting Key="affiliate_winner99_GetAffiliateInfo" SpName="Aff_API_GetAffInfoByID" DbName="DBAFFWINNER99.Affiliate_Winner99.bodbDownlineNet" Plain="0" />
+    <Setting Key="affiliate_mgm88_GetAffiliateInfo" SpName="Aff_API_GetAffInfoByID" DbName="DBAFFMGM88.Affiliate_Mgm88.bodbDownlineNet" Plain="0" />
+    <Setting Key="affiliate_hbobet_GetAffiliateInfo" SpName="Aff_API_GetAffInfoByID" DbName="DBAFFHBOBET.Affiliate_Hbobet.bodbDownlineNet" Plain="0" />
+    <Setting Key="affiliate_wawabet_GetAffiliateInfo" SpName="Aff_API_GetAffInfoByID" DbName="DBAFFWAWABET.Affiliate_Wawabet.bodbDownlineNet" Plain="0" />
+    <Setting Key="affiliate_royalebet_GetAffiliateInfo" SpName="Aff_API_GetAffInfoByID" DbName="DBAFFROYALEBET.Affiliate_Royalebet.bodbDownlineNet" Plain="0" />
+    <Setting Key="affiliate_allbetclub_GetAffiliateInfo" SpName="Aff_API_GetAffInfoByID" DbName="DBAFFALLBETCLUB.Affiliate_Allbetclub.bodbDownlineNet" Plain="0" />
+    <Setting Key="affiliate_m8bola_GetAffiliateInfo" SpName="Aff_API_GetAffInfoByID" DbName="DBAFFM8BOLA.Affiliate_m8bola.bodbDownlineNet" Plain="0" />
+    <Setting Key="affiliate_thbet_GetAffiliateInfo" SpName="Aff_API_GetAffInfoByID" DbName="DBAFFTHBET.Affiliate_THBET.bodbDownlineNet" Plain="0" />
+    <Setting Key="affiliate_28bet_GetAffiliateInfo" SpName="Aff_API_GetAffInfoByID" DbName="DBAFF28BET.Affiliate_28BET.bodbDownlineNet" Plain="0" />
+    <Setting Key="affiliate_be7_GetAffiliateInfo" SpName="Aff_API_GetAffInfoByID" DbName="DBAFFBE7.Affiliate_BE7.bodbDownlineNet" Plain="0" />
+    <Setting Key="affiliate_goobet_GetAffiliateInfo" SpName="Aff_API_GetAffInfoByID" DbName="DBAFFGOOBET.Affiliate_GOOBET.bodbDownlineNet" Plain="0" />
+    <Setting Key="affiliate_q8bola_GetAffiliateInfo" SpName="Aff_API_GetAffInfoByID" DbName="DBAFFQ8BOLA.Affiliate_Q8BOLA.bodbDownlineNet" Plain="0" />
+  </Function>
+
+  <Function Name="Aff-Betlist">
+    <Setting Key="Aff_BetList_SelWinLossByDate" SpName="Aff_BetList_SelWinLossByDate" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
+    <Setting Key="Aff_BetList_SelWinLossByDate_Old" SpName="Aff_BetList_SelWinLossByDate_Old" DbName="DBEXT.bodb_Archive.bodbAdminNet" Plain="0" />
+    <Setting Key="Aff_BetList_SelParlayByTransID" SpName="Aff_BetList_SelParlayByTransID" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
+    <Setting Key="Aff_BetList_SelCombinationParlayDetail" SpName="Aff_BetList_SelCombinationParlayDetail" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
+    <Setting Key="Aff_BetList_SelBalanceUpDay" SpName="Aff_BetList_SelBalanceUpDay" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
+    <Setting Key="Aff_BetList_SelDummyAccID" SpName="Aff_BetList_SelDummyAccID" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
+    <Setting Key="Aff_BetList_RNG_Detail" SpName="Aff_BetList_RNG_Detail" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
+    <Setting Key="Aff_BetList_LC_Detail" SpName="Aff_BetList_LC_Detail" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
+  </Function>
+
+  <Function Name="Aff-Betlist-Results">
+    <Setting Key="Aff_BetList_SelMatchResult" SpName="Aff_BetList_SelMatchResult" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
+    <Setting Key="Aff_BetList_SelMatchResultParlay" SpName="Aff_BetList_SelMatchResultParlay" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
+    <Setting Key="Aff_BetList_SelMatchResultNumberGame" SpName="Aff_BetList_SelMatchResultNumberGame" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
+  </Function>
+</Functions>
+		

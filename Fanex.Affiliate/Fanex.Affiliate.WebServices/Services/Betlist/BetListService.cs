@@ -1,6 +1,6 @@
 ﻿// ----------------------------------------------------------------------
-// <copyright file="BetListService.cs" company="Nexcel Solutions Vietnam">
-//     Copyright (c) Nexcel Solutions Vietnam. All rights reserved.
+// <copyright file="BetListService.cs" company="">
+//     Copyright (c) . All rights reserved.
 // </copyright>
 // ------------------------------------------------------------------------
 // <history>
@@ -58,7 +58,7 @@ namespace Fanex.Affiliate.WebServices.Services
         }
 
         #endregion Constructor
-        
+
         #region BetList
 
         /// <summary>
@@ -115,7 +115,13 @@ namespace Fanex.Affiliate.WebServices.Services
             return _betlistDataAccess.GetPlayerIbcInfo(affiliateGroup, playerUsername);
         }
 
-        #endregion
+        public TicketResult GetBetListDetail(BetListDetailCriteria criteria, string spkey)
+        {
+            Check.Argument.IsNotNull(criteria, "criteria");
+            return _betlistDataAccess.GetBetListDetail(criteria, spkey);
+        }
+
+        #endregion BetList
 
         #region BetList.Results
 
@@ -175,14 +181,6 @@ namespace Fanex.Affiliate.WebServices.Services
             _betlistDataAccess.ValidatePermission(criteria);
         }
 
-        #endregion
-
-        #region BetList.Results.RNGCasino
-        
-        #endregion
-        
-        #region BetList.Results.RNGCasino.Utilities
-        
-        #endregion
+        #endregion BetList.Results
     }
 }

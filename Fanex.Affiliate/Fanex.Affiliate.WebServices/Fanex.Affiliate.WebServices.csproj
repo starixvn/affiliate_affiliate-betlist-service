@@ -60,15 +60,19 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fanex.BetList.BetTrade, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.BetList.Core.2.10.0.3\lib\net40\Fanex.BetList.BetTrade.dll</HintPath>
+      <HintPath>..\packages\Fanex.BetList.Core.2.12.0.6\lib\net40\Fanex.BetList.BetTrade.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Fanex.BetList.Core, Version=2.2.11.3, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.BetList.Core.2.10.0.3\lib\net40\Fanex.BetList.Core.dll</HintPath>
+    <Reference Include="Fanex.BetList.Core, Version=2.12.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fanex.BetList.Core.2.12.0.6\lib\net40\Fanex.BetList.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Fanex.BetList.GoldDeluxe, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.BetList.Core.2.10.0.3\lib\net40\Fanex.BetList.GoldDeluxe.dll</HintPath>
+      <HintPath>..\packages\Fanex.BetList.Core.2.12.0.6\lib\net40\Fanex.BetList.GoldDeluxe.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Fanex.BetList.RnGCasino, Version=1.0.0.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fanex.BetList.RnGCasino.1.0.0.9\lib\net40\Fanex.BetList.RnGCasino.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Fanex.Caching">
@@ -248,6 +252,10 @@
       <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.40804.0\lib\net40\System.Web.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.dll</HintPath>
       <Private>True</Private>
@@ -277,10 +285,30 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\SpNames.xml">
-      <SubType>Designer</SubType>
-    </Content>
+    <Content Include="App_Data\SpNames\SpNameConfig.xml" />
+    <Content Include="App_Data\SpNames\SpNameOriginal.xml" />
     <Content Include="AffiliateAPI.asmx" />
+    <Content Include="App_Data\SpNames\SpNames.production.xml">
+      <DependentUpon>SpNames.xml.tt</DependentUpon>
+    </Content>
+    <Content Include="App_Data\SpNames\SpNames.sandbox.xml">
+      <DependentUpon>SpNames.xml.tt</DependentUpon>
+    </Content>
+    <Content Include="App_Data\SpNames\SpNames.uat.xml">
+      <DependentUpon>SpNames.xml.tt</DependentUpon>
+    </Content>
+    <Content Include="App_Data\SpNames\SpNames.xml">
+      <DependentUpon>SpNames.xml.tt</DependentUpon>
+    </Content>
+    <Content Include="App_Data\SpNames\SpNames.xml.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SpNames.xml.txt</LastGenOutput>
+    </Content>
+    <Content Include="App_Data\SpNames\SpNames.xml.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SpNames.xml.tt</DependentUpon>
+    </Content>
     <Content Include="Content\Fanex.Result\fanex.result.css" />
     <Content Include="Content\Fanex.Result\fanex.result.less" />
     <Content Include="Content\Fanex.Result\images\goal-icon.png" />
@@ -319,6 +347,7 @@
   <ItemGroup>
     <Compile Include="AffiliateEmailInfo.cs" />
     <Compile Include="AffiliateInfo.cs" />
+    <Compile Include="Core\AppSettings.cs" />
     <Compile Include="Criteria\AffEmail\AffiliateInfoCriteria.cs" />
     <Compile Include="Criteria\BetList\BalanceUpMoveBetCriteria.cs">
       <SubType>Code</SubType>
@@ -338,6 +367,7 @@
     <Compile Include="Criteria\BetList\BetListResultsCriteria.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Criteria\BetList\BetListDetailCriteria.cs" />
     <Compile Include="Criteria\BetList\BetListSystemParlayDetailCriteria.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -383,6 +413,8 @@
     <Compile Include="Services\AffEmail\IAffiliateService.cs" />
     <Compile Include="Services\Betlist\BetListService.cs" />
     <Compile Include="Services\Betlist\IBetListService.cs" />
+    <Compile Include="Services\Betlist\IRNGCasinoSingleWalletService.cs" />
+    <Compile Include="Services\Betlist\RNGCasinoSingleWalletService.cs" />
     <Compile Include="Services\Common\QueryService.cs" />
     <Compile Include="Services\Common\ServiceBase.cs" />
     <Compile Include="Utilities\AffBetListHtmlBuilder.cs" />
@@ -473,6 +505,8 @@
     <None Include="App_Data\Fanex.Result\VSHRacing.xls" />
     <None Include="App_Data\Fanex.Result\VSSpeedWay.xls" />
     <None Include="App_Data\Fanex.Result\VSTennis.xls" />
+    <Content Include="App_Data\SpNames\SpNameConfiguration.ttinclude" />
+    <Content Include="App_Data\TemplateFilemanager.CS.ttinclude" />
     <None Include="Deployment.ignore" />
   </ItemGroup>
   <ItemGroup>
@@ -486,6 +520,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Lang.zh-TW.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

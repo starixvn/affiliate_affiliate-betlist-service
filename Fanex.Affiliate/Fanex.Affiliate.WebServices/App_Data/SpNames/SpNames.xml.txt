@@ -1,0 +1,9 @@
+﻿
+
+
+// Generated helper templates
+// Generated items
+// Fanex.Affiliate.WebServices\App_Data\SpNames\SpNames.production.xml
+// Fanex.Affiliate.WebServices\App_Data\SpNames\SpNames.uat.xml
+// Fanex.Affiliate.WebServices\App_Data\SpNames\SpNames.sandbox.xml
+// Fanex.Affiliate.WebServices\App_Data\SpNames\SpNames.xml

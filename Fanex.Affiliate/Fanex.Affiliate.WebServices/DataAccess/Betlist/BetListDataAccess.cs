@@ -1,6 +1,6 @@
 ﻿// ----------------------------------------------------------------------
-// <copyright file="BetListDataAccess.cs" company="Nexcel Solutions Vietnam">
-//     Copyright (c) Nexcel Solutions Vietnam. All rights reserved.
+// <copyright file="BetListDataAccess.cs" company="">
+//     Copyright (c) . All rights reserved.
 // </copyright>
 // ------------------------------------------------------------------------
 // <history>
@@ -41,7 +41,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess
         /// <param name="baseCurrency"> Parameter value.</param>
         /// <returns>Result value.</returns>
         [SuppressMessage(
-            "StyleCop.CSharp.Nexcel.NexcelCustomRules",
+            "StyleCop.CSharp.StylecopPlus.Rules",
             "SP2101:MethodMustNotContainMoreLinesThan",
             Justification = "Reviewed. Suppression is OK here.")]
         [SuppressMessage(
@@ -68,6 +68,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess
             var containsOddsType = columnCollection.Contains("oddstype");
             var containsExternalId = columnCollection.Contains("nickname");
             var containsRace = columnCollection.Contains("race");
+            var containTransDesc = columnCollection.Contains("transdesc");
 
             // Boolean
             var containsLiveIndicator = columnCollection.Contains("liveindicator");
@@ -123,6 +124,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess
                 ticket.OddsType = containsOddsType ? Converter.ToString2(dataRow["oddstype"]) : "0";
                 ticket.ExternalId = containsExternalId ? Converter.ToString2(dataRow["nickname"]) : string.Empty;
                 ticket.Race = containsRace ? Converter.ToString2(dataRow["race"]) : string.Empty;
+                ticket.TransDesc = containTransDesc ? Converter.ToString2(dataRow["transdesc"]) : string.Empty;
 
                 // Boolean
                 ticket.IsLive = containsLiveIndicator ? ReadBoolean(dataRow["liveindicator"]) : false;
@@ -370,6 +372,23 @@ namespace Fanex.Affiliate.WebServices.DataAccess
             };
         }
 
+        public TicketResult GetBetListDetail(BetListDetailCriteria criteria, string spkey)
+        {
+            var result = new TicketResult();
+
+            using (var objectDb = new ObjectDb(spkey))
+            {
+                objectDb.AddInParameter("RefNo", DbType.Int64, criteria.RefNo);
+                objectDb.AddInParameter("CustId", DbType.Int32, criteria.CustId);
+                var ds = objectDb.ExecuteDataSet();
+
+                var mainTable = ds.Tables.Count > 0 ? ds.Tables[0] : new DataTable();
+                result.MainTicketList = ReadMainTicketData(mainTable, string.Empty);
+            }
+
+            return result;
+        }
+
         #endregion BetList
 
         #region Betlist.Results
@@ -494,7 +513,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess
         /// </summary>
         /// <param name="refNo">Reference Number value.</param>
         /// <returns>The Parlay's results.</returns>
-        [SuppressMessage("StyleCop.CSharp.Nexcel.NexcelCustomRules", "SP2101:MethodMustNotContainMoreLinesThan",
+        [SuppressMessage("StyleCop.CSharp.StylecopPlus.Rules", "SP2101:MethodMustNotContainMoreLinesThan",
      Justification = "Reviewed. Suppression is OK here.")]
         public IEnumerable<Parlay> GetParlayResults(long refNo)
         {
