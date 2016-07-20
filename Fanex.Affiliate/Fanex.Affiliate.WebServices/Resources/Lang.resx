@@ -120,6 +120,9 @@
   <data name="Choice" xml:space="preserve">
     <value>Choice</value>
   </data>
+  <data name="Comm" xml:space="preserve">
+    <value>Comm</value>
+  </data>
   <data name="ExternalID" xml:space="preserve">
     <value>External ID</value>
   </data>

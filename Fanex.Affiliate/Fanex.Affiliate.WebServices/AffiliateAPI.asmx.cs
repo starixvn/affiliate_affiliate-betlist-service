@@ -11,11 +11,13 @@
 
 namespace Fanex.Affiliate.WebServices
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Runtime.Serialization.Formatters.Binary;
+    using System.Text;    // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line.
     using System.Web.Services;
     using System.Xml.Serialization;
     using BetList.Core.Builder;
@@ -284,16 +286,7 @@ namespace Fanex.Affiliate.WebServices
                 if (ticket.BetTypeId == (int)BetType.CombinationMixParlay)
                 {
                     var custid = ticket.CustId != 0 ? ticket.CustId : criteria.CustId;
-                    var formatDetail = @"showCombMPDetail({0},{1},{2},{3},&quot;{4}&quot;,&quot;{5}&quot;)";
-                    var betTeam = ticketHelper.GetBetTypeNameById(ticket.BetTypeId) + " - " + ticketHelper.GetCombinationMPOfferName(ticket.BetTeam);
-                    ticketHelper.ClientDetailSystemParlayFunction = string.Format(
-                        formatDetail,
-                        ticket.TransId,
-                        ticket.RefNo,
-                        ticket.BetId,
-                        custid,
-                        betTeam,
-                        baseCurrency);
+                    ticketHelper.ClientDetailSystemParlayFunction = GenerateClientDetailSystemParlayFunction(ticketHelper, baseCurrency, ticket, custid);
                 }
 
                 ticketHelper.IsShowOddsWithChoice = showOdds;
@@ -310,7 +303,7 @@ namespace Fanex.Affiliate.WebServices
                     Choice = builder.BuildChoice(ticket, ticketHelper, ticketResult.TicketDataList, false),
                     Odds = builder.BuildOdds(ticket, ticketResult.TicketDataList, CacheRef.GetOddsTypeName),
                     Stake = builder.BuildStake(ticket),
-                    WinLoss = string.Format("{0:#,##0.00}", ticket.Winlost * exchangeRate)
+                    WinLoss = builder.BuildCustomerWL(ticket, exchangeRate)
                 };
 
                 sumWinloss += ticket.Winlost;
@@ -414,29 +407,56 @@ namespace Fanex.Affiliate.WebServices
         public string GetBetlistParlay(string affiliateName, string transactionId, string exchangeRate, string language = "en-US")
         {
             _langManager.SetCulture(language);
-            var affiliateGroup = affiliateName.Trim() == "12bet" ? "_12bet" : string.Empty;
-            var criteria = new BetListParlayCriteria
-            {
-                AffiliateGroup = affiliateGroup,
-                TransID = long.Parse(transactionId)
-            };
+            var tickets = GetBetListParlay(affiliateName, transactionId);
 
-            var tickets = _betlistService.GetBetListParlay(criteria);
             var ticketsToTexts = Ticket(tickets, new BetListCriteria(), string.Empty, decimal.Parse(exchangeRate), 1, true);
-            var betlistParlayHtmlString = string.Empty;
-            var counter = 0;
-            foreach (var ticket in ticketsToTexts)
-            {
-                betlistParlayHtmlString += ticket.Choice;
-                if (counter != ticketsToTexts.Count - 1)
-                {
-                    betlistParlayHtmlString += "<div class='line'></div>";
-                }
+            return BuildHtmlString(ticketsToTexts);
+        }
 
-                counter++;
+        [WebMethod]
+        public string GetNewBetlistParlay(string affiliateName, string transactionId, string exchangeRate, string betTeam, string betCheck, decimal handicap1, decimal handicap2, string language = "en-US")
+        {
+            _langManager.SetCulture(language);
+
+            var ticketResult = GetBetListParlay(affiliateName, transactionId);
+            var texts = CacheRef.GetCombinationTypeCombo(betTeam, betCheck, Convert.ToInt32(handicap1), Convert.ToInt32(handicap2));
+            var tickets = ticketResult.MainTicketList.Where(x => x.Stake != 0).ToList();
+
+            const string textRenderPattern = "<p class='system-parlay-ticket-infor'>"
+                                    + "<span class='system-parlay-combo-type'>{0}</span> x "
+                                    + "<span class='system-parlay-unit-stake'>{1} {2}</span>"
+                                    + "</p>";
+
+            if (tickets.Count > 0)
+            {
+                if (handicap1 == 0) // System Parlay.
+                {
+                    var ticket = tickets.FirstOrDefault();
+                    texts[0] = string.Format(textRenderPattern, texts[0], ticket.Currency, ticket.Stake.ToString("N0"));
+                }
+                else // Combo parlay.
+                {
+                    tickets = tickets.OrderBy(x => x.MatchId).ToList();
+                    var length = Math.Min(texts.Count(), tickets.Count);
+                    for (int i = 0; i < length; i++)
+                    {
+                        var text = texts[i];
+                        var ticket = tickets[i];
+                        texts[i] = string.Format(textRenderPattern, text, ticket.Currency, ticket.Stake.ToString("N0"));
+                    }
+                }
             }
 
-            return betlistParlayHtmlString;
+            var ticketsToTexts = Ticket(ticketResult, new BetListCriteria(), string.Empty, decimal.Parse(exchangeRate), 1, true);
+            var htmlContent = new StringBuilder();
+            foreach (var item in texts)
+            {
+                htmlContent.Append(item);
+            }
+
+            htmlContent.Append(BuildHtmlString(ticketsToTexts));
+
+            return htmlContent.ToString();
         }
 
         /// <summary>
@@ -600,5 +620,57 @@ namespace Fanex.Affiliate.WebServices
         }
 
         #endregion Affiliate's Results - Web Methods
+
+        private TicketResult GetBetListParlay(string affiliateName, string transactionId)
+        {
+            var affiliateGroup = affiliateName.Trim() == "12bet" ? "_12bet" : string.Empty;
+            var criteria = new BetListParlayCriteria
+            {
+                AffiliateGroup = affiliateGroup,
+                TransID = long.Parse(transactionId)
+            };
+
+            var tickets = _betlistService.GetBetListParlay(criteria);
+            return tickets;
+        }
+
+        private static string BuildHtmlString(IEnumerable<TicketText> tickets)
+        {
+            var result = new StringBuilder();
+            var counter = 0;
+            var length = tickets.Count();
+            foreach (var ticket in tickets)
+            {
+                result.Append(ticket.Choice);
+                if (counter != length - 1)
+                {
+                    result.Append("<div class='line'></div>");
+                }
+
+                counter++;
+            }
+
+            return result.ToString();
+        }
+
+        private static string GenerateClientDetailSystemParlayFunction(ITicketHelper tickerHelper, string baseCurrency, AffTicket ticket, long custid)
+        {
+            const string FormatDetail = @"showCombMPDetail({0},{1},{2},{3},&quot;{4}&quot;,&quot;{5}&quot;)";
+            var comboName = tickerHelper.GetCombinationMPOfferName(ticket.BetTeam);
+            var betTeam = tickerHelper.GetBetTypeNameById(ticket.BetTypeId);
+            if (!string.IsNullOrEmpty(comboName))
+            {
+                betTeam += " - " + comboName;
+            }
+
+            return string.Format(
+                FormatDetail,
+                ticket.TransId,
+                ticket.RefNo,
+                ticket.BetId,
+                custid,
+                betTeam,
+                baseCurrency);
+        }
     }
 }

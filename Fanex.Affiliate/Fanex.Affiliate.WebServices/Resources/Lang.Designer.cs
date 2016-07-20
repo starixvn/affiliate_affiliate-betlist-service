@@ -70,6 +70,15 @@ namespace Fanex.Affiliate.WebServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Comm.
+        /// </summary>
+        public static string Comm {
+            get {
+                return ResourceManager.GetString("Comm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to External ID.
         /// </summary>
         public static string ExternalID {
