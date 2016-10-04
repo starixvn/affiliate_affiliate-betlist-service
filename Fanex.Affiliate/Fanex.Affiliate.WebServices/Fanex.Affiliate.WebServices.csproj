@@ -60,15 +60,15 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fanex.BetList.BetTrade, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.BetList.Core.2.15.2.7-beta\lib\net40\Fanex.BetList.BetTrade.dll</HintPath>
+      <HintPath>..\packages\Fanex.BetList.Core.2.15.2.7\lib\net40\Fanex.BetList.BetTrade.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Fanex.BetList.Core, Version=2.15.2.7, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.BetList.Core.2.15.2.7-beta\lib\net40\Fanex.BetList.Core.dll</HintPath>
+      <HintPath>..\packages\Fanex.BetList.Core.2.15.2.7\lib\net40\Fanex.BetList.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Fanex.BetList.GoldDeluxe, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.BetList.Core.2.15.2.7-beta\lib\net40\Fanex.BetList.GoldDeluxe.dll</HintPath>
+      <HintPath>..\packages\Fanex.BetList.Core.2.15.2.7\lib\net40\Fanex.BetList.GoldDeluxe.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Fanex.BetList.RnGCasino, Version=1.0.0.7, Culture=neutral, processorArchitecture=MSIL">
@@ -89,16 +89,16 @@
       <HintPath>..\packages\Fanex.Logging.1.0.0.0\lib\net40\Fanex.Logging.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Fanex.Result.Core, Version=2.0.1.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.Result.Core-NPOI.2.0.6.2.0.2.6\lib\net40\Fanex.Result.Core.dll</HintPath>
+    <Reference Include="Fanex.Result.Core, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fanex.Result.Core-NPOI.2.0.6.2.0.4\lib\net40\Fanex.Result.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Fanex.Result.Core.AGCasino, Version=1.0.0.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Fanex.Result.Core.AGCasino.1.0.0.7\lib\net40\Fanex.Result.Core.AGCasino.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Fanex.Result.Core.Base, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.Result.Core-NPOI.2.0.6.2.0.2.6\lib\net40\Fanex.Result.Core.Base.dll</HintPath>
+    <Reference Include="Fanex.Result.Core.Base, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fanex.Result.Core-NPOI.2.0.6.2.0.4\lib\net40\Fanex.Result.Core.Base.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Fanex.Result.Core.GoldDeluxe, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -121,8 +121,8 @@
       <HintPath>..\packages\Fanex.Result.Core-Racing.1.0.0.9\lib\net40\Fanex.Result.Core.Racing.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Fanex.Result.Core.Sportsbook, Version=1.0.2.3, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.Result.Core-Sportsbook.1.0.2.3\lib\net40\Fanex.Result.Core.Sportsbook.dll</HintPath>
+    <Reference Include="Fanex.Result.Core.Sportsbook, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fanex.Result.Core-Sportsbook.1.0.3.2\lib\net40\Fanex.Result.Core.Sportsbook.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="HandHistoryLibrary, Version=1.0.0.43, Culture=neutral, processorArchitecture=MSIL">
@@ -552,7 +552,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_StartDate="2014/3/28" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" />
+      <UserProperties BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_StartDate="2014/3/28" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
