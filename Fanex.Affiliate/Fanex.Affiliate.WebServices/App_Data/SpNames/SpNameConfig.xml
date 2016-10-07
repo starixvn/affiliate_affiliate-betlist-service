@@ -4,4 +4,5 @@
   <SpNameConfig Environment="DEV,UAT" SpName="Aff_BetList_SelWinLossByDate" Suffix="_xtest"></SpNameConfig>
   <SpNameConfig Environment="DEV,UAT" SpName="Aff_BetList_SelWinLossByDate_Old" Suffix="_xtest"></SpNameConfig>
   <SpNameConfig Environment="DEV,UAT" SpName="Aff_BetList_SelMatchResult" Suffix="_xtest"></SpNameConfig>
+  <SpNameConfig Environment="DEV,UAT" SpName="Aff_BetList_SelMatchResultParlay" Suffix="_xtest"></SpNameConfig>
 </Root>
