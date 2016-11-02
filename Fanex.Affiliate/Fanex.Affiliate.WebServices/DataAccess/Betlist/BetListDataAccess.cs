@@ -10,6 +10,13 @@
 
 namespace Fanex.Affiliate.WebServices.DataAccess
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
+    using System.Linq;
     using BetList.Core.Entities;
     using Common;
     using Criteria;
@@ -19,13 +26,6 @@ namespace Fanex.Affiliate.WebServices.DataAccess
     using Fanex.Result.Core.NumberGame.DTO;
     using Fanex.Result.Core.Racing.DTO;
     using Fanex.Result.Core.Sportsbook.DTO;
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Diagnostics.CodeAnalysis;
-    using System.Globalization;
-    using System.Linq;
 
     /// <summary>
     /// Account data access.
@@ -657,7 +657,9 @@ namespace Fanex.Affiliate.WebServices.DataAccess
                 RefNo = string.Empty,
                 GameDetails = new List<GameDetail>(),
                 Bettype = GetBetTypeFromToken(reader),
-                BetID = GetBetIDFromToken(reader)
+                BetID = GetBetIDFromToken(reader),
+                LiveAwayScore = reader["LiveAwayScore"] != DBNull.Value ? Convert.ToInt32(reader["LiveAwayScore"].ToString()) : new int?(),
+                LiveHomeScore = reader["LiveHomeScore"] != DBNull.Value ? Convert.ToInt32(reader["LiveHomeScore"].ToString()) : new int?()
             };
 
             return item;
