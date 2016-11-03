@@ -658,8 +658,8 @@ namespace Fanex.Affiliate.WebServices.DataAccess
                 GameDetails = new List<GameDetail>(),
                 Bettype = GetBetTypeFromToken(reader),
                 BetID = GetBetIDFromToken(reader),
-                LiveAwayScore = reader["LiveAwayScore"] != DBNull.Value ? Convert.ToInt32(reader["LiveAwayScore"].ToString()) : new int?(),
-                LiveHomeScore = reader["LiveHomeScore"] != DBNull.Value ? Convert.ToInt32(reader["LiveHomeScore"].ToString()) : new int?()
+                LiveAwayScore = ColumnExisted(reader, "LiveAwayScore") && reader["LiveAwayScore"] != DBNull.Value ? Convert.ToInt32(reader["LiveAwayScore"]) : new int?(),
+                LiveHomeScore = ColumnExisted(reader, "LiveHomeScore") && reader["LiveHomeScore"] != DBNull.Value ? Convert.ToInt32(reader["LiveHomeScore"]) : new int?()
             };
 
             return item;
