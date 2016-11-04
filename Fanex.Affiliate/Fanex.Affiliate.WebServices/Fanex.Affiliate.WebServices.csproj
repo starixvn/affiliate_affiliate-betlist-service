@@ -343,12 +343,6 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AffiliateEmailInfo.cs" />
@@ -456,38 +450,14 @@
     <Content Include="Web.local.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Web.local.Debug.config">
-      <DependentUpon>Web.local.config</DependentUpon>
-    </Content>
-    <Content Include="Web.local.Release.config">
-      <DependentUpon>Web.local.config</DependentUpon>
-    </Content>
     <Content Include="Web.uat.config">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Web.uat.Debug.config">
-      <DependentUpon>Web.uat.config</DependentUpon>
-    </Content>
-    <Content Include="Web.uat.Release.config">
-      <DependentUpon>Web.uat.config</DependentUpon>
     </Content>
     <Content Include="Web.production.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Web.production.Debug.config">
-      <DependentUpon>Web.production.config</DependentUpon>
-    </Content>
-    <Content Include="Web.production.Release.config">
-      <DependentUpon>Web.production.config</DependentUpon>
-    </Content>
     <Content Include="Web.sandbox.config">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Web.sandbox.Debug.config">
-      <DependentUpon>Web.sandbox.config</DependentUpon>
-    </Content>
-    <Content Include="Web.sandbox.Release.config">
-      <DependentUpon>Web.sandbox.config</DependentUpon>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -512,6 +482,9 @@
     <Content Include="App_Data\SpNames\SpNameConfiguration.ttinclude" />
     <Content Include="App_Data\TemplateFilemanager.CS.ttinclude" />
     <None Include="Deployment.ignore" />
+    <None Include="Web.sit.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Lang.ko-KR.resx" />
@@ -552,7 +525,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_StartDate="2014/3/28" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_StartDate="2014/3/28" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
