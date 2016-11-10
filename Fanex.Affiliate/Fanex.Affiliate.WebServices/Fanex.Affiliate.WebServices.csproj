@@ -89,16 +89,16 @@
       <HintPath>..\packages\Fanex.Logging.1.0.0.0\lib\net40\Fanex.Logging.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Fanex.Result.Core, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.Result.Core-NPOI.2.0.6.2.0.4\lib\net40\Fanex.Result.Core.dll</HintPath>
+    <Reference Include="Fanex.Result.Core, Version=2.0.5.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fanex.Result.Core-NPOI.2.0.6.2.0.5.1\lib\net40\Fanex.Result.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Fanex.Result.Core.AGCasino, Version=1.0.0.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Fanex.Result.Core.AGCasino.1.0.0.7\lib\net40\Fanex.Result.Core.AGCasino.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Fanex.Result.Core.Base, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.Result.Core-NPOI.2.0.6.2.0.4\lib\net40\Fanex.Result.Core.Base.dll</HintPath>
+    <Reference Include="Fanex.Result.Core.Base, Version=2.0.5.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fanex.Result.Core-NPOI.2.0.6.2.0.5.1\lib\net40\Fanex.Result.Core.Base.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Fanex.Result.Core.GoldDeluxe, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -121,8 +121,8 @@
       <HintPath>..\packages\Fanex.Result.Core-Racing.1.0.0.9\lib\net40\Fanex.Result.Core.Racing.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Fanex.Result.Core.Sportsbook, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.Result.Core-Sportsbook.1.0.3.2\lib\net40\Fanex.Result.Core.Sportsbook.dll</HintPath>
+    <Reference Include="Fanex.Result.Core.Sportsbook, Version=1.0.5.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fanex.Result.Core-Sportsbook.1.0.5.1\lib\net40\Fanex.Result.Core.Sportsbook.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="HandHistoryLibrary, Version=1.0.0.43, Culture=neutral, processorArchitecture=MSIL">
@@ -343,12 +343,6 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AffiliateEmailInfo.cs" />
@@ -456,38 +450,14 @@
     <Content Include="Web.local.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Web.local.Debug.config">
-      <DependentUpon>Web.local.config</DependentUpon>
-    </Content>
-    <Content Include="Web.local.Release.config">
-      <DependentUpon>Web.local.config</DependentUpon>
-    </Content>
     <Content Include="Web.uat.config">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Web.uat.Debug.config">
-      <DependentUpon>Web.uat.config</DependentUpon>
-    </Content>
-    <Content Include="Web.uat.Release.config">
-      <DependentUpon>Web.uat.config</DependentUpon>
     </Content>
     <Content Include="Web.production.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Web.production.Debug.config">
-      <DependentUpon>Web.production.config</DependentUpon>
-    </Content>
-    <Content Include="Web.production.Release.config">
-      <DependentUpon>Web.production.config</DependentUpon>
-    </Content>
     <Content Include="Web.sandbox.config">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Web.sandbox.Debug.config">
-      <DependentUpon>Web.sandbox.config</DependentUpon>
-    </Content>
-    <Content Include="Web.sandbox.Release.config">
-      <DependentUpon>Web.sandbox.config</DependentUpon>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -512,6 +482,10 @@
     <Content Include="App_Data\SpNames\SpNameConfiguration.ttinclude" />
     <Content Include="App_Data\TemplateFilemanager.CS.ttinclude" />
     <None Include="Deployment.ignore" />
+    <Content Include="Web.ConnectionString.sit.config" />
+    <Content Include="Web.sit.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Lang.ko-KR.resx" />
