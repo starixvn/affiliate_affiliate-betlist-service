@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Root>
   <SpNameConfig Environment="DEV,UAT" SpName="Test" Suffix="_xtest"></SpNameConfig>
-  <SpNameConfig Environment="DEV,UAT" SpName="Aff_BetList_SelMatchResult" Suffix="_UAT2"></SpNameConfig>
+  <SpNameConfig Environment="DEV,UAT" SpName="Aff_BetList_SelMatchResult" Suffix="_xtest"></SpNameConfig>
+  <SpNameConfig Environment="DEV,UAT" SpName="Aff_BetList_SelWinLossByDate" Suffix="_xtest"></SpNameConfig>
+  <SpNameConfig Environment="DEV,UAT" SpName="Aff_BetList_SelWinLossByDate_Old" Suffix="_xtest"></SpNameConfig>
 </Root>
