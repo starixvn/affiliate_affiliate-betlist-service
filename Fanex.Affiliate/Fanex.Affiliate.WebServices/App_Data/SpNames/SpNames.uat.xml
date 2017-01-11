@@ -25,8 +25,8 @@
   </Function>
 
   <Function Name="Aff-Betlist">
-    <Setting Key="Aff_BetList_SelWinLossByDate" SpName="Aff_BetList_SelWinLossByDate_xtest" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
-    <Setting Key="Aff_BetList_SelWinLossByDate_Old" SpName="Aff_BetList_SelWinLossByDate_Old_xtest" DbName="DBEXT.bodb_Archive.bodbAdminNet" Plain="0" />
+    <Setting Key="Aff_BetList_SelWinLossByDate" SpName="Aff_BetList_SelWinLossByDate" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
+    <Setting Key="Aff_BetList_SelWinLossByDate_Old" SpName="Aff_BetList_SelWinLossByDate_Old" DbName="DBEXT.bodb_Archive.bodbAdminNet" Plain="0" />
     <Setting Key="Aff_BetList_SelParlayByTransID" SpName="Aff_BetList_SelParlayByTransID" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
     <Setting Key="Aff_BetList_SelCombinationParlayDetail" SpName="Aff_BetList_SelCombinationParlayDetail" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
     <Setting Key="Aff_BetList_SelBalanceUpDay" SpName="Aff_BetList_SelBalanceUpDay" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
@@ -36,7 +36,7 @@
   </Function>
 
   <Function Name="Aff-Betlist-Results">
-    <Setting Key="Aff_BetList_SelMatchResult" SpName="Aff_BetList_SelMatchResult_xtest" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
+    <Setting Key="Aff_BetList_SelMatchResult" SpName="Aff_BetList_SelMatchResult" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
     <Setting Key="Aff_BetList_SelMatchResultParlay" SpName="Aff_BetList_SelMatchResultParlay" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
     <Setting Key="Aff_BetList_SelMatchResultNumberGame" SpName="Aff_BetList_SelMatchResultNumberGame" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
   </Function>
