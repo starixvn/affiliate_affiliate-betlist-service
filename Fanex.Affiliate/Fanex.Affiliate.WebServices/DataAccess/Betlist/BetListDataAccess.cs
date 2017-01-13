@@ -774,14 +774,17 @@ namespace Fanex.Affiliate.WebServices.DataAccess
         /// <returns>The game detail value.</returns>
         private static GameDetail BindGameDetail(IDataReader reader)
         {
+            var resultStatusId = reader["ResultStatusID"];
+            var settlementStatusID = reader["SettlementStatusID"];
+
             return new GameDetail
             {
                 MatchId = int.Parse(reader["matchid"].ToString()),
                 ResourceId = reader["ResourceId"].ToString(),
                 HomeValue = reader["HomeValue"].ToString(),
                 AwayValue = reader["AwayValue"].ToString(),
-                ResultStatusID = int.Parse(reader["ResultStatusID"].ToString()),
-                SettlementStatusID = int.Parse(reader["SettlementStatusID"].ToString()),
+                ResultStatusID = resultStatusId == DBNull.Value ? 0 : int.Parse(resultStatusId.ToString()),
+                SettlementStatusID = settlementStatusID == DBNull.Value ? 0 : int.Parse(settlementStatusID.ToString()),
                 OtherInfo = reader["OtherInfo"].ToString()
             };
         }
