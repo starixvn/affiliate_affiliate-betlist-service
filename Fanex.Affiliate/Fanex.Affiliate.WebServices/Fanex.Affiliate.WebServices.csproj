@@ -117,8 +117,8 @@
       <HintPath>..\packages\Fanex.Result.Core-Racing.1.0.0.9\lib\net40\Fanex.Result.Core.Racing.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Fanex.Result.Core.Sportsbook, Version=1.0.6.11, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.Result.Core-Sportsbook.1.0.6.11-beta\lib\net40\Fanex.Result.Core.Sportsbook.dll</HintPath>
+    <Reference Include="Fanex.Result.Core.Sportsbook, Version=1.0.6.12, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fanex.Result.Core-Sportsbook.1.0.6.12-beta\lib\net40\Fanex.Result.Core.Sportsbook.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="HandHistoryLibrary, Version=1.0.0.43, Culture=neutral, processorArchitecture=MSIL">
@@ -522,7 +522,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_StartDate="2014/3/28" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_StartDate="2014/3/28" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
