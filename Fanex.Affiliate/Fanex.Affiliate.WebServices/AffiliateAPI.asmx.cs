@@ -516,8 +516,7 @@ namespace Fanex.Affiliate.WebServices
             }
 
             var templatePath = Server.MapPath("~/Views/BetList.cshtml");
-            var exchangeRate = 1m;
-            var ticketTextList = Ticket(ticketResults, criteria, userName, exchangeRate);
+            var ticketTextList = Ticket(ticketResults, criteria, userName, criteria.ExchangeRate);
 
             foreach (var ticket in ticketTextList)
             {
@@ -530,7 +529,7 @@ namespace Fanex.Affiliate.WebServices
                 IsShowSystemIdAndExternalId = false,
                 IsShowWinLoss = true,
                 TicketTextList = ticketTextList,
-                SumWinLoss = FormaterCurrency.Format(ticketResults.SumWinLoss * exchangeRate)
+                SumWinLoss = FormaterCurrency.Format(ticketResults.SumWinLoss * criteria.ExchangeRate)
             };
 
             return BindDataToTemplate(templatePath, content);

@@ -3,5 +3,7 @@
     public class BetListDetailCriteria : BetListCriteria
     {
         public long RefNo { get; set; }
+
+        public decimal ExchangeRate { get; set; }
     }
 }
