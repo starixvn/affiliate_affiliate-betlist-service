@@ -3,10 +3,6 @@
 //     Copyright (c) . All rights reserved.
 // </copyright>
 // ------------------------------------------------------------------------
-// <history>
-//   <change who="Long.Luu" date="2013/11/20">Created</change>
-//   <change who="" date=""></change>
-// </history>
 
 namespace Fanex.Affiliate.WebServices.Criteria
 {
