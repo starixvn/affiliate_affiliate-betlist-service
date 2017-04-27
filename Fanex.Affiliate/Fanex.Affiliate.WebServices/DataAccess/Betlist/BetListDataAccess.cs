@@ -405,7 +405,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess
             var gameDetails = new List<GameDetail>();
             using (var db = new ObjectDb("Aff_BetList_SelMatchResult"))
             {
-                using (var reader = db.ExecuteReader(new { matchid = criteria.MatchId, bettype = criteria.Bettype }))
+                using (var reader = db.ExecuteReader(new { matchid = criteria.MatchId, bettype = criteria.Bettype, betid = criteria.BetId }))
                 {
                     while (reader.Read())
                     {
