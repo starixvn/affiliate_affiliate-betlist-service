@@ -4,10 +4,6 @@
 //     Copyright (c) . All rights reserved.
 // </copyright>
 // ------------------------------------------------------------------------
-// <history>
-//   <change who="Long.Luu" date="2014/02/25">Created</change>
-//   <change who="" date=""></change>
-// </history>
 
 namespace Fanex.Affiliate.WebServices
 {
@@ -605,7 +601,8 @@ namespace Fanex.Affiliate.WebServices
                 IsOutright = criteria.IsOutRight.HasValue && criteria.IsOutRight.Value > 0,
                 IsParlayPopUp = criteria.Bettype == (int)BetType.MixParlay || criteria.Bettype == (int)BetType.CombinationMixParlay,
                 IsPopUp = true,
-                LanguageCode = _resultsSupportedLanguages.Exists(i => i.Equals(sessionLanguage)) ? sessionLanguage : "en-US"
+                LanguageCode = _resultsSupportedLanguages.Exists(i => i.Equals(sessionLanguage)) ? sessionLanguage : "en-US",
+                EnableCheckScoreCalculated = sportType == SportType.Soccer
             };
 
             if (displaySettings.IsParlayPopUp && criteria.RefNo != null)
