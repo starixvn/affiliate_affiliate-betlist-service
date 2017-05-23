@@ -117,6 +117,12 @@ namespace Fanex.Affiliate.WebServices.Services
             return _betlistDataAccess.GetBetListDetail(criteria, spkey);
         }
 
+        public TicketResult GetBetListCashOutDetail(BetListDetailCriteria criteria, string spkey)
+        {
+            Check.Argument.IsNotNull(criteria, "criteria");
+            return _betlistDataAccess.GetBetListCashOutDetail(criteria, spkey);
+        }
+
         #endregion BetList
 
         #region BetList.Results

@@ -504,6 +504,15 @@ namespace Fanex.Affiliate.WebServices
             return GetTicketDetailHtml(ticketResults, criteria, userName);
         }
 
+        [WebMethod]
+        public string GetBetListCashOutDetail(string userName, BetListDetailCriteria criteria)
+        {
+            const string spKey = "Aff_BetList_CashOut_Detail";
+            var ticketResults = _betlistService.GetBetListCashOutDetail(criteria, spKey);
+
+            return GetTicketDetailHtml(ticketResults, criteria, userName);
+        }
+
         private string GetTicketDetailHtml(TicketResult ticketResults, BetListDetailCriteria criteria, string userName)
         {
             if (ticketResults.MainTicketList == null)

@@ -65,6 +65,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess
             var containsExternalId = columnCollection.Contains("nickname");
             var containsRace = columnCollection.Contains("race");
             var containTransDesc = columnCollection.Contains("transdesc");
+            var containExtraInfo = columnCollection.Contains("extrainfo");
 
             // Boolean
             var containsLiveIndicator = columnCollection.Contains("liveindicator");
@@ -82,10 +83,12 @@ namespace Fanex.Affiliate.WebServices.DataAccess
             var containsLiveHomeScore = columnCollection.Contains("livehomescore");
             var containsLiveAwayScore = columnCollection.Contains("liveawayscore");
             var containsStatusID = columnCollection.Contains("statusid");
+            var containsOriginalBetType = columnCollection.Contains("originalbettype");
 
             // Long
             var containsTransId = columnCollection.Contains("transid");
             var containsBetId = columnCollection.Contains("betid");
+            var containsBetdaqId = columnCollection.Contains("betdaqid");
 
             // DateTime
             var containsWinlostDate = columnCollection.Contains("winlostdate");
@@ -123,6 +126,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess
                 ticket.ExternalId = containsExternalId ? Converter.ToString2(dataRow["nickname"]) : string.Empty;
                 ticket.Race = containsRace ? Converter.ToString2(dataRow["race"]) : string.Empty;
                 ticket.TransDesc = containTransDesc ? Converter.ToString2(dataRow["transdesc"]) : string.Empty;
+                ticket.ExtraInfo = containExtraInfo ? Converter.ToString2(dataRow["extrainfo"]) : string.Empty;
 
                 // Boolean
                 ticket.IsLive = containsLiveIndicator ? ReadBoolean(dataRow["liveindicator"]) : false;
@@ -140,10 +144,12 @@ namespace Fanex.Affiliate.WebServices.DataAccess
                 ticket.LiveHomeScore = containsLiveHomeScore ? Converter.ToInt(dataRow["livehomescore"]) : 0;
                 ticket.LiveAwayScore = containsLiveAwayScore ? Converter.ToInt(dataRow["liveawayscore"]) : 0;
                 ticket.StatusId = containsStatusID ? Converter.ToInt(dataRow["statusid"]) : 0;
+                ticket.OriginalBetType = containsOriginalBetType ? Converter.ToInt(dataRow["originalbettype"]) : 0;
 
                 // Long
                 ticket.TransId = containsTransId ? Convert.ToInt64(dataRow["transid"]) : 0;
                 ticket.BetId = containsBetId && !Convert.IsDBNull(dataRow["betid"]) ? new long?(Convert.ToInt64(dataRow["betid"])) : null;
+                ticket.BetdaqId = containsBetdaqId ? Convert.ToInt64(dataRow["betdaqid"]) : 0;
 
                 // DateTime
                 ticket.WinlostDate = containsWinlostDate ? Converter.ToDateTime(dataRow["winlostdate"]) : DateTime.Now;
@@ -381,6 +387,25 @@ namespace Fanex.Affiliate.WebServices.DataAccess
             {
                 objectDb.AddInParameter("RefNo", DbType.Int64, criteria.RefNo);
                 objectDb.AddInParameter("CustId", DbType.Int32, criteria.CustId);
+                var ds = objectDb.ExecuteDataSet();
+
+                var mainTable = ds.Tables.Count > 0 ? ds.Tables[0] : new DataTable();
+                result.MainTicketList = ReadMainTicketData(mainTable, string.Empty);
+            }
+
+            return result;
+        }
+
+        public TicketResult GetBetListCashOutDetail(BetListDetailCriteria criteria, string spkey)
+        {
+            var result = new TicketResult();
+
+            using (var objectDb = new ObjectDb(spkey))
+            {
+                objectDb.AddInParameter("TransId", DbType.Int64, criteria.TranId);
+                objectDb.AddInParameter("RefNo", DbType.Int32, criteria.RefNo);
+                objectDb.AddInParameter("BetType", DbType.Int64, criteria.BetType);
+                objectDb.AddInParameter("OriginalTransId", DbType.Int32, criteria.OriginalTransId);
                 var ds = objectDb.ExecuteDataSet();
 
                 var mainTable = ds.Tables.Count > 0 ? ds.Tables[0] : new DataTable();
