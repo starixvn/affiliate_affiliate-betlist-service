@@ -26,6 +26,7 @@ namespace Fanex.Affiliate.WebServices
     using Fanex.Result.Core.Base;
     using RazorEngine;
     using RazorEngine.Templating;
+    using Resources;
     using Result.Core;
     using Services;
     using Services.Betlist;
@@ -251,6 +252,77 @@ namespace Fanex.Affiliate.WebServices
                     criteria.ShowSB = true;
                     break;
             }
+        }
+
+        public IList<TicketText> BuildOriginalTicketText(IList<AffTicket> tickets, BetListDetailCriteria criteria)
+        {
+            var builder = new BetListHTMLBuilder();
+            var ticketTextList = new List<TicketText>();
+            var ticketHelper = new TicketHelper
+            {
+                IsShowOddsWithChoice = false,
+                HideStatusCashOutHistory = true
+            };
+            var baseCurrency = criteria == null ? string.Empty : criteria.BaseCurrency;
+
+            foreach (var ticket in tickets)
+            {
+                var statusHtml = builder.CreateStatusBuilder(ticket.BetTypeId).Render(ticket, ticketHelper, null, true);
+                statusHtml.StatusResult = null;
+
+                ticket.Stake *= criteria.ExchangeRate;
+                ticket.ActualStake *= criteria.ExchangeRate;
+                var ticketText = new TicketText
+                {
+                    TransTime = builder.BuildTrans(ticket),
+                    Status = statusHtml.ToString(),
+                    Choice = builder.BuildChoice(ticket, ticketHelper, null, false),
+                    Odds = builder.BuildOdds(ticket, null, CacheRef.GetOddsTypeName),
+                    Stake = builder.BuildStake(ticket),
+                    WinLoss = builder.BuildCustomerWL(ticket, criteria.ExchangeRate)
+                };
+
+                ticketTextList.Add(ticketText);
+            }
+
+            return ticketTextList;
+        }
+
+        public IList<CashOutTicketText> BuildCashOutTicketText(IList<CashOutTicket> tickets, BetListDetailCriteria criteria)
+        {
+            var builder = new BetListHTMLBuilder();
+            var ticketTextList = new List<CashOutTicketText>();
+            var ticketHelper = new TicketHelper
+            {
+                HideStatusCashOutHistory = true
+            };
+            foreach (var ticket in tickets)
+            {
+                var betListTicket = new AffTicket
+                {
+                    BetTypeId = ticket.BetTypeId,
+                    Status = ticket.Status
+                };
+                var statusHtml = builder.CreateStatusBuilder(ticket.BetTypeId).Render(betListTicket, ticketHelper, null, true);
+                statusHtml.StatusResult = null;
+
+                ticket.Stake *= criteria.ExchangeRate;
+                ticket.Winlost *= criteria.ExchangeRate;
+                ticket.Price *= criteria.ExchangeRate;
+                var ticketText = new CashOutTicketText
+                {
+                    TransTime = Lang.RefNo + ": " + ticket.TransId + "<div class='time'>" + ticket.TransDate + "</div>",
+                    Stake = ticket.Stake.ToString("0"),
+                    Price = ticket.Price.ToString("0"),
+                    WinLoss = ticket.Winlost.ToString("0.00"),
+                    Status = statusHtml.ToString(),
+                    IsHighlight = criteria.TransId == ticket.TransId
+                };
+
+                ticketTextList.Add(ticketText);
+            }
+
+            return ticketTextList;
         }
 
         /// <summary>
@@ -510,7 +582,29 @@ namespace Fanex.Affiliate.WebServices
             const string spKey = "Aff_BetList_CashOut_Detail";
             var ticketResults = _betlistService.GetBetListCashOutDetail(criteria, spKey);
 
-            return GetTicketDetailHtml(ticketResults, criteria, userName);
+            return GetCashOutTicketDetailHtml(ticketResults, criteria);
+        }
+
+        private string GetCashOutTicketDetailHtml(CashOutTicketDetail ticketResults, BetListDetailCriteria criteria)
+        {
+            if (ticketResults.OriginalTicket == null)
+            {
+                return string.Empty;
+            }
+
+            var templatePath = Server.MapPath("~/Views/CashOutDetail.cshtml");
+            var originalTicketTextList = BuildOriginalTicketText(ticketResults.OriginalTicket, criteria);
+            var cashOutTicketTextList = BuildCashOutTicketText(ticketResults.CashOutTicket, criteria);
+
+            var content = new
+            {
+                OriginalTextList = originalTicketTextList,
+                CashOutTextList = cashOutTicketTextList,
+                IsHighlightOriginalTicket = !cashOutTicketTextList.Any(x => x.IsHighlight),
+                IsCashOut = ticketResults.CashOutTicket.FirstOrDefault()?.BetTypeId == (int)BetType.CashOut
+            };
+
+            return BindDataToTemplate(templatePath, content);
         }
 
         private string GetTicketDetailHtml(TicketResult ticketResults, BetListDetailCriteria criteria, string userName)

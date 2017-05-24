@@ -59,7 +59,7 @@ namespace Fanex.Affiliate.WebServices.Services
 
         TicketResult GetBetListDetail(BetListDetailCriteria criteria, string spkey);
 
-        TicketResult GetBetListCashOutDetail(BetListDetailCriteria criteria, string spkey);
+        CashOutTicketDetail GetBetListCashOutDetail(BetListDetailCriteria criteria, string spkey);
 
         #endregion BetList
 

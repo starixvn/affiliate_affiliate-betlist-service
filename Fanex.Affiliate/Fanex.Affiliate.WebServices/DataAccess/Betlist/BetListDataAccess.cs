@@ -177,6 +177,65 @@ namespace Fanex.Affiliate.WebServices.DataAccess
             return result;
         }
 
+        public static List<CashOutTicket> ReadCashOutTicketDetailData(DataTable dataTable)
+        {
+            var columnCollection = dataTable.Columns;
+
+            // String
+            var containsRefNo = columnCollection.Contains("refno");
+            var containsStatus = columnCollection.Contains("status");
+
+            // Int
+            var containsBetType = columnCollection.Contains("bettype");
+            var containsCustId = columnCollection.Contains("custid");
+
+            // Long
+            var containsTransId = columnCollection.Contains("transid");
+
+            // DateTime
+            var containsWinlostDate = columnCollection.Contains("winlostdate");
+            var containsTransDate = columnCollection.Contains("transdate");
+
+            // Money
+            var containsWinlost = columnCollection.Contains("winlost");
+            var containsStake = columnCollection.Contains("stake");
+            var containsCurrency = columnCollection.Contains("currency");
+            var containsPrice = columnCollection.Contains("price");
+
+            var result = new List<CashOutTicket>();
+            foreach (DataRow dataRow in dataTable.Rows)
+            {
+                var ticket = new CashOutTicket();
+
+                // String
+                ticket.RefNo = containsRefNo ? Converter.ToString2(dataRow["refno"]) : string.Empty;
+                ticket.Status = containsStatus ? Converter.ToString2(dataRow["status"]) : string.Empty;
+
+
+                // Int
+                ticket.BetTypeId = containsBetType ? Converter.ToInt(dataRow["bettype"]) : 0;
+                ticket.CustId = containsCustId ? Converter.ToInt(dataRow["custid"]) : 0;
+
+                // Long
+                ticket.TransId = containsTransId ? Convert.ToInt64(dataRow["transid"]) : 0;
+
+                // DateTime
+                ticket.WinlostDate = containsWinlostDate ? Converter.ToDateTime(dataRow["winlostdate"]) : DateTime.Now;
+                ticket.TransDate = containsTransDate ? Converter.ToDateTime(dataRow["transdate"]) : DateTime.Now;
+
+                // Money
+                ticket.Winlost = containsWinlost ? Converter.ToDecimal(dataRow["winlost"]) : 0;
+                ticket.Stake = containsStake ? Converter.ToDecimal(dataRow["stake"]) : 0;
+                ticket.Price = containsPrice ? Converter.ToDecimal(dataRow["price"]) : 0;
+
+                ticket.Currency = containsCurrency ? Converter.ToString2(dataRow["currency"]) : string.Empty;
+
+                result.Add(ticket);
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Read reference ticket.
         /// </summary>
@@ -396,20 +455,23 @@ namespace Fanex.Affiliate.WebServices.DataAccess
             return result;
         }
 
-        public TicketResult GetBetListCashOutDetail(BetListDetailCriteria criteria, string spkey)
+        public CashOutTicketDetail GetBetListCashOutDetail(BetListDetailCriteria criteria, string spkey)
         {
-            var result = new TicketResult();
+            var result = new CashOutTicketDetail();
 
             using (var objectDb = new ObjectDb(spkey))
             {
-                objectDb.AddInParameter("TransId", DbType.Int64, criteria.TranId);
-                objectDb.AddInParameter("RefNo", DbType.Int32, criteria.RefNo);
-                objectDb.AddInParameter("BetType", DbType.Int64, criteria.BetType);
-                objectDb.AddInParameter("OriginalTransId", DbType.Int32, criteria.OriginalTransId);
+                objectDb.AddInParameter("TransId", DbType.Int64, criteria.TransId);
+                objectDb.AddInParameter("RefNo", DbType.Int64, criteria.RefNo);
+                objectDb.AddInParameter("BetType", DbType.Int32, criteria.BetType);
+                objectDb.AddInParameter("OriginalTransId", DbType.Int64, criteria.OriginalTransId);
                 var ds = objectDb.ExecuteDataSet();
 
                 var mainTable = ds.Tables.Count > 0 ? ds.Tables[0] : new DataTable();
-                result.MainTicketList = ReadMainTicketData(mainTable, string.Empty);
+                var cashOutTable = ds.Tables.Count > 1 ? ds.Tables[1] : new DataTable();
+
+                result.OriginalTicket = ReadMainTicketData(mainTable, string.Empty);
+                result.CashOutTicket = ReadCashOutTicketDetailData(cashOutTable);
             }
 
             return result;

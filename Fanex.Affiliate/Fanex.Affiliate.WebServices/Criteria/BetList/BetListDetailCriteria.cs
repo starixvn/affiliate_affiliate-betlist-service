@@ -6,10 +6,10 @@
 
         public decimal ExchangeRate { get; set; }
 
-        public long TranId { get; set; }
+        public long TransId { get; set; }
 
         public long OriginalTransId { get; set; }
 
-        public long BetType { get; set; }
+        public int BetType { get; set; }
     }
 }

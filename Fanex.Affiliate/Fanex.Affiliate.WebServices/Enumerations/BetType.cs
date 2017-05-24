@@ -73,6 +73,7 @@ namespace Fanex.Affiliate.WebServices.Enumerations
         NgHighLow = 87,
         NgWarrior = 88,
         NgNextCombo = 89,
-        NgNumberGroup = 90
+        NgNumberGroup = 90,
+        CashOut = 911
     }
 }
