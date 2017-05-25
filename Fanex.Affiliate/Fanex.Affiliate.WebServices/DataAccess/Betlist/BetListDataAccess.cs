@@ -60,7 +60,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
             new BetListColumn {Name="statusid",Type=DbType.Int32,MappingName="StatusId" },
             new BetListColumn {Name="originalbettype",Type=DbType.Int32,MappingName="OriginalBetType" },
             new BetListColumn {Name="transid",Type=DbType.Int64,MappingName="TransId" },
-            new BetListColumn {Name="betid",Type=DbType.Int64,IsNullAble=true ,MappingName="BetId" },
+            new BetListColumn {Name="betid",Type=DbType.Int64,IsNullable=true ,MappingName="BetId" },
             new BetListColumn {Name="betdaqid",Type=DbType.Int64,MappingName="BetdaqId" },
             new BetListColumn {Name="winlostdate",Type=DbType.DateTime,MappingName="WinlostDate" },
             new BetListColumn {Name="transdate",Type=DbType.DateTime,MappingName="TransDate" },
@@ -92,7 +92,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
             {
                 Name = i.Name,
                 HasData = columnCollection.Contains(i.Name),
-                IsNullAble = i.IsNullAble,
+                IsNullable = i.IsNullable,
                 Type = i.Type,
                 MappingName = i.MappingName
             }).Union(betlistColumnByCurrency).ToList();
@@ -128,7 +128,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
                         break;
 
                     case DbType.Int64:
-                        var value = item.IsNullAble ? Convert.IsDBNull(columnValue) ? new long?(Convert.ToInt64(columnValue)) : null
+                        var value = item.IsNullable ? Convert.IsDBNull(columnValue) ? new long?(Convert.ToInt64(columnValue)) : null
                             : Convert.ToInt64(columnValue);
 
                         setter.Invoke(ticket, new object[] { value });
@@ -152,7 +152,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
             {
                 Name = i.Name,
                 HasData = columnCollection.Contains(i.Name),
-                IsNullAble = i.IsNullAble,
+                IsNullable = i.IsNullable,
                 Type = i.Type,
                 MappingName = i.MappingName
             }).ToList();
