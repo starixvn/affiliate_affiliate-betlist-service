@@ -177,6 +177,14 @@ namespace Fanex.Affiliate.WebServices.DataAccess
             return result;
         }
 
+        [SuppressMessage(
+            "StyleCop.CSharp.StylecopPlus.Rules",
+            "SP2101:MethodMustNotContainMoreLinesThan",
+            Justification = "Reviewed. Suppression is OK here.")]
+        [SuppressMessage(
+            "Microsoft.Maintainability",
+            "CA1502:AvoidExcessiveComplexity",
+            Justification = "Reviewed. Suppression is OK here.")]
         public static List<CashOutTicket> ReadCashOutTicketDetailData(DataTable dataTable)
         {
             var columnCollection = dataTable.Columns;
@@ -210,7 +218,6 @@ namespace Fanex.Affiliate.WebServices.DataAccess
                 // String
                 ticket.RefNo = containsRefNo ? Converter.ToString2(dataRow["refno"]) : string.Empty;
                 ticket.Status = containsStatus ? Converter.ToString2(dataRow["status"]) : string.Empty;
-
 
                 // Int
                 ticket.BetTypeId = containsBetType ? Converter.ToInt(dataRow["bettype"]) : 0;
