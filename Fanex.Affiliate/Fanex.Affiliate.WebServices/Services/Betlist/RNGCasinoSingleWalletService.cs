@@ -12,7 +12,7 @@
 
     public class RNGCasinoSingleWalletService : IRNGCasinoSingleWalletService
     {
-        private static readonly IDictionary<string, string> _mapLanguages = new Dictionary<string, string>()
+        private static readonly IDictionary<string, string> SiteLanguages = new Dictionary<string, string>
             {
                 { "en-US", "en" },
                 { "zh-TW", "ch" },
@@ -82,7 +82,7 @@
         {
             var languageCode = CultureInfo.CurrentUICulture.IetfLanguageTag;
             string result;
-            if (!_mapLanguages.TryGetValue(languageCode, out result))
+            if (!SiteLanguages.TryGetValue(languageCode, out result))
             {
                 return "en";
             }
