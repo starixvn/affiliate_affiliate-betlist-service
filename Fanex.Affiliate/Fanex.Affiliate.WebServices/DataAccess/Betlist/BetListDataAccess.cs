@@ -13,6 +13,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
+    using System.Reflection;
     using BetList.Core.Entities;
     using Common;
     using Criteria.BetList;
@@ -104,20 +105,20 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
             return result;
         }
 
-        private static void AssignDataToAffTicket(Type ticketType, DataRow dataRow, BetListColumn item)
+        private static void AssignDataToAffTicket(PropertyInfo property, DataRow dataRow, BetListColumn item)
         {
             switch (item.Type)
             {
                 case DbType.String:
-                    ticketType.GetProperty(item.MappingName).SetValue(item, Converter.ToString2(dataRow[item.Name]), null);
+                    property.SetValue(item, Converter.ToString2(dataRow[item.Name]), null);
                     break;
 
                 case DbType.Boolean:
-                    ticketType.GetProperty(item.MappingName).SetValue(item, ReadBoolean(dataRow[item.Name]), null);
+                    property.SetValue(item, ReadBoolean(dataRow[item.Name]), null);
                     break;
 
                 case DbType.Int32:
-                    ticketType.GetProperty(item.MappingName).SetValue(item, Converter.ToInt(dataRow[item.Name]), null);
+                    property.SetValue(item, Converter.ToInt(dataRow[item.Name]), null);
 
                     break;
 
@@ -125,27 +126,19 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
                     var value = item.IsNullAble ? Convert.IsDBNull(dataRow[item.Name]) ? new long?(Convert.ToInt64(dataRow[item.Name])) : null
                         : Convert.ToInt64(item.Name);
 
-                    ticketType.GetProperty(item.MappingName).SetValue(item, value, null);
+                    property.SetValue(item, value, null);
                     break;
 
                 case DbType.DateTime:
-                    ticketType.GetProperty(item.MappingName).SetValue(item, Converter.ToDateTime(dataRow[item.Name]), null);
+                    property.SetValue(item, Converter.ToDateTime(dataRow[item.Name]), null);
                     break;
 
                 case DbType.Decimal:
-                    ticketType.GetProperty(item.MappingName).SetValue(item, Converter.ToDecimal(dataRow[item.Name]), null);
+                    property.SetValue(item, Converter.ToDecimal(dataRow[item.Name]), null);
                     break;
             }
         }
 
-        [SuppressMessage(
-            "StyleCop.CSharp.StylecopPlus.Rules",
-            "SP2101:MethodMustNotContainMoreLinesThan",
-            Justification = "Reviewed. Suppression is OK here.")]
-        [SuppressMessage(
-            "Microsoft.Maintainability",
-            "CA1502:AvoidExcessiveComplexity",
-            Justification = "Reviewed. Suppression is OK here.")]
         public static List<CashOutTicket> ReadCashOutTicketDetailData(DataTable dataTable)
         {
             var columnCollection = dataTable.Columns;
@@ -180,17 +173,18 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
 
             foreach (var item in items)
             {
+                var property = ticketType.GetProperty(item.MappingName);
                 if (item.HasData)
                 {
-                    AssignDataToAffTicket(ticketType, dataRow, item);
+                    AssignDataToAffTicket(property, dataRow, item);
                 }
                 else if (item.Type == DbType.String)
                 {
-                    ticketType.GetProperty(item.MappingName).SetValue(item, string.Empty, null);
+                    property.SetValue(item, string.Empty, null);
                 }
                 else if (item.Type == DbType.DateTime)
                 {
-                    ticketType.GetProperty(item.MappingName).SetValue(item, DateTime.Now, null);
+                    property.SetValue(item, DateTime.Now, null);
                 }
             }
 
@@ -212,7 +206,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
             var containsStake = data.Columns.Contains("stake");
             foreach (DataRow dataRow in data.Rows)
             {
-                var ticket = new TicketData
+                result.Add(new TicketData
                 {
                     BetTeam = containsBetTeam ? dataRow["betteam"].ToString() : string.Empty,
                     RefNo = dataRow["refno"].ToString(),
@@ -220,9 +214,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
                     BetTypeId = Convert.ToInt32(dataRow["bettype"]),
                     Stake = containsStake ? Convert.ToDecimal(dataRow["stake" + baseCurrency]) : 0,
                     Odds = Convert.ToDecimal(dataRow["odds"])
-                };
-
-                result.Add(ticket);
+                });
             }
 
             return result;
