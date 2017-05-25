@@ -111,34 +111,35 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
         {
             if (setter != null)
             {
+                var columnValue = dataRow[item.Name];
                 switch (item.Type)
                 {
                     case DbType.String:
-                        setter.Invoke(ticket, new object[] { Converter.ToString2(dataRow[item.Name]) });
+                        setter.Invoke(ticket, new object[] { Converter.ToString2(columnValue) });
                         break;
 
                     case DbType.Boolean:
-                        setter.Invoke(ticket, new object[] { ReadBoolean(dataRow[item.Name]) });
+                        setter.Invoke(ticket, new object[] { ReadBoolean(columnValue) });
                         break;
 
                     case DbType.Int32:
-                        setter.Invoke(ticket, new object[] { Converter.ToInt(dataRow[item.Name]) });
+                        setter.Invoke(ticket, new object[] { Converter.ToInt(columnValue) });
 
                         break;
 
                     case DbType.Int64:
-                        var value = item.IsNullAble ? Convert.IsDBNull(dataRow[item.Name]) ? new long?(Convert.ToInt64(dataRow[item.Name])) : null
-                            : Convert.ToInt64(dataRow[item.Name]);
+                        var value = item.IsNullAble ? Convert.IsDBNull(columnValue) ? new long?(Convert.ToInt64(columnValue)) : null
+                            : Convert.ToInt64(columnValue);
 
                         setter.Invoke(ticket, new object[] { value });
                         break;
 
                     case DbType.DateTime:
-                        setter.Invoke(ticket, new object[] { Converter.ToDateTime(dataRow[item.Name]) });
+                        setter.Invoke(ticket, new object[] { Converter.ToDateTime(columnValue) });
                         break;
 
                     case DbType.Decimal:
-                        setter.Invoke(ticket, new object[] { Converter.ToDecimal(dataRow[item.Name]) });
+                        setter.Invoke(ticket, new object[] { Converter.ToDecimal(columnValue) });
                         break;
                 }
             }
