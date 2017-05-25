@@ -1,4 +1,4 @@
-﻿namespace Fanex.Affiliate.WebServices.Criteria
+﻿namespace Fanex.Affiliate.WebServices.Criteria.BetList
 {
     public class BetListDetailCriteria : BetListCriteria
     {

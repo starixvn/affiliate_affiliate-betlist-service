@@ -4,7 +4,7 @@
 // </copyright>
 // ------------------------------------------------------------------------
 
-namespace Fanex.Affiliate.WebServices.DataAccess
+namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
 {
     using System;
     using System.Collections;
@@ -15,7 +15,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess
     using System.Linq;
     using BetList.Core.Entities;
     using Common;
-    using Criteria;
+    using Criteria.BetList;
     using Data;
     using DTO.BetList;
     using Fanex.Result.Core.LiveCasino.DTO;
@@ -30,151 +30,112 @@ namespace Fanex.Affiliate.WebServices.DataAccess
     {
         #region BetList
 
-        /// <summary>
-        /// Read main ticket data.
-        /// </summary>
-        /// <param name="dataTable">Data table Parameter value.</param>
-        /// <param name="baseCurrency"> Parameter value.</param>
-        /// <returns>Result value.</returns>
-        [SuppressMessage(
-            "StyleCop.CSharp.StylecopPlus.Rules",
-            "SP2101:MethodMustNotContainMoreLinesThan",
-            Justification = "Reviewed. Suppression is OK here.")]
-        [SuppressMessage(
-            "Microsoft.Maintainability",
-            "CA1502:AvoidExcessiveComplexity",
-            Justification = "Reviewed. Suppression is OK here.")]
+        private static readonly IList<BetListColumn> BetListColumnList = new List<BetListColumn> {
+            new BetListColumn {Name="username", Type=DbType.String, MappingName="UserName" },
+            new BetListColumn {Name="refno",Type=DbType.String ,MappingName="RefNo" },
+            new BetListColumn {Name="matchcode",Type=DbType.String,MappingName="MatchCode" },
+            new BetListColumn {Name="status",Type=DbType.String ,MappingName="Status"},
+            new BetListColumn {Name="betteam",Type=DbType.String,MappingName="BetTeam" },
+            new BetListColumn {Name="betstatus",Type=DbType.String,MappingName="EventStatus" },
+            new BetListColumn {Name="oddstype",Type=DbType.String,MappingName="OddsType" },
+            new BetListColumn {Name="nickname",Type=DbType.String,MappingName="ExternalId" },
+            new BetListColumn {Name="race",Type=DbType.String,MappingName="Race" },
+            new BetListColumn {Name="transdesc",Type=DbType.String,MappingName="TransDesc" },
+            new BetListColumn {Name="extrainfo",Type=DbType.String,MappingName="ExtraInfo" },
+            new BetListColumn {Name="betcheck",Type=DbType.String,MappingName="BetCheck" },
+            new BetListColumn {Name="currency",Type=DbType.String,MappingName="Currency" },
+            new BetListColumn {Name="liveindicator",Type=DbType.Boolean,MappingName="IsLive" },
+            new BetListColumn {Name="isneutral",Type=DbType.Boolean,MappingName="IsNeutral" },
+            new BetListColumn {Name="sporttype",Type=DbType.Int32 ,MappingName="SportTypeId"},
+            new BetListColumn {Name="bettype",Type=DbType.Int32,MappingName="BetTypeId" },
+            new BetListColumn {Name="leagueid",Type=DbType.Int32,MappingName="LeagueId" },
+            new BetListColumn {Name="homeid",Type=DbType.Int32,MappingName="HomeId" },
+            new BetListColumn {Name="awayid",Type=DbType.Int32,MappingName="AwayId" },
+            new BetListColumn {Name="matchid",Type=DbType.Int32,MappingName="MatchId" },
+            new BetListColumn {Name="custid",Type=DbType.Int32,MappingName="CustId" },
+            new BetListColumn {Name="currencyid",Type=DbType.Int32,MappingName="CurrencyId" },
+            new BetListColumn {Name="livehomescore",Type=DbType.Int32,MappingName="LiveHomeScore" },
+            new BetListColumn {Name="liveawayscore",Type=DbType.Int32,MappingName="LiveAwayScore" },
+            new BetListColumn {Name="statusid",Type=DbType.Int32,MappingName="StatusId" },
+            new BetListColumn {Name="originalbettype",Type=DbType.Int32,MappingName="OriginalBetType" },
+            new BetListColumn {Name="transid",Type=DbType.Int64,MappingName="TransId" },
+            new BetListColumn {Name="betid",Type=DbType.Int64,IsNullAble=true ,MappingName="BetId" },
+            new BetListColumn {Name="betdaqid",Type=DbType.Int64,MappingName="BetdaqId" },
+            new BetListColumn {Name="winlostdate",Type=DbType.DateTime,MappingName="WinlostDate" },
+            new BetListColumn {Name="transdate",Type=DbType.DateTime,MappingName="TransDate" },
+            new BetListColumn {Name="winlost",Type=DbType.Decimal,MappingName="Winlost" },
+            new BetListColumn {Name="stake",Type=DbType.Decimal ,MappingName="Stake"},
+            new BetListColumn {Name="odds",Type=DbType.Decimal,MappingName="Odds" },
+            new BetListColumn {Name="modds",Type=DbType.Decimal,MappingName="MasterOdds" },
+            new BetListColumn {Name="hdp1",Type=DbType.Decimal,MappingName="Handicap1" },
+            new BetListColumn {Name="hdp2",Type=DbType.Decimal,MappingName="Handicap2" },
+        };
+
         public static List<AffTicket> ReadMainTicketData(DataTable dataTable, string baseCurrency)
         {
             var playerCommCol = "playercomm" + baseCurrency;
             var commCol = "comm" + baseCurrency;
             var licenseeWlCol = "licenseewl" + baseCurrency;
             var actualStakeCol = "actual_stake" + baseCurrency;
-
-            var columnCollection = dataTable.Columns;
-
-            // String
-            var containsUsername = columnCollection.Contains("username");
-            var containsRefNo = columnCollection.Contains("refno");
-            var containsMatchCode = columnCollection.Contains("matchcode");
-            var containsStatus = columnCollection.Contains("status");
-            var containsBetTeam = columnCollection.Contains("betteam");
-            var containsBetStatus = columnCollection.Contains("betstatus");
-            var containsShowTime = columnCollection.Contains("showtime");
-            var containsOddsType = columnCollection.Contains("oddstype");
-            var containsExternalId = columnCollection.Contains("nickname");
-            var containsRace = columnCollection.Contains("race");
-            var containTransDesc = columnCollection.Contains("transdesc");
-            var containExtraInfo = columnCollection.Contains("extrainfo");
-
-            // Boolean
-            var containsLiveIndicator = columnCollection.Contains("liveindicator");
-            var containsNeutral = columnCollection.Contains("isneutral");
-
-            // Int
-            var containsSportType = columnCollection.Contains("sporttype");
-            var containsBetType = columnCollection.Contains("bettype");
-            var containsLeagueId = columnCollection.Contains("leagueid");
-            var containsHomeId = columnCollection.Contains("homeid");
-            var containsAwayId = columnCollection.Contains("awayid");
-            var containsMatchId = columnCollection.Contains("matchid");
-            var containsCustId = columnCollection.Contains("custid");
-            var containsCurrencyId = columnCollection.Contains("currencyid");
-            var containsLiveHomeScore = columnCollection.Contains("livehomescore");
-            var containsLiveAwayScore = columnCollection.Contains("liveawayscore");
-            var containsStatusID = columnCollection.Contains("statusid");
-            var containsOriginalBetType = columnCollection.Contains("originalbettype");
-
-            // Long
-            var containsTransId = columnCollection.Contains("transid");
-            var containsBetId = columnCollection.Contains("betid");
-            var containsBetdaqId = columnCollection.Contains("betdaqid");
-
-            // DateTime
-            var containsWinlostDate = columnCollection.Contains("winlostdate");
-            var containsTransDate = columnCollection.Contains("transdate");
-
-            // Money
-            var containsPlayerComm = columnCollection.Contains(playerCommCol);
-            var containsComm = columnCollection.Contains(commCol);
-            var containsLicenseeWl = columnCollection.Contains(licenseeWlCol);
-            var containsWinlost = columnCollection.Contains("winlost");
-            var containsStake = columnCollection.Contains("stake");
-            var containsActualStake = columnCollection.Contains(actualStakeCol);
-            var containsOdds = columnCollection.Contains("odds");
-            var containsMasterOdds = columnCollection.Contains("modds");
-            var containsHandicap1 = columnCollection.Contains("hdp1");
-            var containsHandicap2 = columnCollection.Contains("hdp2");
-            var containsBetCheck = columnCollection.Contains("betcheck");
-            var hasStake = columnCollection.Contains("stake");
-            var hasCurrency = columnCollection.Contains("currency");
-
             var result = new List<AffTicket>();
+            var columnCollection = dataTable.Columns;
+            var betlistColumnByCurrency = new List<BetListColumn>
+            {
+                new BetListColumn {Name=playerCommCol,Type=DbType.Decimal,HasData=columnCollection.Contains(playerCommCol),MappingName="PlayerComm" },
+                new BetListColumn {Name=commCol + baseCurrency,Type=DbType.Decimal,HasData=columnCollection.Contains(commCol),MappingName="Comm" },
+                new BetListColumn {Name=licenseeWlCol,Type=DbType.Decimal,HasData=columnCollection.Contains(licenseeWlCol),MappingName= "LicenseeWl"  },
+                new BetListColumn {Name=actualStakeCol,Type=DbType.Decimal ,HasData=columnCollection.Contains(actualStakeCol),MappingName="ActualStake " }
+            };
+
+            var items = BetListColumnList.Select(i => new BetListColumn
+            {
+                Name = i.Name,
+                HasData = columnCollection.Contains(i.Name),
+                IsNullAble = i.IsNullAble,
+                Type = i.Type
+            }).Union(betlistColumnByCurrency).ToList();
+
+            var ticketType = typeof(AffTicket);
             foreach (DataRow dataRow in dataTable.Rows)
             {
-                var ticket = new AffTicket();
-
-                // String
-                ticket.UserName = containsUsername ? Converter.ToString2(dataRow["username"]) : string.Empty;
-                ticket.RefNo = containsRefNo ? Converter.ToString2(dataRow["refno"]) : string.Empty;
-                ticket.MatchCode = containsMatchCode ? Converter.ToString2(dataRow["matchcode"]) : string.Empty;
-                ticket.Status = containsStatus ? Converter.ToString2(dataRow["status"]) : string.Empty;
-                ticket.BetTeam = containsBetTeam ? Converter.ToString2(dataRow["betteam"]) : string.Empty;
-                ticket.EventStatus = containsBetStatus ? Converter.ToString2(dataRow["betstatus"]) : string.Empty;
-                ticket.ShowTime = containsShowTime ? Converter.ToString2(dataRow["showtime"]) : string.Empty;
-                ticket.OddsType = containsOddsType ? Converter.ToString2(dataRow["oddstype"]) : "0";
-                ticket.ExternalId = containsExternalId ? Converter.ToString2(dataRow["nickname"]) : string.Empty;
-                ticket.Race = containsRace ? Converter.ToString2(dataRow["race"]) : string.Empty;
-                ticket.TransDesc = containTransDesc ? Converter.ToString2(dataRow["transdesc"]) : string.Empty;
-                ticket.ExtraInfo = containExtraInfo ? Converter.ToString2(dataRow["extrainfo"]) : string.Empty;
-
-                // Boolean
-                ticket.IsLive = containsLiveIndicator ? ReadBoolean(dataRow["liveindicator"]) : false;
-                ticket.IsNeutral = containsNeutral ? ReadBoolean(dataRow["isneutral"]) : false;
-
-                // Int
-                ticket.SportTypeId = containsSportType ? Converter.ToInt(dataRow["sporttype"]) : 0;
-                ticket.BetTypeId = containsBetType ? Converter.ToInt(dataRow["bettype"]) : 0;
-                ticket.LeagueId = containsLeagueId ? Converter.ToInt(dataRow["leagueid"]) : 0;
-                ticket.HomeId = containsHomeId ? Converter.ToInt(dataRow["homeid"]) : 0;
-                ticket.AwayId = containsAwayId ? Converter.ToInt(dataRow["awayid"]) : 0;
-                ticket.MatchId = containsMatchId ? Converter.ToInt(dataRow["matchid"]) : 0;
-                ticket.CustId = containsCustId ? Converter.ToInt(dataRow["custid"]) : 0;
-                ticket.CurrencyId = containsCurrencyId ? Converter.ToInt(dataRow["currencyid"]) : 0;
-                ticket.LiveHomeScore = containsLiveHomeScore ? Converter.ToInt(dataRow["livehomescore"]) : 0;
-                ticket.LiveAwayScore = containsLiveAwayScore ? Converter.ToInt(dataRow["liveawayscore"]) : 0;
-                ticket.StatusId = containsStatusID ? Converter.ToInt(dataRow["statusid"]) : 0;
-                ticket.OriginalBetType = containsOriginalBetType ? Converter.ToInt(dataRow["originalbettype"]) : 0;
-
-                // Long
-                ticket.TransId = containsTransId ? Convert.ToInt64(dataRow["transid"]) : 0;
-                ticket.BetId = containsBetId && !Convert.IsDBNull(dataRow["betid"]) ? new long?(Convert.ToInt64(dataRow["betid"])) : null;
-                ticket.BetdaqId = containsBetdaqId ? Convert.ToInt64(dataRow["betdaqid"]) : 0;
-
-                // DateTime
-                ticket.WinlostDate = containsWinlostDate ? Converter.ToDateTime(dataRow["winlostdate"]) : DateTime.Now;
-                ticket.TransDate = containsTransDate ? Converter.ToDateTime(dataRow["transdate"]) : DateTime.Now;
-
-                // Money
-                ticket.PlayerComm = containsPlayerComm ? Converter.ToDecimal(dataRow[playerCommCol]) : 0;
-                ticket.Comm = containsComm ? Converter.ToDecimal(dataRow[commCol]) : 0;
-                ticket.LicenseeWl = containsLicenseeWl ? Converter.ToDecimal(dataRow[licenseeWlCol]) : 0;
-                ticket.Winlost = containsWinlost ? Converter.ToDecimal(dataRow["winlost"]) : 0;
-                ticket.Stake = containsStake ? Converter.ToDecimal(dataRow["stake"]) : 0;
-                ticket.ActualStake = containsActualStake ? Converter.ToDecimal(dataRow[actualStakeCol]) : 0;
-                ticket.Odds = containsOdds ? Converter.ToDecimal(dataRow["odds"]) : 0;
-                ticket.MasterOdds = containsMasterOdds ? Converter.ToDecimal(dataRow["modds"]) : 0;
-                ticket.Handicap1 = containsHandicap1 ? Converter.ToDecimal(dataRow["hdp1"]) : 0;
-                ticket.Handicap2 = containsHandicap2 ? Converter.ToDecimal(dataRow["hdp2"]) : 0;
-                ticket.BetCheck = containsBetCheck ? Converter.ToString2(dataRow["BetCheck"]) : string.Empty;
-
-                ticket.Stake = hasStake ? Converter.ToDecimal(dataRow["stake"]) : 0;
-                ticket.Currency = hasCurrency ? Converter.ToString2(dataRow["currency"]) : string.Empty;
-
-                result.Add(ticket);
+                result.Add(CreateAffTicket<AffTicket>(items, ticketType, dataRow));
             }
 
             return result;
+        }
+
+        private static void AssignDataToAffTicket(Type ticketType, DataRow dataRow, BetListColumn item)
+        {
+            switch (item.Type)
+            {
+                case DbType.String:
+                    ticketType.GetProperty(item.MappingName).SetValue(item, Converter.ToString2(dataRow[item.Name]), null);
+                    break;
+
+                case DbType.Boolean:
+                    ticketType.GetProperty(item.MappingName).SetValue(item, ReadBoolean(dataRow[item.Name]), null);
+                    break;
+
+                case DbType.Int32:
+                    ticketType.GetProperty(item.MappingName).SetValue(item, Converter.ToInt(dataRow[item.Name]), null);
+
+                    break;
+
+                case DbType.Int64:
+                    var value = item.IsNullAble ? Convert.IsDBNull(dataRow[item.Name]) ? new long?(Convert.ToInt64(dataRow[item.Name])) : null
+                        : Convert.ToInt64(item.Name);
+
+                    ticketType.GetProperty(item.MappingName).SetValue(item, value, null);
+                    break;
+
+                case DbType.DateTime:
+                    ticketType.GetProperty(item.MappingName).SetValue(item, Converter.ToDateTime(dataRow[item.Name]), null);
+                    break;
+
+                case DbType.Decimal:
+                    ticketType.GetProperty(item.MappingName).SetValue(item, Converter.ToDecimal(dataRow[item.Name]), null);
+                    break;
+            }
         }
 
         [SuppressMessage(
@@ -188,59 +149,52 @@ namespace Fanex.Affiliate.WebServices.DataAccess
         public static List<CashOutTicket> ReadCashOutTicketDetailData(DataTable dataTable)
         {
             var columnCollection = dataTable.Columns;
+            var items = BetListColumnList.Select(i => new BetListColumn
+            {
+                Name = i.Name,
+                HasData = columnCollection.Contains(i.Name),
+                IsNullAble = i.IsNullAble,
+                Type = i.Type
+            }).ToList();
+            items.Add(new BetListColumn
+            {
+                Name = "price",
+                HasData = columnCollection.Contains("price"),
+                MappingName = "Price",
+                Type = DbType.Decimal
+            });
 
-            // String
-            var containsRefNo = columnCollection.Contains("refno");
-            var containsStatus = columnCollection.Contains("status");
-
-            // Int
-            var containsBetType = columnCollection.Contains("bettype");
-            var containsCustId = columnCollection.Contains("custid");
-
-            // Long
-            var containsTransId = columnCollection.Contains("transid");
-
-            // DateTime
-            var containsWinlostDate = columnCollection.Contains("winlostdate");
-            var containsTransDate = columnCollection.Contains("transdate");
-
-            // Money
-            var containsWinlost = columnCollection.Contains("winlost");
-            var containsStake = columnCollection.Contains("stake");
-            var containsCurrency = columnCollection.Contains("currency");
-            var containsPrice = columnCollection.Contains("price");
-
+            var ticketType = typeof(CashOutTicket);
             var result = new List<CashOutTicket>();
             foreach (DataRow dataRow in dataTable.Rows)
             {
-                var ticket = new CashOutTicket();
-
-                // String
-                ticket.RefNo = containsRefNo ? Converter.ToString2(dataRow["refno"]) : string.Empty;
-                ticket.Status = containsStatus ? Converter.ToString2(dataRow["status"]) : string.Empty;
-
-                // Int
-                ticket.BetTypeId = containsBetType ? Converter.ToInt(dataRow["bettype"]) : 0;
-                ticket.CustId = containsCustId ? Converter.ToInt(dataRow["custid"]) : 0;
-
-                // Long
-                ticket.TransId = containsTransId ? Convert.ToInt64(dataRow["transid"]) : 0;
-
-                // DateTime
-                ticket.WinlostDate = containsWinlostDate ? Converter.ToDateTime(dataRow["winlostdate"]) : DateTime.Now;
-                ticket.TransDate = containsTransDate ? Converter.ToDateTime(dataRow["transdate"]) : DateTime.Now;
-
-                // Money
-                ticket.Winlost = containsWinlost ? Converter.ToDecimal(dataRow["winlost"]) : 0;
-                ticket.Stake = containsStake ? Converter.ToDecimal(dataRow["stake"]) : 0;
-                ticket.Price = containsPrice ? Converter.ToDecimal(dataRow["price"]) : 0;
-
-                ticket.Currency = containsCurrency ? Converter.ToString2(dataRow["currency"]) : string.Empty;
-
-                result.Add(ticket);
+                result.Add(CreateAffTicket<CashOutTicket>(items, ticketType, dataRow));
             }
 
             return result;
+        }
+
+        private static T CreateAffTicket<T>(List<BetListColumn> items, Type ticketType, DataRow dataRow) where T : class
+        {
+            var ticket = Activator.CreateInstance(ticketType) as T;
+
+            foreach (var item in items)
+            {
+                if (item.HasData)
+                {
+                    AssignDataToAffTicket(ticketType, dataRow, item);
+                }
+                else if (item.Type == DbType.String)
+                {
+                    ticketType.GetProperty(item.MappingName).SetValue(item, string.Empty, null);
+                }
+                else if (item.Type == DbType.DateTime)
+                {
+                    ticketType.GetProperty(item.MappingName).SetValue(item, DateTime.Now, null);
+                }
+            }
+
+            return ticket;
         }
 
         /// <summary>
@@ -286,12 +240,12 @@ namespace Fanex.Affiliate.WebServices.DataAccess
                 return false;
             }
 
-            if (value.GetType() == typeof(bool))
+            if (value is bool)
             {
                 return Convert.ToBoolean(value);
             }
 
-            if (value.GetType() == typeof(int))
+            if (value is int)
             {
                 return Convert.ToInt32(value) > 0;
             }
@@ -361,41 +315,47 @@ namespace Fanex.Affiliate.WebServices.DataAccess
             {
                 var param = criteria.GetSpParams();
                 var dataSet = objectDb.ExecuteDataSet(param);
-                var ticketData = dataSet.Tables.Count > 0 ? dataSet.Tables[0] : new DataTable();
-                var serialData = dataSet.Tables.Count > 1 ? dataSet.Tables[1] : new DataTable();
-                var systemParlayData = new SystemParlayData();
-
-                systemParlayData.TicketList = new List<ISystemParlayTicket>();
-                foreach (DataRow row in ticketData.Rows)
+                var systemParlayData = new SystemParlayData
                 {
-                    var ticket = new SystemParlayTicket
-                    {
-                        Comm = Converter.ToDecimal(row["comm"]),
-                        MOdds = Converter.ToDecimal(row["modds"]),
-                        PlayerComm = Converter.ToDecimal(row["playercomm"]),
-                        Serial = Convert.ToInt64(row["serial"]),
-                        Stake = Converter.ToDecimal(row["stake"]),
-                        Status = Converter.ToString2(row["status"]),
-                        StatusId = Converter.ToInt(row["statusid"]),
-                        TransId = Convert.ToInt64(row["transid"]),
-                        WinLost = Converter.ToDecimal(row["winlost"]),
-                        WinLostDate = Converter.ToDateTime(row["winlostdate"])
-                    };
+                    TicketList = new List<ISystemParlayTicket>()
+                };
 
-                    systemParlayData.TicketList.Add(ticket);
+                if (dataSet.Tables.Count > 0)
+                {
+                    foreach (DataRow row in dataSet.Tables[0].Rows)
+                    {
+                        var ticket = new SystemParlayTicket
+                        {
+                            Comm = Converter.ToDecimal(row["comm"]),
+                            MOdds = Converter.ToDecimal(row["modds"]),
+                            PlayerComm = Converter.ToDecimal(row["playercomm"]),
+                            Serial = Convert.ToInt64(row["serial"]),
+                            Stake = Converter.ToDecimal(row["stake"]),
+                            Status = Converter.ToString2(row["status"]),
+                            StatusId = Converter.ToInt(row["statusid"]),
+                            TransId = Convert.ToInt64(row["transid"]),
+                            WinLost = Converter.ToDecimal(row["winlost"]),
+                            WinLostDate = Converter.ToDateTime(row["winlostdate"])
+                        };
+
+                        systemParlayData.TicketList.Add(ticket);
+                    }
                 }
 
                 systemParlayData.SerialList = new List<ISystemParlaySerial>();
-                foreach (DataRow row in serialData.Rows)
+                if (dataSet.Tables.Count > 1)
                 {
-                    var serial = new SystemParlaySerial
+                    foreach (DataRow row in dataSet.Tables[1].Rows)
                     {
-                        Serial = Convert.ToInt64(row["serial"]),
-                        HomeId = Converter.ToInt(row["homeid"]),
-                        AwayId = Converter.ToInt(row["awayid"])
-                    };
+                        var serial = new SystemParlaySerial
+                        {
+                            Serial = Convert.ToInt64(row["serial"]),
+                            HomeId = Converter.ToInt(row["homeid"]),
+                            AwayId = Converter.ToInt(row["awayid"])
+                        };
 
-                    systemParlayData.SerialList.Add(serial);
+                        systemParlayData.SerialList.Add(serial);
+                    }
                 }
 
                 systemParlayData.Outstanding = Converter.ToDecimal(param["outstanding"]);
@@ -433,16 +393,17 @@ namespace Fanex.Affiliate.WebServices.DataAccess
                 { "ibcusername", string.Empty },
                 { "currencyid", 0 }
             };
-            var objectDb = new ObjectDb("Aff_BetList_SelDummyAccID");
-            objectDb.ExecuteNonQuery(hashParam);
-
-            return new CustomerInfoBetList
+            using (var objectDb = new ObjectDb("Aff_BetList_SelDummyAccID"))
             {
-                CustId = int.Parse(hashParam["custid"].ToString()),
-                Username = playerUsername,
-                IBCUsername = hashParam["ibcusername"].ToString(),
-                CurrencyId = int.Parse(hashParam["currencyid"].ToString())
-            };
+                objectDb.ExecuteNonQuery(hashParam);
+                return new CustomerInfoBetList
+                {
+                    CustId = int.Parse(hashParam["custid"].ToString()),
+                    Username = playerUsername,
+                    IBCUsername = hashParam["ibcusername"].ToString(),
+                    CurrencyId = int.Parse(hashParam["currencyid"].ToString())
+                };
+            }
         }
 
         public TicketResult GetBetListDetail(BetListDetailCriteria criteria, string spkey)

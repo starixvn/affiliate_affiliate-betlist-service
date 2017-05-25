@@ -19,7 +19,8 @@ namespace Fanex.Affiliate.WebServices
     using BetList.Core.Builder;
     using BetList.Core.Entities;
     using BetList.Core.TicketHelper;
-    using Criteria;
+    using Criteria.AffEmail;
+    using Criteria.BetList;
     using Data.Configuration;
     using DTO.BetList;
     using Enumerations;
@@ -28,7 +29,7 @@ namespace Fanex.Affiliate.WebServices
     using RazorEngine.Templating;
     using Resources;
     using Result.Core;
-    using Services;
+    using Services.AffEmail;
     using Services.Betlist;
     using Utilities;
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line.
@@ -102,32 +103,7 @@ namespace Fanex.Affiliate.WebServices
         }
 
         #endregion Common
-
-        #region Affiliate's Email - Web Methods
-
-        /// <summary>
-        /// Get Affiliate Email.
-        /// </summary>
-        /// <param name="siteName">Site Name.</param>
-        /// <param name="btag">Identify B tag.</param>
-        /// <returns>Affiliate email.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Reviewed. Suppression is OK here.")]
-        [WebMethod]
-        public string GetAffiliateEmail(string siteName, string btag)
-        {
-            try
-            {
-                var affId = int.Parse(btag.Trim().Split('_')[1]);
-                var criteria = new AffiliateInfoCriteria { AffId = affId };
-                return ToXml(_affiliateService.GetAffiliateInfo(criteria, siteName.Trim().ToLower()));
-            }
-            catch
-            {
-                return ToXml(new AffiliateInfo(100, "Invalid Site Name."));
-            }
-        }
-
-        #endregion Affiliate's Email - Web Methods
+        
 
         #region Affiliate's Betlist - Utilities
 

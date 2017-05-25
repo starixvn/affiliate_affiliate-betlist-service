@@ -4,7 +4,7 @@
 // </copyright>
 // ------------------------------------------------------------------------
 
-namespace Fanex.Affiliate.WebServices.Criteria
+namespace Fanex.Affiliate.WebServices.Criteria.AffEmail
 {
     using System.Diagnostics.CodeAnalysis;
     using Fanex.Data.Repository;

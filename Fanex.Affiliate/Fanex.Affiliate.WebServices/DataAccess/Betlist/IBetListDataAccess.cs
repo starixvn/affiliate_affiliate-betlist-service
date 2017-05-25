@@ -4,11 +4,11 @@
 // </copyright>
 // ------------------------------------------------------------------------
 
-namespace Fanex.Affiliate.WebServices.DataAccess
+namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
 {
     using System.Collections.Generic;
     using BetList.Core.Entities;
-    using Criteria;
+    using Criteria.BetList;
     using DTO.BetList;
     using Fanex.Result.Core.LiveCasino.DTO;
     using Fanex.Result.Core.NumberGame.DTO;
@@ -42,7 +42,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess
         /// <param name="criteria">The metal model.</param>
         /// <returns>The system parlay.</returns>
         SystemParlayData GetSystemParlayDetail(BetListSystemParlayDetailCriteria criteria);
-        
+
         /// <summary>
         /// Get balance up and move bet dates.
         /// </summary>
@@ -61,7 +61,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess
 
         CashOutTicketDetail GetBetListCashOutDetail(BetListDetailCriteria criteria, string spkey);
 
-        #endregion
+        #endregion BetList
 
         #region BetList.Results
 
@@ -101,7 +101,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess
         /// <returns>The Parlay's results.</returns>
         IEnumerable<Parlay> GetParlayResults(long refNo);
 
-        #endregion
+        #endregion BetList.Results
 
         void ValidatePermission(ValidationCriteria criteria);
     }

@@ -4,7 +4,7 @@
 // </copyright>
 // ------------------------------------------------------------------------
 
-namespace Fanex.Affiliate.WebServices.ViewModels
+namespace Fanex.Affiliate.WebServices.ViewModels.Betlist
 {
     using System;
     using System.Collections.Generic;

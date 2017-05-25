@@ -4,15 +4,16 @@
 // </copyright>
 // ------------------------------------------------------------------------
 
-namespace Fanex.Affiliate.WebServices.Services
+namespace Fanex.Affiliate.WebServices.Services.Betlist
 {
     using System.Collections.Generic;
     using System.Linq;
     using BetList.Core.Entities;
-    using Common.Helper;
-    using Criteria;
-    using DataAccess;
+    using Common;
+    using Criteria.BetList;
+    using DataAccess.Betlist;
     using DTO.BetList;
+    using Fanex.Common.Helper;
     using Fanex.Result.Core.LiveCasino.DTO;
     using Fanex.Result.Core.NumberGame.DTO;
     using Fanex.Result.Core.Racing.DTO;
@@ -21,7 +22,7 @@ namespace Fanex.Affiliate.WebServices.Services
     /// <summary>
     /// Account Service.
     /// </summary>
-    public class BetListService : QueryService, IBetListService
+    public class BetListService : IBetListService
     {
         #region Fields
 
@@ -29,8 +30,6 @@ namespace Fanex.Affiliate.WebServices.Services
         /// Define Account DataAccess.
         /// </summary>
         private readonly IBetListDataAccess _betlistDataAccess;
-
-        private readonly string _subDomainPath = string.Empty;
 
         #endregion Fields
 

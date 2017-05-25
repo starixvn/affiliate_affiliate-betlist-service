@@ -4,9 +4,9 @@
 // </copyright>
 // ------------------------------------------------------------------------
 
-namespace Fanex.Affiliate.WebServices.DataAccess
+namespace Fanex.Affiliate.WebServices.DataAccess.AffEmail
 {
-    using Criteria;
+    using Criteria.AffEmail;
     using Data;
 
     /// <summary>
@@ -14,13 +14,6 @@ namespace Fanex.Affiliate.WebServices.DataAccess
     /// </summary>
     public class AffiliateDataAccess : IAffiliateDataAccess
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AffiliateDataAccess" /> class.
-        /// </summary>
-        public AffiliateDataAccess()
-        {
-        }
-
         /// <summary>
         /// Get Affiliate Information.
         /// </summary>

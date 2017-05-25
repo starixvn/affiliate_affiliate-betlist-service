@@ -384,6 +384,7 @@
     <Compile Include="DTO\BetList\AffTicket.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DTO\BetList\BetListColumn.cs" />
     <Compile Include="DTO\BetList\BetlistSOAP.cs" />
     <Compile Include="DTO\BetList\CashOutTicket.cs" />
     <Compile Include="DTO\BetList\CashOutTicketDetail.cs" />
@@ -419,8 +420,6 @@
     <Compile Include="Services\Betlist\IBetListService.cs" />
     <Compile Include="Services\Betlist\IRNGCasinoSingleWalletService.cs" />
     <Compile Include="Services\Betlist\RNGCasinoSingleWalletService.cs" />
-    <Compile Include="Services\Common\QueryService.cs" />
-    <Compile Include="Services\Common\ServiceBase.cs" />
     <Compile Include="Utilities\AffBetListHtmlBuilder.cs" />
     <Compile Include="Utilities\FormaterCurrency.cs" />
     <Compile Include="Utilities\LanguageManager.cs" />
@@ -531,7 +530,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_StartDate="2014/3/28" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" />
+      <UserProperties BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_StartDate="2014/3/28" BuildVersion_UpdateFileVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

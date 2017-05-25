@@ -4,9 +4,9 @@
 // </copyright>
 // ------------------------------------------------------------------------
 
-namespace Fanex.Affiliate.WebServices.DataAccess
+namespace Fanex.Affiliate.WebServices.DataAccess.AffEmail
 {
-    using Criteria;
+    using Criteria.AffEmail;
 
     /// <summary>
     /// Interface Account.

@@ -7,7 +7,6 @@
 namespace Fanex.Affiliate.WebServices.Enumerations
 {
     using System.Diagnostics.CodeAnalysis;
-    
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1602:EnumerationItemsMustBeDocumented", Justification = "Reviewed.")]
     public enum BetType
     {

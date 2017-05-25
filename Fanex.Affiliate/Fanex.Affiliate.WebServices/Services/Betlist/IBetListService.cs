@@ -4,11 +4,12 @@
 // </copyright>
 // ------------------------------------------------------------------------
 
-namespace Fanex.Affiliate.WebServices.Services
+namespace Fanex.Affiliate.WebServices.Services.Betlist
 {
     using System.Collections.Generic;
     using BetList.Core.Entities;
     using Criteria;
+    using Criteria.BetList;
     using DTO.BetList;
     using Fanex.Result.Core.LiveCasino.DTO;
     using Fanex.Result.Core.NumberGame.DTO;

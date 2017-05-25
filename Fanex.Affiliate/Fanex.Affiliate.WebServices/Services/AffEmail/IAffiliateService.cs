@@ -4,9 +4,9 @@
 // </copyright>
 // ------------------------------------------------------------------------
 
-namespace Fanex.Affiliate.WebServices.Services
+namespace Fanex.Affiliate.WebServices.Services.AffEmail
 {
-    using Criteria;
+    using Criteria.AffEmail;
 
     /// <summary>
     /// Interface Affiliate service.

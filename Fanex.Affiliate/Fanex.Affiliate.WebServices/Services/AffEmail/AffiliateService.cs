@@ -4,10 +4,10 @@
 // </copyright>
 // ------------------------------------------------------------------------
 
-namespace Fanex.Affiliate.WebServices.Services
+namespace Fanex.Affiliate.WebServices.Services.AffEmail
 {
-    using Criteria;
-    using DataAccess;
+    using Criteria.AffEmail;
+    using DataAccess.AffEmail;
 
     /// <summary>
     /// Account Service.
