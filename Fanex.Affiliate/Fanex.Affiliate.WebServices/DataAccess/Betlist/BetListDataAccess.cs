@@ -13,7 +13,6 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
-    using System.Reflection;
     using BetList.Core.Entities;
     using Common;
     using Criteria.BetList;
@@ -97,45 +96,49 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
             }).Union(betlistColumnByCurrency).ToList();
 
             var ticketType = typeof(AffTicket);
+            var setters = CreateSetterMethodForAffTicket<AffTicket>(ticketType);
             foreach (DataRow dataRow in dataTable.Rows)
             {
-                result.Add(CreateAffTicket<AffTicket>(items, ticketType, dataRow));
+                result.Add(CreateAffTicket<AffTicket>(setters,items, ticketType, dataRow));
             }
 
             return result;
         }
 
-        private static void AssignDataToAffTicket(PropertyInfo property, DataRow dataRow, BetListColumn item)
+        private static void AssignDataToAffTicket<T>(T ticket, Action<T, object> setter, DataRow dataRow, BetListColumn item) where T : class
         {
-            switch (item.Type)
+            if (setter != null)
             {
-                case DbType.String:
-                    property.SetValue(item, Converter.ToString2(dataRow[item.Name]), null);
-                    break;
+                switch (item.Type)
+                {
+                    case DbType.String:
+                        setter(ticket, Converter.ToString2(dataRow[item.Name]));
+                        break;
 
-                case DbType.Boolean:
-                    property.SetValue(item, ReadBoolean(dataRow[item.Name]), null);
-                    break;
+                    case DbType.Boolean:
+                        setter(ticket, ReadBoolean(dataRow[item.Name]));
+                        break;
 
-                case DbType.Int32:
-                    property.SetValue(item, Converter.ToInt(dataRow[item.Name]), null);
+                    case DbType.Int32:
+                        setter(ticket, Converter.ToInt(dataRow[item.Name]));
 
-                    break;
+                        break;
 
-                case DbType.Int64:
-                    var value = item.IsNullAble ? Convert.IsDBNull(dataRow[item.Name]) ? new long?(Convert.ToInt64(dataRow[item.Name])) : null
-                        : Convert.ToInt64(item.Name);
+                    case DbType.Int64:
+                        var value = item.IsNullAble ? Convert.IsDBNull(dataRow[item.Name]) ? new long?(Convert.ToInt64(dataRow[item.Name])) : null
+                            : Convert.ToInt64(item.Name);
 
-                    property.SetValue(item, value, null);
-                    break;
+                        setter(ticket, value);
+                        break;
 
-                case DbType.DateTime:
-                    property.SetValue(item, Converter.ToDateTime(dataRow[item.Name]), null);
-                    break;
+                    case DbType.DateTime:
+                        setter(ticket, Converter.ToDateTime(dataRow[item.Name]));
+                        break;
 
-                case DbType.Decimal:
-                    property.SetValue(item, Converter.ToDecimal(dataRow[item.Name]), null);
-                    break;
+                    case DbType.Decimal:
+                        setter(ticket, Converter.ToDecimal(dataRow[item.Name]));
+                        break;
+                }
             }
         }
 
@@ -159,32 +162,43 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
 
             var ticketType = typeof(CashOutTicket);
             var result = new List<CashOutTicket>();
+            var setters = CreateSetterMethodForAffTicket<CashOutTicket>(ticketType);
+
             foreach (DataRow dataRow in dataTable.Rows)
             {
-                result.Add(CreateAffTicket<CashOutTicket>(items, ticketType, dataRow));
+                result.Add(CreateAffTicket<CashOutTicket>(setters, items, ticketType, dataRow));
             }
 
             return result;
         }
 
-        private static T CreateAffTicket<T>(List<BetListColumn> items, Type ticketType, DataRow dataRow) where T : class
+        private static Dictionary<string, Action<T, object>> CreateSetterMethodForAffTicket<T>(Type ticketType) where T : class
+        {
+            return ticketType.GetProperties()
+                            .Select(i => new KeyValuePair<string, Action<T, object>>(
+                                i.Name,
+                                (Action<T, object>)Delegate.CreateDelegate(typeof(Action<T, object>), i.GetSetMethod())))
+                                .ToDictionary(j => j.Key, j => j.Value);
+        }
+
+        private static T CreateAffTicket<T>(IDictionary<string, Action<T, object>> setters, List<BetListColumn> items, Type ticketType, DataRow dataRow) where T : class
         {
             var ticket = Activator.CreateInstance(ticketType) as T;
 
             foreach (var item in items)
             {
-                var property = ticketType.GetProperty(item.MappingName);
+                var setter = setters[item.Name];
                 if (item.HasData)
                 {
-                    AssignDataToAffTicket(property, dataRow, item);
+                    AssignDataToAffTicket(ticket, setter, dataRow, item);
                 }
                 else if (item.Type == DbType.String)
                 {
-                    property.SetValue(item, string.Empty, null);
+                    setter(ticket, string.Empty);
                 }
                 else if (item.Type == DbType.DateTime)
                 {
-                    property.SetValue(item, DateTime.Now, null);
+                    setter(ticket, DateTime.Now);
                 }
             }
 
