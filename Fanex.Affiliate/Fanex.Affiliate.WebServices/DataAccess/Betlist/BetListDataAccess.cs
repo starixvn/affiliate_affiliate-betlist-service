@@ -282,21 +282,9 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
                     }
                 }
 
-                systemParlayData.SerialList = new List<ISystemParlaySerial>();
-                if (dataSet.Tables.Count > 1)
-                {
-                    foreach (DataRow row in dataSet.Tables[1].Rows)
-                    {
-                        var serial = new SystemParlaySerial
-                        {
-                            Serial = Convert.ToInt64(row["serial"]),
-                            HomeId = Converter.ToInt(row["homeid"]),
-                            AwayId = Converter.ToInt(row["awayid"])
-                        };
-
-                        systemParlayData.SerialList.Add(serial);
-                    }
-                }
+                systemParlayData.SerialList = dataSet.Tables.Count > 1 ?
+                        ReadSystemParlaySerialList(dataSet.Tables[1]) :
+                        new List<ISystemParlaySerial>();
 
                 systemParlayData.Outstanding = Converter.ToDecimal(param["outstanding"]);
                 return systemParlayData;
@@ -605,6 +593,24 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
         #endregion Betlist.Results
 
         #region Betlist.Results.Utilities
+
+        private static IList<ISystemParlaySerial> ReadSystemParlaySerialList(DataTable table)
+        {
+            var list = new List<ISystemParlaySerial>();
+            foreach (DataRow row in table.Rows)
+            {
+                var serial = new SystemParlaySerial
+                {
+                    Serial = Convert.ToInt64(row["serial"]),
+                    HomeId = Converter.ToInt(row["homeid"]),
+                    AwayId = Converter.ToInt(row["awayid"])
+                };
+
+                list.Add(serial);
+            }
+
+            return list;
+        }
 
         private static void AssignDataToAffTicket<T>(T ticket, MethodInfo setter, DataRow dataRow, BetListColumn item) where T : class
         {
