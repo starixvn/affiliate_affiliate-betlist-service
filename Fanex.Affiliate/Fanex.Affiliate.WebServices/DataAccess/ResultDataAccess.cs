@@ -176,28 +176,6 @@
             return results;
         }
 
-        public void ValidatePermission(ValidationCriteria criteria)
-        {
-            using (var db = new ObjectDb(criteria.GetSettingKey()))
-            {
-                var param = criteria.GetSpParams();
-                db.ExecuteNonQuery(param);
-
-                var outputParams = db.GetOuputParams();
-                var properties = criteria.GetType().GetProperties();
-                foreach (string outputParam in outputParams.Keys)
-                {
-                    foreach (var property in properties)
-                    {
-                        if (property.CanWrite && property.Name.ToLower() == outputParam)
-                        {
-                            property.SetValue(criteria, param[outputParam] == DBNull.Value ? null : param[outputParam], null);
-                        }
-                    }
-                }
-            }
-        }
-
         /// <summary>
         /// Bind data from IDATAREADER to DTO.
         /// </summary>

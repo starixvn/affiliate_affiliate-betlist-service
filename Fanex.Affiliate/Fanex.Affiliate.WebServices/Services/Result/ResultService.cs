@@ -54,10 +54,5 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
         {
             return _resultDataAccess.GetParlayResults(refNo).ToList();
         }
-
-        public void ValidatePermission(ValidationCriteria criteria)
-        {
-            _resultDataAccess.ValidatePermission(criteria);
-        }
     }
 }

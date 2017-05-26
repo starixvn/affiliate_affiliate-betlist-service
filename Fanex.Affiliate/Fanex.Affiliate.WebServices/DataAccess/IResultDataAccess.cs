@@ -24,7 +24,5 @@ namespace Fanex.Affiliate.WebServices.DataAccess
         IEnumerable<Racing> GetRacingResults(int matchId, int raceNo);
 
         IEnumerable<Parlay> GetParlayResults(long refNo);
-
-        void ValidatePermission(ValidationCriteria criteria);
     }
 }

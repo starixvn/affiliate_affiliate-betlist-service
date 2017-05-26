@@ -24,7 +24,5 @@ namespace Fanex.Affiliate.WebServices.Services.Result
         IList<Racing> GetRacingResults(int matchId, int raceNo);
 
         IList<Parlay> GetParlayResults(long refNo);
-
-        void ValidatePermission(ValidationCriteria criteria);
     }
 }
