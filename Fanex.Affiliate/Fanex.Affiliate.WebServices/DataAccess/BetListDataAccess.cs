@@ -10,7 +10,6 @@ namespace Fanex.Affiliate.WebServices.DataAccess
     using System.Collections;
     using System.Collections.Generic;
     using System.Data;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
     using BetList.Core.Entities;
@@ -129,7 +128,6 @@ namespace Fanex.Affiliate.WebServices.DataAccess
             return result;
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists", Justification = "Reviewed.")]
         public static List<ITicketData> ReadReferneceTicket(DataTable data, string baseCurrency)
         {
             var result = new List<ITicketData>();

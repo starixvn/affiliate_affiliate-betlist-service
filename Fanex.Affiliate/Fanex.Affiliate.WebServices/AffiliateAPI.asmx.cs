@@ -200,7 +200,7 @@ namespace Fanex.Affiliate.WebServices
             }
         }
 
-        public IList<TicketText> BuildOriginalTicketText(IList<AffTicket> tickets, BetListDetailCriteria criteria)
+        private IList<TicketText> BuildOriginalTicketText(IList<AffTicket> tickets, BetListDetailCriteria criteria)
         {
             var builder = new BetListHTMLBuilder();
             var ticketTextList = new List<TicketText>();
@@ -234,7 +234,7 @@ namespace Fanex.Affiliate.WebServices
             return ticketTextList;
         }
 
-        public IList<CashOutTicketText> BuildCashOutTicketText(IList<CashOutTicket> tickets, BetListDetailCriteria criteria)
+        private IList<CashOutTicketText> BuildCashOutTicketText(IList<CashOutTicket> tickets, BetListDetailCriteria criteria)
         {
             var builder = new BetListHTMLBuilder();
             var ticketTextList = new List<CashOutTicketText>();
@@ -271,7 +271,7 @@ namespace Fanex.Affiliate.WebServices
             return ticketTextList;
         }
 
-        public IList<TicketText> BuildTicketTextList(
+        private IList<TicketText> BuildTicketTextList(
             TicketResult ticketResult,
             BetListCriteria criteria,
             string username,
@@ -324,7 +324,7 @@ namespace Fanex.Affiliate.WebServices
         /// </summary>
         /// <param name="systemParlayData">Original system parlay data object.</param>
         /// <param name="exchangeRate">Exchange rate.</param>
-        public void ExchangeSystemParlayTickets(SystemParlayData systemParlayData, decimal exchangeRate)
+        private void ExchangeSystemParlayTickets(SystemParlayData systemParlayData, decimal exchangeRate)
         {
             systemParlayData.Outstanding *= exchangeRate;
             foreach (var ticket in systemParlayData.TicketList)
@@ -335,7 +335,7 @@ namespace Fanex.Affiliate.WebServices
                 ticket.WinLost *= exchangeRate;
             }
         }
-        public byte[] Serialize(object objectToSeralize)
+        private byte[] Serialize(object objectToSeralize)
         {
             byte[] objectBytes;
             using (MemoryStream stream = new MemoryStream())
@@ -567,7 +567,7 @@ namespace Fanex.Affiliate.WebServices
         /// <param name="sportType">The sport type.</param>
         /// <param name="setting">The setting result.</param>
         /// <returns>HTML formatted of data.</returns>
-        public string GetResultsData(
+        private string GetResultsData(
             BetListResultsCriteria criteria,
             SportType sportType,
             ResultSetting setting)

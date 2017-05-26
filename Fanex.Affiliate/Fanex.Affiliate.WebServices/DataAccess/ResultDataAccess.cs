@@ -176,12 +176,7 @@
             return results;
         }
 
-        /// <summary>
-        /// Bind data from IDATAREADER to DTO.
-        /// </summary>
-        /// <param name="reader">The IDATAREADER.</param>
-        /// <returns>The SPORTBOOK DTO.</returns>
-        private static Sportsbook BindSportsbook(System.Data.IDataReader reader)
+        private static Sportsbook BindSportsbook(IDataReader reader)
         {
             var item = new Sportsbook
             {
@@ -226,12 +221,7 @@
             return item;
         }
 
-        /// <summary>
-        /// Bind data from IDATAREADER to DTO.
-        /// </summary>
-        /// <param name="reader">The IDATAREADER.</param>
-        /// <returns>The live casino DTO.</returns>
-        private static LiveCasino BindLiveCasino(System.Data.IDataReader reader)
+        private static LiveCasino BindLiveCasino(IDataReader reader)
         {
             return new LiveCasino
             {
@@ -252,12 +242,7 @@
             };
         }
 
-        /// <summary>
-        /// Bind data from IDATAREADER to DTO.
-        /// </summary>
-        /// <param name="reader">The IDATAREADER.</param>
-        /// <returns>The Racing DTO.</returns>
-        private static Racing BindRacing(System.Data.IDataReader reader)
+        private static Racing BindRacing(IDataReader reader)
         {
             return new Racing
             {
@@ -278,12 +263,7 @@
             };
         }
 
-        /// <summary>
-        /// Bind data from IDATAREADER to DTO.
-        /// </summary>
-        /// <param name="result">The result list.</param>
-        /// <param name="reader">The IDATAREADER.</param>
-        private static void BindNumberGame(List<NumberGame> result, System.Data.IDataReader reader)
+        private static void BindNumberGame(List<NumberGame> result, IDataReader reader)
         {
             var matchId = int.Parse(reader["matchid"].ToString());
             var existMatch = result.SingleOrDefault(i => i.MatchId == matchId);
@@ -309,12 +289,6 @@
             }
         }
 
-        /// <summary>
-        /// Check the column existed in data reader.
-        /// </summary>
-        /// <param name="reader">The data reader.</param>
-        /// <param name="columnName">The column name.</param>
-        /// <returns>True or False.</returns>
         private static bool ColumnExisted(IDataReader reader, string columnName)
         {
             for (int i = 0; i < reader.FieldCount; i++)
@@ -328,11 +302,6 @@
             return false;
         }
 
-        /// <summary>
-        /// Bind game detail value.
-        /// </summary>
-        /// <param name="reader">The data reader.</param>
-        /// <returns>The game detail value.</returns>
         private static GameDetail BindGameDetail(IDataReader reader)
         {
             var resultStatusId = reader["ResultStatusID"];
