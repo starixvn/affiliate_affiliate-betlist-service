@@ -6,17 +6,11 @@
 
 namespace Fanex.Affiliate.WebServices.Services.Betlist
 {
-    using System.Collections.Generic;
-    using System.Linq;
     using BetList.Core.Entities;
     using Criteria.BetList;
-    using DataAccess.Betlist;
+    using DataAccess;
     using DTO.BetList;
     using Fanex.Common.Helper;
-    using Fanex.Result.Core.LiveCasino.DTO;
-    using Fanex.Result.Core.NumberGame.DTO;
-    using Fanex.Result.Core.Racing.DTO;
-    using Fanex.Result.Core.Sportsbook.DTO;
 
     public class BetListService : IBetListService
     {
@@ -31,8 +25,6 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
         {
             _betlistDataAccess = betlistDataAccess ?? new BetListDataAccess();
         }
-
-        #region BetList
 
         public TicketResult GetBetList(BetListCriteria criteria)
         {
@@ -74,41 +66,5 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
             Check.Argument.IsNotNull(criteria, "criteria");
             return _betlistDataAccess.GetBetListCashOutDetail(criteria, spkey);
         }
-
-        #endregion BetList
-
-        #region BetList.Results
-
-        public IList<Sportsbook> GetSportsbookResults(BetListResultsCriteria criteria)
-        {
-            return _betlistDataAccess.GetSportsbookResults(criteria).ToList();
-        }
-
-        public IList<LiveCasino> GetLiveCasinoResults(int matchId)
-        {
-            return _betlistDataAccess.GetLiveCasinoResults(matchId).ToList();
-        }
-
-        public IList<NumberGame> GetNumberGameResults(int matchId)
-        {
-            return _betlistDataAccess.GetNumberGameResults(matchId).ToList();
-        }
-
-        public IList<Racing> GetRacingResults(int matchId, int raceNo)
-        {
-            return _betlistDataAccess.GetRacingResults(matchId, raceNo).ToList();
-        }
-
-        public IList<Parlay> GetParlayResults(long refNo)
-        {
-            return _betlistDataAccess.GetParlayResults(refNo).ToList();
-        }
-
-        public void ValidatePermission(ValidationCriteria criteria)
-        {
-            _betlistDataAccess.ValidatePermission(criteria);
-        }
-
-        #endregion BetList.Results
     }
 }

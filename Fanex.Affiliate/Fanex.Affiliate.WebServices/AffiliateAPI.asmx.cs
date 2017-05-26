@@ -28,6 +28,7 @@ namespace Fanex.Affiliate.WebServices
     using Resources;
     using Result.Core;
     using Services.Betlist;
+    using Services.Result;
     using Utilities;
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line.
     // [System.Web.Script.Services.ScriptService]
@@ -40,31 +41,23 @@ namespace Fanex.Affiliate.WebServices
     [System.ComponentModel.ToolboxItem(false)]
     public class AffiliateAPI : WebService
     {
-        #region Properties
-
         private readonly IBetListService _betlistService;
+
+        private readonly IResultService _resultService;
 
         private readonly IRNGCasinoSingleWalletService _rngCasinoSingleWalletService;
 
-        private List<string> _resultsSupportedLanguages = new List<string>() { "en-US", "zh-TW", "zh-CN", "ja-JP", "th-TH", "ko-KR", "vi-VN" };
+        private readonly IList<string> _resultsSupportedLanguages = new List<string>() { "en-US", "zh-TW", "zh-CN", "ja-JP", "th-TH", "ko-KR", "vi-VN" };
 
-        private LanguageManager _langManager = new LanguageManager();
+        private readonly LanguageManager _langManager = new LanguageManager();
 
-        #endregion Properties
-
-        #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AffiliateAPI" /> class.
-        /// </summary>
         public AffiliateAPI()
         {
             DbSettingProviderManager.Current.Start();
             _betlistService = new BetListService();
+            _resultService = new ResultService();
             _rngCasinoSingleWalletService = new RNGCasinoSingleWalletService();
         }
-
-        #endregion Constructor
 
         #region Common
 
@@ -101,11 +94,6 @@ namespace Fanex.Affiliate.WebServices
 
         #region Affiliate's Betlist - Utilities
 
-        /// <summary>
-        /// Generate Bet list criteria.
-        /// </summary>
-        /// <param name="betlistSOAP">Bet list SOAP object.</param>
-        /// <returns>BetListCriteria object.</returns>
         public BetListCriteria GenerateBetlistCriteria(BetlistSOAP betlistSOAP)
         {
             var affiliateGroup = betlistSOAP.AffiliateName.Trim() == "12bet" ? "_12bet" : string.Empty;
@@ -141,7 +129,7 @@ namespace Fanex.Affiliate.WebServices
             return criteria;
         }
 
-        public void ViewBetListByProduct(BetListCriteria criteria, string products, IEnumerable<Product> supportedProducts)
+        private  void ViewBetListByProduct(BetListCriteria criteria, string products, IEnumerable<Product> supportedProducts)
         {
             if (products.Trim() == "All")
             {
@@ -159,7 +147,7 @@ namespace Fanex.Affiliate.WebServices
             }
         }
 
-        public void ViewBetListBySpecificProduct(BetListCriteria criteria, string product)
+        private static void ViewBetListBySpecificProduct(BetListCriteria criteria, string product)
         {
             switch (product.ToLower())
             {
@@ -195,7 +183,7 @@ namespace Fanex.Affiliate.WebServices
                     criteria.ShowAG = true;
                     break;
 
-                case "gold delux":
+                case "gold deluxe":
                     criteria.ShowGD = true;
                     break;
 
@@ -208,7 +196,6 @@ namespace Fanex.Affiliate.WebServices
                     break;
 
                 default:
-                    criteria.ShowSB = true;
                     break;
             }
         }
@@ -348,12 +335,6 @@ namespace Fanex.Affiliate.WebServices
                 ticket.WinLost *= exchangeRate;
             }
         }
-
-        /// <summary>
-        /// Serializes the given object to byte stream.
-        /// </summary>
-        /// <param name="objectToSeralize">Object to be serialized.</param>
-        /// <returns>Byte array of serialize object.</returns>
         public byte[] Serialize(object objectToSeralize)
         {
             byte[] objectBytes;
@@ -372,11 +353,6 @@ namespace Fanex.Affiliate.WebServices
 
         #region Affiliate's Betlist - Web Methods
 
-        /// <summary>
-        /// Get Bet list View Model.
-        /// </summary>
-        /// <param name="betlistSOAP">Bet list SOAP object.</param>
-        /// <returns>Bet list View Model.</returns>
         [WebMethod]
         public string GetBetlist(BetlistSOAP betlistSOAP)
         {
@@ -407,19 +383,9 @@ namespace Fanex.Affiliate.WebServices
                 SumWinLoss = FormaterCurrency.Format(ticketResults.SumWinLoss * betlistSOAP.ExchangeRate)
             };
 
-            var betlistHtmlString = BindDataToTemplate(templatePath, content);
-
-            return betlistHtmlString;
+            return BindDataToTemplate(templatePath, content);
         }
 
-        /// <summary>
-        /// Get Bet list Parlay.
-        /// </summary>
-        /// <param name="affiliateName">Affiliate Name.</param>
-        /// <param name="transactionId">Transaction ID.</param>
-        /// <param name="exchangeRate">Exchange Rate.</param>
-        /// <param name="language">Language Input.</param>
-        /// <returns>Ticket Result.</returns>
         [WebMethod]
         public string GetBetlistParlay(string affiliateName, string transactionId, string exchangeRate, string language = "en-US")
         {
@@ -614,19 +580,19 @@ namespace Fanex.Affiliate.WebServices
                         return string.Empty;
                     }
 
-                    var dataRc = _betlistService.GetRacingResults(criteria.MatchId, criteria.RaceNo.Value);
+                    var dataRc = _resultService.GetRacingResults(criteria.MatchId, criteria.RaceNo.Value);
                     return dataRc != null ? ResultEngine.HtmlParser(dataRc, setting) : string.Empty;
 
                 case SportType.LiveCasino:
-                    var dataLc = _betlistService.GetLiveCasinoResults(criteria.MatchId);
+                    var dataLc = _resultService.GetLiveCasinoResults(criteria.MatchId);
                     return dataLc != null ? ResultEngine.HtmlParser(dataLc, setting) : string.Empty;
 
                 case SportType.NumberGame:
-                    var dataNg = _betlistService.GetNumberGameResults(criteria.MatchId);
+                    var dataNg = _resultService.GetNumberGameResults(criteria.MatchId);
                     return dataNg != null ? ResultEngine.HtmlParser(dataNg, setting) : string.Empty;
 
                 default:
-                    var dataSb = _betlistService.GetSportsbookResults(criteria);
+                    var dataSb = _resultService.GetSportsbookResults(criteria);
                     return dataSb != null ? ResultEngine.HtmlParser(dataSb, setting) : string.Empty;
             }
         }
@@ -653,13 +619,13 @@ namespace Fanex.Affiliate.WebServices
                 IsOutright = criteria.IsOutRight.HasValue && criteria.IsOutRight.Value > 0,
                 IsParlayPopUp = criteria.Bettype == (int)BetType.MixParlay || criteria.Bettype == (int)BetType.CombinationMixParlay,
                 IsPopUp = true,
-                LanguageCode = _resultsSupportedLanguages.Exists(i => i.Equals(sessionLanguage)) ? sessionLanguage : "en-US",
+                LanguageCode = _resultsSupportedLanguages.Any(i => i.Equals(sessionLanguage)) ? sessionLanguage : "en-US",
                 EnableCheckScoreCalculated = true
             };
 
             if (displaySettings.IsParlayPopUp && criteria.RefNo != null)
             {
-                var parlayData = _betlistService.GetParlayResults(criteria.RefNo.Value);
+                var parlayData = _resultService.GetParlayResults(criteria.RefNo.Value);
                 return ResultEngine.HtmlParser(parlayData, displaySettings);
             }
 

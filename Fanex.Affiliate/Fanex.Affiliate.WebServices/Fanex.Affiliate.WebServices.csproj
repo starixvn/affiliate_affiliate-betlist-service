@@ -374,12 +374,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Criteria\BetList\ValidationCriteria.cs" />
-    <Compile Include="DataAccess\Betlist\BetListDataAccess.cs" />
+    <Compile Include="DataAccess\BetListDataAccess.cs" />
     <Compile Include="AffiliateAPI.asmx.cs">
       <DependentUpon>AffiliateAPI.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="DataAccess\Betlist\IBetListDataAccess.cs" />
+    <Compile Include="DataAccess\IResultDataAccess.cs" />
+    <Compile Include="DataAccess\IBetListDataAccess.cs" />
+    <Compile Include="DataAccess\ResultDataAccess.cs" />
     <Compile Include="DTO\BetList\AffTicket.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -417,6 +419,8 @@
     <Compile Include="Services\Betlist\IBetListService.cs" />
     <Compile Include="Services\Betlist\IRNGCasinoSingleWalletService.cs" />
     <Compile Include="Services\Betlist\RNGCasinoSingleWalletService.cs" />
+    <Compile Include="Services\Result\ResultService.cs" />
+    <Compile Include="Services\Result\IResultService.cs" />
     <Compile Include="Utilities\AffBetListHtmlBuilder.cs" />
     <Compile Include="Utilities\FormaterCurrency.cs" />
     <Compile Include="Utilities\LanguageManager.cs" />

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Fanex.Affiliate.WebServices.DTO.BetList
+﻿namespace Fanex.Affiliate.WebServices.DTO.BetList
 {
     public class Product
     {
