@@ -353,7 +353,6 @@
     <Compile Include="AffiliateEmailInfo.cs" />
     <Compile Include="AffiliateInfo.cs" />
     <Compile Include="Core\AppSettings.cs" />
-    <Compile Include="Criteria\AffEmail\AffiliateInfoCriteria.cs" />
     <Compile Include="Criteria\BetList\BalanceUpMoveBetCriteria.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -377,9 +376,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Criteria\BetList\ValidationCriteria.cs" />
-    <Compile Include="DataAccess\AffEmail\AffiliateDataAccess.cs" />
     <Compile Include="DataAccess\Betlist\BetListDataAccess.cs" />
-    <Compile Include="DataAccess\AffEmail\IAffiliateDataAccess.cs" />
     <Compile Include="AffiliateAPI.asmx.cs">
       <DependentUpon>AffiliateAPI.asmx</DependentUpon>
       <SubType>Component</SubType>
@@ -418,8 +415,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Lang.zh-TW.resx</DependentUpon>
     </Compile>
-    <Compile Include="Services\AffEmail\AffiliateService.cs" />
-    <Compile Include="Services\AffEmail\IAffiliateService.cs" />
     <Compile Include="Services\Betlist\BetListService.cs" />
     <Compile Include="Services\Betlist\IBetListService.cs" />
     <Compile Include="Services\Betlist\IRNGCasinoSingleWalletService.cs" />
@@ -534,7 +529,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_StartDate="2014/3/28" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_StartDate="2014/3/28" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

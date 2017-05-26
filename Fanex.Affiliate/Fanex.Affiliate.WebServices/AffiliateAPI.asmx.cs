@@ -9,7 +9,6 @@ namespace Fanex.Affiliate.WebServices
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Linq;
     using System.Runtime.Serialization.Formatters.Binary;
@@ -19,7 +18,6 @@ namespace Fanex.Affiliate.WebServices
     using BetList.Core.Builder;
     using BetList.Core.Entities;
     using BetList.Core.TicketHelper;
-    using Criteria.AffEmail;
     using Criteria.BetList;
     using Data.Configuration;
     using DTO.BetList;
@@ -29,7 +27,6 @@ namespace Fanex.Affiliate.WebServices
     using RazorEngine.Templating;
     using Resources;
     using Result.Core;
-    using Services.AffEmail;
     using Services.Betlist;
     using Utilities;
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line.
@@ -44,8 +41,6 @@ namespace Fanex.Affiliate.WebServices
     public class AffiliateAPI : WebService
     {
         #region Properties
-
-        private readonly IAffiliateService _affiliateService;
 
         private readonly IBetListService _betlistService;
 
@@ -65,7 +60,6 @@ namespace Fanex.Affiliate.WebServices
         public AffiliateAPI()
         {
             DbSettingProviderManager.Current.Start();
-            _affiliateService = new AffiliateService();
             _betlistService = new BetListService();
             _rngCasinoSingleWalletService = new RNGCasinoSingleWalletService();
         }
