@@ -492,15 +492,15 @@ namespace Fanex.Affiliate.WebServices
         }
 
         [WebMethod]
-        public string GetBetListCashOutDetail(BetListDetailCriteria criteria)
+        public string GetBetListCashOutDetail(BetListDetailCriteria criteria, bool isCashOut)
         {
             const string spKey = "Aff_BetList_CashOut_Detail";
             var ticketResults = _betlistService.GetBetListCashOutDetail(criteria, spKey);
 
-            return GetCashOutTicketDetailHtml(ticketResults, criteria);
+            return GetCashOutTicketDetailHtml(ticketResults, criteria, isCashOut);
         }
 
-        private string GetCashOutTicketDetailHtml(CashOutTicketDetail ticketResults, BetListDetailCriteria criteria)
+        private string GetCashOutTicketDetailHtml(CashOutTicketDetail ticketResults, BetListDetailCriteria criteria, bool isCashOut)
         {
             if (!ticketResults.OriginalTicket.Any())
             {
@@ -515,11 +515,18 @@ namespace Fanex.Affiliate.WebServices
             {
                 OriginalTextList = originalTicketTextList,
                 CashOutTextList = cashOutTicketTextList,
-                IsHighlightOriginalTicket = !cashOutTicketTextList.Any(x => x.IsHighlight),
-                IsCashOut = ticketResults.CashOutTicket.Any() ? (bool?)ticketResults.CashOutTicket.Any(x=>x.BetTypeId == (int)BetType.CashOut) : null
+                IsHighlightOriginalTicket = ticketResults.OriginalTicket.Any(x => x.TransId == criteria.TransId) 
+                || IsCashOutBetTicket(criteria.BetdaqId, criteria.BetType),
+                IsCashOut = isCashOut
             };
 
             return BindDataToTemplate(templatePath, content, "CashOutDetail");
+        }
+
+        private bool IsCashOutBetTicket(long betdaqid, int bettype)
+        {
+            var cashOutBetTypes = new int[] { 900, 912 };
+            return betdaqid == 1 && cashOutBetTypes.Contains(bettype) == false;
         }
 
         private string GetTicketDetailHtml(TicketResult ticketResults, BetListDetailCriteria criteria, string userName)

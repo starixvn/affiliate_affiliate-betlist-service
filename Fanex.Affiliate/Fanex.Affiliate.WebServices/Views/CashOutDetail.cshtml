@@ -1,10 +1,7 @@
 ﻿@using Fanex.Affiliate.WebServices.Resources
 
 <div class="original-ticket">
-    @if (Model.IsCashOut != null)
-    {
-        <p>@Lang.OriginalBetTicket:</p>
-    }
+    <p>@Lang.OriginalBetTicket:</p>
     <p>
         <table cellspacing="0" cellpadding="0" class="tblBetList tblCashOutDetail">
             <thead>
@@ -60,55 +57,52 @@
         </table>
     </p>
 </div>
-@if (Model.IsCashOut != null)
-{
-    <div class="cashout-ticket">
-        <p>@(Model.IsCashOut == true ? Lang.CashOutTickets : Lang.BoughtTickets):</p>
-        <p>
-            <table cellspacing="0" cellpadding="0" class="tblBetList tblCashOutDetail">
-                <thead>
-                    <tr>
-                        <th style="width: 160px">
-                            @Lang.TransTime
-                        </th>
-                        <th style="width: 470px">
-                            @(Model.IsCashOut ? Lang.CashOutStake : Lang.BoughtStake)
-                        </th>
-                        <th style="width: 80px">
-                            @(Model.IsCashOut ? Lang.CashOutAmount : Lang.BoughtAmount)
-                        </th>
-                        <th style="width: 70px">
-                            @Lang.Win/@Lang.Loss
-                        </th>
-                        <th style="width: 100px">
-                            @Lang.Status
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var cashOut in Model.CashOutTextList)
+<div class="cashout-ticket">
+    <p>@(Model.IsCashOut ? Lang.CashOutTickets : Lang.BoughtTickets):</p>
+    <p>
+        <table cellspacing="0" cellpadding="0" class="tblBetList tblCashOutDetail">
+            <thead>
+                <tr>
+                    <th style="width: 160px">
+                        @Lang.TransTime
+                    </th>
+                    <th style="width: 470px">
+                        @(Model.IsCashOut ? Lang.CashOutStake : Lang.BoughtStake)
+                    </th>
+                    <th style="width: 80px">
+                        @(Model.IsCashOut ? Lang.CashOutAmount : Lang.BoughtAmount)
+                    </th>
+                    <th style="width: 70px">
+                        @Lang.Win/@Lang.Loss
+                    </th>
+                    <th style="width: 100px">
+                        @Lang.Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cashOut in Model.CashOutTextList)
                 {
                     highlightClass = cashOut.IsHighlight ? "highlight" : string.Empty;
-                        <tr>
-                            <td class="c @highlightClass">
-                                @Raw(cashOut.TransTime)
-                            </td>
-                            <td class="bl_underdog @highlightClass">
-                                @Raw(cashOut.Stake)
-                            </td>
-                            <td class="bl_underdog @highlightClass">
-                                @Raw(cashOut.Price)
-                            </td>
-                            <td class="bl_underdog @highlightClass">
-                                @Raw(cashOut.WinLoss)
-                            </td>
-                            <td class="c @highlightClass">
-                                @Raw(cashOut.Status)
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </p>
-    </div>
-}
+                    <tr>
+                        <td class="c @highlightClass">
+                            @Raw(cashOut.TransTime)
+                        </td>
+                        <td class="bl_underdog @highlightClass">
+                            @Raw(cashOut.Stake)
+                        </td>
+                        <td class="bl_underdog @highlightClass">
+                            @Raw(cashOut.Price)
+                        </td>
+                        <td class="bl_underdog @highlightClass">
+                            @Raw(cashOut.WinLoss)
+                        </td>
+                        <td class="c @highlightClass">
+                            @Raw(cashOut.Status)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </p>
+</div>
