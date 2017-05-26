@@ -59,12 +59,6 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
         {
             Check.Argument.IsNotNull(criteria, "criteria");
             return _betlistDataAccess.GetBetListDetail(criteria, spkey);
-        }
-
-        public CashOutTicketDetail GetBetListCashOutDetail(BetListDetailCriteria criteria, string spkey)
-        {
-            Check.Argument.IsNotNull(criteria, "criteria");
-            return _betlistDataAccess.GetBetListCashOutDetail(criteria, spkey);
-        }
+        }      
     }
 }

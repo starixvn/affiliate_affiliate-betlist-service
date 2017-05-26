@@ -23,7 +23,5 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
         CustomerInfoBetList GetPlayerIbcInfo(string affiliateGroup, string playerUsername);
 
         TicketResult GetBetListDetail(BetListDetailCriteria criteria, string spkey);
-
-        CashOutTicketDetail GetBetListCashOutDetail(BetListDetailCriteria criteria, string spkey);
     }
 }

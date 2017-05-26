@@ -47,6 +47,8 @@ namespace Fanex.Affiliate.WebServices
 
         private readonly IRNGCasinoSingleWalletService _rngCasinoSingleWalletService;
 
+        private readonly ICashOutService _cashOutService;
+
         private readonly IList<string> _resultsSupportedLanguages = new List<string>() { "en-US", "zh-TW", "zh-CN", "ja-JP", "th-TH", "ko-KR", "vi-VN" };
 
         private readonly LanguageManager _langManager = new LanguageManager();
@@ -57,6 +59,7 @@ namespace Fanex.Affiliate.WebServices
             _betlistService = new BetListService();
             _resultService = new ResultService();
             _rngCasinoSingleWalletService = new RNGCasinoSingleWalletService();
+            _cashOutService = new CashOutService();
         }
 
         #region Common
@@ -495,7 +498,7 @@ namespace Fanex.Affiliate.WebServices
         public string GetBetListCashOutDetail(BetListDetailCriteria criteria, bool isCashOut)
         {
             const string spKey = "Aff_BetList_CashOut_Detail";
-            var ticketResults = _betlistService.GetBetListCashOutDetail(criteria, spKey);
+            var ticketResults = _cashOutService.GetBetListCashOutDetail(criteria, spKey);
 
             return GetCashOutTicketDetailHtml(ticketResults, criteria, isCashOut);
         }

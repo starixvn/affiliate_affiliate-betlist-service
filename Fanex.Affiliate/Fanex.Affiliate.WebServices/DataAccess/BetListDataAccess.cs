@@ -29,6 +29,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess
             new BetListColumn { Name = "betteam", Type = DbType.String, MappingName = "BetTeam" },
             new BetListColumn { Name = "betstatus", Type = DbType.String, MappingName = "EventStatus" },
             new BetListColumn { Name = "oddstype", Type = DbType.String, MappingName = "OddsType" },
+            new BetListColumn { Name = "nickname", Type = DbType.String, MappingName = "ExternalId" },
             new BetListColumn { Name = "race", Type = DbType.String, MappingName = "Race" },
             new BetListColumn { Name = "transdesc", Type = DbType.String, MappingName = "TransDesc" },
             new BetListColumn { Name = "extrainfo", Type = DbType.String, MappingName = "ExtraInfo" },
@@ -43,6 +44,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess
             new BetListColumn { Name = "awayid", Type = DbType.Int32, MappingName = "AwayId" },
             new BetListColumn { Name = "matchid", Type = DbType.Int32, MappingName = "MatchId" },
             new BetListColumn { Name = "custid", Type = DbType.Int32, MappingName = "CustId" },
+            new BetListColumn { Name = "currencyid", Type = DbType.Int32, MappingName = "CurrencyId" },
             new BetListColumn { Name = "livehomescore", Type = DbType.Int32, MappingName = "LiveHomeScore" },
             new BetListColumn { Name = "liveawayscore", Type = DbType.Int32, MappingName = "LiveAwayScore" },
             new BetListColumn { Name = "statusid", Type = DbType.Int32, MappingName = "StatusId" },
@@ -72,9 +74,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess
                 new BetListColumn { Name = playerCommCol, Type = DbType.Decimal, HasData = columnCollection.Contains(playerCommCol), MappingName = "PlayerComm" },
                 new BetListColumn { Name = commCol, Type = DbType.Decimal, HasData = columnCollection.Contains(commCol), MappingName = "Comm" },
                 new BetListColumn { Name = licenseeWlCol, Type = DbType.Decimal, HasData = columnCollection.Contains(licenseeWlCol), MappingName = "LicenseeWl" },
-                new BetListColumn { Name = actualStakeCol, Type = DbType.Decimal, HasData = columnCollection.Contains(actualStakeCol), MappingName = "ActualStake" },
-                new BetListColumn { Name = "nickname", Type = DbType.String, MappingName = "ExternalId" },
-                new BetListColumn { Name = "currencyid", Type = DbType.Int32, MappingName = "CurrencyId" }
+                new BetListColumn { Name = actualStakeCol, Type = DbType.Decimal, HasData = columnCollection.Contains(actualStakeCol), MappingName = "ActualStake" }
             };
 
             var columnList = BetListColumnList.Select(i => new BetListColumn
@@ -336,6 +336,11 @@ namespace Fanex.Affiliate.WebServices.DataAccess
 
             foreach (var column in columnList)
             {
+                if (!setters.ContainsKey(column.MappingName))
+                {
+                    continue;
+                }
+
                 var setter = setters[column.MappingName];
                 if (column.HasData)
                 {
