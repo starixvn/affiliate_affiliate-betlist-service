@@ -177,6 +177,10 @@
   <data name="SystemID" xml:space="preserve">
     <value>System ID</value>
   </data>
+  <data name="TicketDetails" xml:space="preserve">
+    <value>Ticket Details</value>
+    <comment>#74874</comment>
+  </data>
   <data name="Total" xml:space="preserve">
     <value>Total</value>
   </data>

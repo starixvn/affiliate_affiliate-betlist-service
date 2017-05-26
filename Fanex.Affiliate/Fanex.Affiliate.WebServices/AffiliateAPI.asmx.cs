@@ -96,10 +96,10 @@ namespace Fanex.Affiliate.WebServices
         /// <param name="templatePath">Template path.</param>
         /// <param name="model">Binding model.</param>
         /// <returns>Bet list's Html string.</returns>
-        public string BindDataToTemplate(string templatePath, object model)
+        public string BindDataToTemplate(string templatePath, object model, string key = "key")
         {
             var template = File.ReadAllText(templatePath);
-            return Engine.Razor.RunCompile(template, "key", null, model);
+            return Engine.Razor.RunCompile(template, key, null, model);
         }
 
         #endregion Common
@@ -553,7 +553,7 @@ namespace Fanex.Affiliate.WebServices
         }
 
         [WebMethod]
-        public string GetBetListCashOutDetail(string userName, BetListDetailCriteria criteria)
+        public string GetBetListCashOutDetail(BetListDetailCriteria criteria)
         {
             const string spKey = "Aff_BetList_CashOut_Detail";
             var ticketResults = _betlistService.GetBetListCashOutDetail(criteria, spKey);
@@ -563,7 +563,7 @@ namespace Fanex.Affiliate.WebServices
 
         private string GetCashOutTicketDetailHtml(CashOutTicketDetail ticketResults, BetListDetailCriteria criteria)
         {
-            if (ticketResults.OriginalTicket == null)
+            if (!ticketResults.OriginalTicket.Any())
             {
                 return string.Empty;
             }
@@ -577,10 +577,10 @@ namespace Fanex.Affiliate.WebServices
                 OriginalTextList = originalTicketTextList,
                 CashOutTextList = cashOutTicketTextList,
                 IsHighlightOriginalTicket = !cashOutTicketTextList.Any(x => x.IsHighlight),
-                IsCashOut = ticketResults.CashOutTicket.FirstOrDefault()?.BetTypeId == (int)BetType.CashOut
+                IsCashOut = ticketResults.CashOutTicket.Any() ? (bool?)ticketResults.CashOutTicket.Any(x=>x.BetTypeId == (int)BetType.CashOut) : null
             };
 
-            return BindDataToTemplate(templatePath, content);
+            return BindDataToTemplate(templatePath, content, "CashOutDetail");
         }
 
         private string GetTicketDetailHtml(TicketResult ticketResults, BetListDetailCriteria criteria, string userName)

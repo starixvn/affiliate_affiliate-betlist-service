@@ -214,6 +214,15 @@ namespace Fanex.Affiliate.WebServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ticket Details.
+        /// </summary>
+        public static string TicketDetails {
+            get {
+                return ResourceManager.GetString("TicketDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total.
         /// </summary>
         public static string Total {
