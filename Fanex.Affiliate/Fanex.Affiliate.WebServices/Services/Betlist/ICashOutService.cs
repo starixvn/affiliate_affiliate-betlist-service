@@ -11,6 +11,6 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
 
     public interface ICashOutService
     {
-        CashOutTicketDetail GetBetListCashOutDetail(BetListDetailCriteria criteria, string spkey);
+        CashOutTicketDetail GetBetListCashOutDetail(BetListDetailCriteria criteria, string spkey, bool isCashOut);
     }
 }

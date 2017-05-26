@@ -1,19 +1,15 @@
 ﻿namespace Fanex.Affiliate.WebServices.DTO.BetList
 {
-    using System;
     using System.Collections.Generic;
 
-    [Serializable]
     public class CashOutTicketDetail
     {
-        public CashOutTicketDetail()
-        {
-            OriginalTicket = new List<AffTicket>();
-            CashOutTicket = new List<CashOutTicket>();
-        }
+        public IList<TicketText> OriginalTextList { get; set; }
 
-        public IList<AffTicket> OriginalTicket { get; set; }
+        public IList<CashOutTicketText> CashOutTextList { get; set; }
 
-        public IList<CashOutTicket> CashOutTicket { get; set; }
+        public bool IsHighlightOriginalTicket { get; set; }
+
+        public bool IsCashOut { get; set; }
     }
 }

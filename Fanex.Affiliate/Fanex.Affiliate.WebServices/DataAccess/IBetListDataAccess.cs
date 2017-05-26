@@ -24,6 +24,6 @@ namespace Fanex.Affiliate.WebServices.DataAccess
 
         TicketResult GetBetListDetail(BetListDetailCriteria criteria, string spkey);
 
-        CashOutTicketDetail GetBetListCashOutDetail(BetListDetailCriteria criteria, string spkey);
+        CashOutTicketHistory GetBetListCashOutDetail(BetListDetailCriteria criteria, string spkey);
     }
 }

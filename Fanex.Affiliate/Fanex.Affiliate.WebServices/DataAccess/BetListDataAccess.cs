@@ -283,9 +283,9 @@ namespace Fanex.Affiliate.WebServices.DataAccess
             return result;
         }
 
-        public CashOutTicketDetail GetBetListCashOutDetail(BetListDetailCriteria criteria, string spkey)
+        public CashOutTicketHistory GetBetListCashOutDetail(BetListDetailCriteria criteria, string spkey)
         {
-            var result = new CashOutTicketDetail();
+            var result = new CashOutTicketHistory();
 
             using (var objectDb = new ObjectDb(spkey))
             {
