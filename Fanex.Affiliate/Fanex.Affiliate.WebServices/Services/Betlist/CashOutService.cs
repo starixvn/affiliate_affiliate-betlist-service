@@ -38,7 +38,7 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
 
             if (tickets.OriginalTicket.Any())
             {
-                return new CashOutTicketDetail()
+                return new CashOutTicketDetail
                 {
                     OriginalTextList = BuildOriginalTicketText(tickets.OriginalTicket, criteria),
                     CashOutTextList = BuildCashOutTicketText(tickets.CashOutTicket, criteria),
@@ -48,7 +48,7 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
                 };
             }
 
-            return new CashOutTicketDetail()
+            return new CashOutTicketDetail
             {
                 OriginalTextList = new List<TicketText>(),
                 CashOutTextList = new List<CashOutTicketText>(),
@@ -56,7 +56,7 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
             };
         }
 
-        private IList<TicketText> BuildOriginalTicketText(IList<AffTicket> tickets, BetListDetailCriteria criteria)
+        private static IList<TicketText> BuildOriginalTicketText(IList<AffTicket> tickets, BetListDetailCriteria criteria)
         {
             var builder = new BetListHTMLBuilder();
             var ticketTextList = new List<TicketText>();
@@ -89,7 +89,7 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
             return ticketTextList;
         }
 
-        private IList<CashOutTicketText> BuildCashOutTicketText(IList<CashOutTicket> tickets, BetListDetailCriteria criteria)
+        private static IList<CashOutTicketText> BuildCashOutTicketText(IList<CashOutTicket> tickets, BetListDetailCriteria criteria)
         {
             var builder = new BetListHTMLBuilder();
             var ticketTextList = new List<CashOutTicketText>();
@@ -97,6 +97,7 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
             {
                 HideStatusCashOutHistory = true
             };
+
             foreach (var ticket in tickets)
             {
                 var betListTicket = new AffTicket
@@ -126,10 +127,10 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
             return ticketTextList;
         }
 
-        private bool IsCashOutBetTicket(long betdaqid, int bettype)
+        private static bool IsCashOutBetTicket(long betdaqid, int bettype)
         {
             var cashOutBetTypes = new int[] { 900, 912 };
-            return betdaqid == 1 && cashOutBetTypes.Contains(bettype) == false;
+            return betdaqid == 1 && !cashOutBetTypes.Contains(bettype);
         }
     }
 }

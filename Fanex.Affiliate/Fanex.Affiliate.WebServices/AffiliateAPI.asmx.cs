@@ -25,7 +25,6 @@ namespace Fanex.Affiliate.WebServices
     using Fanex.Result.Core.Base;
     using RazorEngine;
     using RazorEngine.Templating;
-    using Resources;
     using Result.Core;
     using Services.Betlist;
     using Services.Result;
