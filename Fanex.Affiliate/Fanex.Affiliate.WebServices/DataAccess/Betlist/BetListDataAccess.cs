@@ -79,7 +79,6 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
             var commCol = "comm" + baseCurrency;
             var licenseeWlCol = "licenseewl" + baseCurrency;
             var actualStakeCol = "actual_stake" + baseCurrency;
-            var result = new List<AffTicket>();
             var columnCollection = dataTable.Columns;
             var betlistColumnByCurrency = new List<BetListColumn>
             {
@@ -89,7 +88,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
                 new BetListColumn { Name = actualStakeCol, Type = DbType.Decimal, HasData = columnCollection.Contains(actualStakeCol), MappingName = "ActualStake" }
             };
 
-            var items = BetListColumnList.Select(i => new BetListColumn
+            var columnList = BetListColumnList.Select(i => new BetListColumn
             {
                 Name = i.Name,
                 HasData = columnCollection.Contains(i.Name),
@@ -99,16 +98,17 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
             }).Union(betlistColumnByCurrency).ToList();
 
             var ticketType = typeof(AffTicket);
-            var setters = CreateSetterMethodForAffTicket(ticketType);
+            var setters = GetSetterMethods(ticketType);
+            var result = new List<AffTicket>();
             foreach (DataRow dataRow in dataTable.Rows)
             {
-                result.Add(CreateAffTicket<AffTicket>(setters, items, ticketType, dataRow));
+                result.Add(CreateAffTicket<AffTicket>(setters, columnList, ticketType, dataRow));
             }
 
             return result;
         }
 
-        public static List<CashOutTicket> ReadCashOutTicketDetailData(DataTable dataTable)
+        public static IList<CashOutTicket> ReadCashOutTicketDetailData(DataTable dataTable)
         {
             var columnCollection = dataTable.Columns;
             var items = BetListColumnList.Select(i => new BetListColumn
@@ -129,7 +129,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
 
             var ticketType = typeof(CashOutTicket);
             var result = new List<CashOutTicket>();
-            var setters = CreateSetterMethodForAffTicket(ticketType);
+            var setters = GetSetterMethods(ticketType);
 
             foreach (DataRow dataRow in dataTable.Rows)
             {
@@ -139,12 +139,6 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
             return result;
         }
 
-        /// <summary>
-        /// Read reference ticket.
-        /// </summary>
-        /// <param name="data">Data Parameter value.</param>
-        /// <param name="baseCurrency"> Parameter value.</param>
-        /// <returns>Result value.</returns>
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists", Justification = "Reviewed.")]
         public static List<ITicketData> ReadReferneceTicket(DataTable data, string baseCurrency)
         {
@@ -168,12 +162,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
             return result;
         }
 
-        /// <summary>
-        /// Read boolean object.
-        /// </summary>
-        /// <param name="value"> Parameter value.</param>
-        /// <returns>Result value.</returns>
-        public static bool ReadBoolean(object value)
+        private static bool ReadBoolean(object value)
         {
             if (value == null || value == Convert.DBNull)
             {
@@ -193,11 +182,6 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
             return false;
         }
 
-        /// <summary>
-        /// Get Bet List.
-        /// </summary>
-        /// <param name="criteria">Input criteria.</param>
-        /// <returns>Ticket results.</returns>
         public TicketResult GetBetList(BetListCriteria criteria)
         {
             var result = new TicketResult();
@@ -220,11 +204,6 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
             return result;
         }
 
-        /// <summary>
-        /// Get Bet List Parlay.
-        /// </summary>
-        /// <param name="criteria">Bet list parlay.</param>
-        /// <returns>Ticket results.</returns>
         public TicketResult GetBetListParlay(BetListParlayCriteria criteria)
         {
             var result = new TicketResult();
@@ -244,11 +223,6 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
             return result;
         }
 
-        /// <summary>
-        /// Get System Parlay Detail data.
-        /// </summary>
-        /// <param name="criteria">The metal model.</param>
-        /// <returns>The system parlay.</returns>
         public SystemParlayData GetSystemParlayDetail(BetListSystemParlayDetailCriteria criteria)
         {
             using (var objectDb = new ObjectDb(criteria.GetSettingKey()))
@@ -650,30 +624,29 @@ namespace Fanex.Affiliate.WebServices.DataAccess.Betlist
             }
         }
 
-        private static IDictionary<string, MethodInfo> CreateSetterMethodForAffTicket(Type ticketType)
+        private static IDictionary<string, MethodInfo> GetSetterMethods(Type type)
         {
-            return ticketType.GetProperties()
+            return type.GetProperties()
                             .Select(i => new KeyValuePair<string, MethodInfo>(i.Name, i.GetSetMethod()))
-
-                                .ToDictionary(j => j.Key, j => j.Value);
+                            .ToDictionary(j => j.Key, j => j.Value);
         }
 
-        private static T CreateAffTicket<T>(IDictionary<string, MethodInfo> setters, List<BetListColumn> items, Type ticketType, DataRow dataRow) where T : class
+        private static T CreateAffTicket<T>(IDictionary<string, MethodInfo> setters, IList<BetListColumn> columnList, Type ticketType, DataRow dataRow) where T : class
         {
             var ticket = Activator.CreateInstance(ticketType) as T;
 
-            foreach (var item in items)
+            foreach (var column in columnList)
             {
-                var setter = setters[item.MappingName];
-                if (item.HasData)
+                var setter = setters[column.MappingName];
+                if (column.HasData)
                 {
-                    AssignDataToAffTicket(ticket, setter, dataRow, item);
+                    AssignDataToAffTicket(ticket, setter, dataRow, column);
                 }
-                else if (item.Type == DbType.String)
+                else if (column.Type == DbType.String)
                 {
                     setter.Invoke(ticket, new object[] { string.Empty });
                 }
-                else if (item.Type == DbType.DateTime)
+                else if (column.Type == DbType.DateTime)
                 {
                     setter.Invoke(ticket, new object[] { DateTime.Now });
                 }

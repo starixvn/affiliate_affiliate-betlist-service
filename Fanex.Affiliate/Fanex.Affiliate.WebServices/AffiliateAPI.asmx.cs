@@ -141,12 +141,6 @@ namespace Fanex.Affiliate.WebServices
             return criteria;
         }
 
-        /// <summary>
-        /// View bet list by product.
-        /// </summary>
-        /// <param name="criteria">Bet list criteria.</param>
-        /// <param name="products">Product parameter.</param>
-        /// <param name="supportedProducts">List of supported products.</param>
         public void ViewBetListByProduct(BetListCriteria criteria, string products, IEnumerable<Product> supportedProducts)
         {
             if (products.Trim() == "All")
@@ -165,11 +159,6 @@ namespace Fanex.Affiliate.WebServices
             }
         }
 
-        /// <summary>
-        /// View Bet List By Specific Product.
-        /// </summary>
-        /// <param name="criteria">Bet List Criteria.</param>
-        /// <param name="product">Selected product.</param>
         public void ViewBetListBySpecificProduct(BetListCriteria criteria, string product)
         {
             switch (product.ToLower())
@@ -295,17 +284,7 @@ namespace Fanex.Affiliate.WebServices
             return ticketTextList;
         }
 
-        /// <summary>
-        /// Generate ticket text.
-        /// </summary>
-        /// <param name="ticketResult">Ticket result Parameter value.</param>
-        /// <param name="criteria"> Parameter value.</param>
-        /// <param name="username">User's Name.</param>
-        /// <param name="exchangeRate">Exchange rate value.</param>
-        /// <param name="startIndex">Start index Parameter value.</param>
-        /// <param name="showOdds">Show Odds or not.</param>
-        /// <returns>Result value.</returns>
-        public List<TicketText> Ticket(
+        public IList<TicketText> BuildTicketTextList(
             TicketResult ticketResult,
             BetListCriteria criteria,
             string username,
@@ -411,7 +390,7 @@ namespace Fanex.Affiliate.WebServices
             }
 
             var templatePath = Server.MapPath("~/Views/BetList.cshtml");
-            var ticketTextList = Ticket(ticketResults, betlistCriteria, betlistSOAP.Username, betlistSOAP.ExchangeRate);
+            var ticketTextList = BuildTicketTextList(ticketResults, betlistCriteria, betlistSOAP.Username, betlistSOAP.ExchangeRate);
 
             foreach (var ticket in ticketTextList)
             {
@@ -447,8 +426,8 @@ namespace Fanex.Affiliate.WebServices
             _langManager.SetCulture(language);
             var tickets = GetBetListParlay(affiliateName, transactionId);
 
-            var ticketsToTexts = Ticket(tickets, new BetListCriteria(), string.Empty, decimal.Parse(exchangeRate), 1, true);
-            return BuildHtmlString(ticketsToTexts);
+            var ticketTextList = BuildTicketTextList(tickets, new BetListCriteria(), string.Empty, decimal.Parse(exchangeRate), 1, true);
+            return BuildHtmlString(ticketTextList);
         }
 
         [WebMethod]
@@ -485,14 +464,14 @@ namespace Fanex.Affiliate.WebServices
                 }
             }
 
-            var ticketsToTexts = Ticket(ticketResult, new BetListCriteria(), string.Empty, decimal.Parse(exchangeRate), 1, true);
+            var ticketTextList = BuildTicketTextList(ticketResult, new BetListCriteria(), string.Empty, decimal.Parse(exchangeRate), 1, true);
             var htmlContent = new StringBuilder();
             foreach (var item in texts)
             {
                 htmlContent.Append(item);
             }
 
-            htmlContent.Append(BuildHtmlString(ticketsToTexts));
+            htmlContent.Append(BuildHtmlString(ticketTextList));
 
             return htmlContent.ToString();
         }
@@ -585,7 +564,7 @@ namespace Fanex.Affiliate.WebServices
             }
 
             var templatePath = Server.MapPath("~/Views/BetList.cshtml");
-            var ticketTextList = Ticket(ticketResults, criteria, userName, criteria.ExchangeRate);
+            var ticketTextList = BuildTicketTextList(ticketResults, criteria, userName, criteria.ExchangeRate);
 
             foreach (var ticket in ticketTextList)
             {

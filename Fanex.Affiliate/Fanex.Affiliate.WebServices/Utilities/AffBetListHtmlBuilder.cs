@@ -8,7 +8,6 @@ namespace Fanex.Affiliate.WebServices.Utilities
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using BetList.Core.App_GlobalResources;
     using BetList.Core.Builder;
     using BetList.Core.Entities;
@@ -16,22 +15,8 @@ namespace Fanex.Affiliate.WebServices.Utilities
     using DTO.BetList;
     using Fanex.Affiliate.WebServices.Resources;
 
-    /// <summary>
-    /// Affiliate BetList HTML Builder.
-    /// </summary>
     public static class AffBetListHtmlBuilder
     {
-        /// <summary>
-        /// Get ticket status.
-        /// </summary>
-        /// <param name="builder">Bet list builder.</param>
-        /// <param name="ticket">Affiliate ticket object.</param>
-        /// <param name="ticketHelper">Ticket helper.</param>
-        /// <param name="ticketData">List of ticket data.</param>
-        /// <param name="criteria">Meta model.</param>
-        /// <param name="username">User Name.</param>
-        /// <returns>Ticket status text.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists", Justification = "Since Betlist.dll used that data-structure.")]
         public static string BuildAffBetListResultStatus(
             this BetListHTMLBuilder builder,
             AffTicket ticket,
@@ -55,6 +40,7 @@ namespace Fanex.Affiliate.WebServices.Utilities
                         ticket.RefNo,
                         GetCasinoHandHistoryParam(ticket, criteria, username),
                         Lang.Results);
+
                 case 72:
                 case 73:
                     return statusNormalText;
@@ -83,13 +69,6 @@ namespace Fanex.Affiliate.WebServices.Utilities
             return winloss;
         }
 
-        /// <summary>
-        /// Get Casino Hand History Parameter.
-        /// </summary>
-        /// <param name="ticket">LRF Ticket object.</param>
-        /// <param name="criteria">Meta model object.</param>
-        /// <param name="username">User's Name.</param>
-        /// <returns>Parameter for Casino Hand History.</returns>
         private static string GetCasinoHandHistoryParam(
             AffTicket ticket,
             BetListCriteria criteria,
@@ -109,11 +88,6 @@ namespace Fanex.Affiliate.WebServices.Utilities
             return param;
         }
 
-        /// <summary>
-        /// Get status text by status id.
-        /// </summary>
-        /// <param name="ticket">LRF ticket object.</param>
-        /// <returns>Status text.</returns>
         private static string GetStatusText(AffTicket ticket)
         {
             var statusText = string.Empty;

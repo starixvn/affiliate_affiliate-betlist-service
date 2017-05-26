@@ -11,9 +11,6 @@ namespace Fanex.Affiliate.WebServices.DTO.BetList
     using System.Diagnostics.CodeAnalysis;
     using Fanex.BetList.Core.Entities;
 
-    /// <summary>
-    /// TODO: Update summary.
-    /// </summary>
     [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "Reviewed. Suppression is OK here")]
     [Serializable]
     public class TicketResult
@@ -24,7 +21,7 @@ namespace Fanex.Affiliate.WebServices.DTO.BetList
             TicketDataList = new List<ITicketData>();
         }
 
-        public List<AffTicket> MainTicketList { get; set; }
+        public IList<AffTicket> MainTicketList { get; set; }
 
         public List<ITicketData> TicketDataList { get; set; }
 
