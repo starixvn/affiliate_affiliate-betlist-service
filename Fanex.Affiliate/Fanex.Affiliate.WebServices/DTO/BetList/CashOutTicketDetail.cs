@@ -4,9 +4,9 @@
 
     public class CashOutTicketDetail
     {
-        public IList<TicketText> OriginalTextList { get; set; }
+        public IEnumerable<TicketText> OriginalTextList { get; set; }
 
-        public IList<CashOutTicketText> CashOutTextList { get; set; }
+        public IEnumerable<CashOutTicketText> CashOutTextList { get; set; }
 
         public bool IsHighlightOriginalTicket { get; set; }
 

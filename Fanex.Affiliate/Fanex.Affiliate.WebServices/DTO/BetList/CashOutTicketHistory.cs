@@ -12,8 +12,8 @@
             CashOutTicket = new List<CashOutTicket>();
         }
 
-        public IList<AffTicket> OriginalTicket { get; set; }
+        public IEnumerable<AffTicket> OriginalTicket { get; set; }
 
-        public IList<CashOutTicket> CashOutTicket { get; set; }
+        public IEnumerable<CashOutTicket> CashOutTicket { get; set; }
     }
 }

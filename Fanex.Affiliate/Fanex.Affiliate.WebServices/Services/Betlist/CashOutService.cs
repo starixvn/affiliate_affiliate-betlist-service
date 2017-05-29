@@ -56,7 +56,7 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
             };
         }
 
-        private static IList<TicketText> BuildOriginalTicketText(IList<AffTicket> tickets, BetListDetailCriteria criteria)
+        private static IEnumerable<TicketText> BuildOriginalTicketText(IEnumerable<AffTicket> tickets, BetListDetailCriteria criteria)
         {
             var builder = new BetListHTMLBuilder();
             var ticketTextList = new List<TicketText>();
@@ -89,7 +89,7 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
             return ticketTextList;
         }
 
-        private static IList<CashOutTicketText> BuildCashOutTicketText(IList<CashOutTicket> tickets, BetListDetailCriteria criteria)
+        private static IEnumerable<CashOutTicketText> BuildCashOutTicketText(IEnumerable<CashOutTicket> tickets, BetListDetailCriteria criteria)
         {
             var builder = new BetListHTMLBuilder();
             var ticketTextList = new List<CashOutTicketText>();

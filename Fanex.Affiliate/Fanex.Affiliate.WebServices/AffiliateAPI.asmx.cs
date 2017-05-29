@@ -96,7 +96,7 @@ namespace Fanex.Affiliate.WebServices
 
         #region Affiliate's Betlist - Utilities
 
-        public BetListCriteria GenerateBetlistCriteria(BetlistSOAP betlistSOAP)
+        private BetListCriteria GenerateBetlistCriteria(BetlistSOAP betlistSOAP)
         {
             var affiliateGroup = betlistSOAP.AffiliateName.Trim() == "12bet" ? "_12bet" : string.Empty;
             var balanceUpMoveBetCriteria = new BalanceUpMoveBetCriteria { AffiliateGroup = affiliateGroup };
