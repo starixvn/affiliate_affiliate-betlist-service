@@ -10,6 +10,8 @@ namespace Fanex.Affiliate.WebServices.Services.Result
     using System.Linq;
     using Criteria.BetList;
     using DataAccess;
+    using Fanex.Result.Core;
+    using Fanex.Result.Core.Base;
     using Fanex.Result.Core.LiveCasino.DTO;
     using Fanex.Result.Core.NumberGame.DTO;
     using Fanex.Result.Core.Racing.DTO;
@@ -29,29 +31,67 @@ namespace Fanex.Affiliate.WebServices.Services.Result
             _resultDataAccess = resultDataAccess ?? new ResultDataAccess();
         }
 
-        public IList<Sportsbook> GetSportsbookResults(BetListResultsCriteria criteria)
+        public string GetResultHtml(
+            BetListResultsCriteria criteria,
+            SportType sportType,
+            ResultSetting setting)
+        {
+            switch (sportType)
+            {
+                case SportType.HorseRacing:
+                case SportType.Greyhound:
+                case SportType.Harness:
+                case SportType.VirtualHorseRacing:
+                case SportType.VirtualGreyhounds:
+                case SportType.VirtualMotorRacing:
+                case SportType.VirtualSpeedway:
+                case SportType.VirtualCycling:
+                    if (criteria.RaceNo == null)
+                    {
+                        return string.Empty;
+                    }
+
+                    var dataRc = GetRacingResults(criteria.MatchId, criteria.RaceNo.Value);
+                    return ResultEngine.HtmlParser(dataRc, setting);
+
+                case SportType.LiveCasino:
+                    var dataLc = GetLiveCasinoResults(criteria.MatchId);
+                    return ResultEngine.HtmlParser(dataLc, setting);
+
+                case SportType.NumberGame:
+                    var dataNg = GetNumberGameResults(criteria.MatchId);
+                    return ResultEngine.HtmlParser(dataNg, setting);
+
+                default:
+                    var dataSb = GetSportsbookResults(criteria);
+                    return ResultEngine.HtmlParser(dataSb, setting);
+            }
+        }
+
+        public string GetParlayResultHtml(long refNo, ResultSetting setting)
+        {
+            var data = _resultDataAccess.GetParlayResults(refNo).ToList();
+            return ResultEngine.HtmlParser(data, setting);
+        }
+
+        private IList<Sportsbook> GetSportsbookResults(BetListResultsCriteria criteria)
         {
             return _resultDataAccess.GetSportsbookResults(criteria).ToList();
         }
 
-        public IList<LiveCasino> GetLiveCasinoResults(int matchId)
+        private IList<LiveCasino> GetLiveCasinoResults(int matchId)
         {
             return _resultDataAccess.GetLiveCasinoResults(matchId).ToList();
         }
 
-        public IList<NumberGame> GetNumberGameResults(int matchId)
+        private IList<NumberGame> GetNumberGameResults(int matchId)
         {
             return _resultDataAccess.GetNumberGameResults(matchId).ToList();
         }
 
-        public IList<Racing> GetRacingResults(int matchId, int raceNo)
+        private IList<Racing> GetRacingResults(int matchId, int raceNo)
         {
             return _resultDataAccess.GetRacingResults(matchId, raceNo).ToList();
-        }
-
-        public IList<Parlay> GetParlayResults(long refNo)
-        {
-            return _resultDataAccess.GetParlayResults(refNo).ToList();
         }
     }
 }

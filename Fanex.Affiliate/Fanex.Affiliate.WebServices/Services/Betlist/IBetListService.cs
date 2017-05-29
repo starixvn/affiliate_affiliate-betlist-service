@@ -18,10 +18,10 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
 
         SystemParlayData GetSystemParlayDetail(BetListSystemParlayDetailCriteria criteria);
 
-        void GetBalanceUpMoveBetDate(BalanceUpMoveBetCriteria criteria);
-
-        CustomerInfoBetList GetPlayerIbcInfo(string affiliateGroup, string playerUsername);
-
         TicketResult GetBetListDetail(BetListDetailCriteria criteria, string spkey);
+
+        BetListCriteria GenerateBetlistCriteria(BetlistSOAP betlistSOAP);
+
+        void GetBalanceUpMoveBetDate(BalanceUpMoveBetCriteria criteria);
     }
 }

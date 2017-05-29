@@ -9,23 +9,16 @@ namespace Fanex.Affiliate.WebServices
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
-    using System.Runtime.Serialization.Formatters.Binary;
     using System.Text;    // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line.
     using System.Web.Services;
-    using System.Xml.Serialization;
     using BetList.Core.Builder;
-    using BetList.Core.Entities;
     using BetList.Core.TicketHelper;
     using Criteria.BetList;
     using Data.Configuration;
     using DTO.BetList;
     using Enumerations;
     using Fanex.Result.Core.Base;
-    using RazorEngine;
-    using RazorEngine.Templating;
-    using Result.Core;
     using Services.Betlist;
     using Services.Result;
     using Utilities;
@@ -40,6 +33,8 @@ namespace Fanex.Affiliate.WebServices
     [System.ComponentModel.ToolboxItem(false)]
     public class AffiliateAPI : WebService
     {
+        private static readonly IEnumerable<string> ResultSupportedLanguages = new List<string>() { "en-US", "zh-TW", "zh-CN", "ja-JP", "th-TH", "ko-KR", "vi-VN" };
+
         private readonly IBetListService _betlistService;
 
         private readonly IResultService _resultService;
@@ -47,8 +42,6 @@ namespace Fanex.Affiliate.WebServices
         private readonly IRNGCasinoSingleWalletService _rngCasinoSingleWalletService;
 
         private readonly ICashOutService _cashOutService;
-
-        private readonly IList<string> _resultsSupportedLanguages = new List<string>() { "en-US", "zh-TW", "zh-CN", "ja-JP", "th-TH", "ko-KR", "vi-VN" };
 
         private readonly LanguageManager _langManager = new LanguageManager();
 
@@ -60,235 +53,14 @@ namespace Fanex.Affiliate.WebServices
             _rngCasinoSingleWalletService = new RNGCasinoSingleWalletService();
             _cashOutService = new CashOutService();
         }
-
-        #region Common
-
-        /// <summary>
-        /// Convert an object into XML format.
-        /// </summary>
-        /// <param name="inputObject">Input object.</param>
-        /// <returns>XML String.</returns>
-        public static string ToXml(object inputObject)
-        {
-            XmlSerializer serializer = new XmlSerializer(inputObject.GetType());
-
-            using (StringWriter textWriter = new StringWriter())
-            {
-                serializer.Serialize(textWriter, inputObject);
-                return textWriter.ToString();
-            }
-        }
-
-        /// <summary>
-        /// Bind bet list data to template.
-        /// </summary>
-        /// <param name="templatePath">Template path.</param>
-        /// <param name="model">Binding model.</param>
-        /// <returns>Bet list's Html string.</returns>
-        public string BindDataToTemplate(string templatePath, object model, string key = "key")
-        {
-            var template = File.ReadAllText(templatePath);
-            return Engine.Razor.RunCompile(template, key, null, model);
-        }
-
-        #endregion Common
         
-
-        #region Affiliate's Betlist - Utilities
-
-        private BetListCriteria GenerateBetlistCriteria(BetlistSOAP betlistSOAP)
-        {
-            var affiliateGroup = betlistSOAP.AffiliateName.Trim() == "12bet" ? "_12bet" : string.Empty;
-            var balanceUpMoveBetCriteria = new BalanceUpMoveBetCriteria { AffiliateGroup = affiliateGroup };
-            _betlistService.GetBalanceUpMoveBetDate(balanceUpMoveBetCriteria);
-            var customerInfoBetList = _betlistService.GetPlayerIbcInfo(affiliateGroup, betlistSOAP.AffiliateName + "$" + betlistSOAP.Username);
-
-            BetListCriteria criteria;
-            if (betlistSOAP.FromDate < balanceUpMoveBetCriteria.BalanceUpDay)
-            {
-                criteria = new BetListArchiveCriteria
-                {
-                    CustId = customerInfoBetList.CustId,
-                    FromDate = betlistSOAP.FromDate,
-                    ToDate = betlistSOAP.ToDate,
-                    AffiliateGroup = affiliateGroup
-                };
-            }
-            else
-            {
-                criteria = new BetListNormalCriteria
-                {
-                    CustId = customerInfoBetList.CustId,
-                    FromDate = betlistSOAP.FromDate,
-                    ToDate = betlistSOAP.ToDate,
-                    MoveBetsDay = balanceUpMoveBetCriteria.MoveBetsDay,
-                    AffiliateGroup = affiliateGroup
-                };
-            }
-
-            ViewBetListByProduct(criteria, betlistSOAP.Product, betlistSOAP.SupportedProducts);
-
-            return criteria;
-        }
-
-        private  void ViewBetListByProduct(BetListCriteria criteria, string products, IEnumerable<Product> supportedProducts)
-        {
-            if (products.Trim() == "All")
-            {
-                products = string.Join(",", supportedProducts.Select(t => t.ProductName));
-            }
-
-            var productList = products.Split(',');
-
-            foreach (var pro in productList)
-            {
-                if (supportedProducts.Any(t => t.ProductName.Equals(pro.Trim())))
-                {
-                    ViewBetListBySpecificProduct(criteria, pro);
-                }
-            }
-        }
-
-        private static void ViewBetListBySpecificProduct(BetListCriteria criteria, string product)
-        {
-            switch (product.ToLower())
-            {
-                case "sportsbook":
-                    criteria.ShowSB = true;
-                    break;
-
-                case "rng casino":
-                    criteria.ShowCS = true;
-                    break;
-
-                case "racing":
-                    criteria.ShowRB = true;
-                    break;
-
-                case "number game":
-                    criteria.ShowNG = true;
-                    break;
-
-                case "keno":
-                    criteria.ShowKN = true;
-                    break;
-
-                case "virtual sports":
-                    criteria.ShowVS = true;
-                    break;
-
-                case "live casino":
-                    criteria.ShowLC = true;
-                    break;
-
-                case "ag casino":
-                    criteria.ShowAG = true;
-                    break;
-
-                case "gold deluxe":
-                    criteria.ShowGD = true;
-                    break;
-
-                case "colossus bets":
-                    criteria.ShowCB = true;
-                    break;
-
-                case "cock fighting":
-                    criteria.ShowCF = true;
-                    break;
-
-                default:
-                    break;
-            }
-        }
-        
-        private IList<TicketText> BuildTicketTextList(
-            TicketResult ticketResult,
-            BetListCriteria criteria,
-            string username,
-            decimal exchangeRate = 1,
-            int startIndex = 1,
-            bool showOdds = false)
-        {
-            var builder = new BetListHTMLBuilder();
-            var ticketTextList = new List<TicketText>();
-            var ticketHelper = new TicketHelper();
-            var baseCurrency = criteria == null ? string.Empty : criteria.BaseCurrency;
-            decimal sumWinloss = 0;
-
-            foreach (var ticket in ticketResult.MainTicketList)
-            {
-                if (ticket.BetTypeId == (int)BetType.CombinationMixParlay)
-                {
-                    var custid = ticket.CustId != 0 ? ticket.CustId : criteria.CustId;
-                    ticketHelper.ClientDetailSystemParlayFunction = GenerateClientDetailSystemParlayFunction(ticketHelper, baseCurrency, ticket, custid);
-                }
-
-                ticketHelper.IsShowOddsWithChoice = showOdds;
-                ticket.Stake *= exchangeRate;
-                ticket.ActualStake *= exchangeRate;
-                var ticketText = new TicketText
-                {
-                    Index = startIndex++,
-                    ExternalId = ticket.ExternalId,
-                    SystemId = ticket.UserName,
-                    TransTime = builder.BuildTrans(ticket),
-                    Status = builder.BuildAffBetListResultStatus(
-                        ticket, ticketHelper, ticketResult.TicketDataList, criteria, username),
-                    Choice = builder.BuildChoice(ticket, ticketHelper, ticketResult.TicketDataList, false),
-                    Odds = builder.BuildOdds(ticket, ticketResult.TicketDataList, CacheRef.GetOddsTypeName),
-                    Stake = builder.BuildStake(ticket),
-                    WinLoss = builder.BuildCustomerWL(ticket, exchangeRate)
-                };
-
-                sumWinloss += ticket.Winlost;
-                ticketTextList.Add(ticketText);
-            }
-
-            ticketResult.SumWinLoss = sumWinloss;
-
-            return ticketTextList;
-        }
-
-        /// <summary>
-        /// Exchange system parlay ticket from user's currency to affiliate's currency.
-        /// </summary>
-        /// <param name="systemParlayData">Original system parlay data object.</param>
-        /// <param name="exchangeRate">Exchange rate.</param>
-        private void ExchangeSystemParlayTickets(SystemParlayData systemParlayData, decimal exchangeRate)
-        {
-            systemParlayData.Outstanding *= exchangeRate;
-            foreach (var ticket in systemParlayData.TicketList)
-            {
-                ticket.Comm *= exchangeRate;
-                ticket.PlayerComm *= exchangeRate;
-                ticket.Stake *= exchangeRate;
-                ticket.WinLost *= exchangeRate;
-            }
-        }
-        private byte[] Serialize(object objectToSeralize)
-        {
-            byte[] objectBytes;
-            using (MemoryStream stream = new MemoryStream())
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
-
-                formatter.Serialize(stream, objectToSeralize);
-                objectBytes = stream.ToArray();
-            }
-
-            return objectBytes;
-        }
-
-        #endregion Affiliate's Betlist - Utilities
-
         #region Affiliate's Betlist - Web Methods
 
         [WebMethod]
         public string GetBetlist(BetlistSOAP betlistSOAP)
         {
             _langManager.SetCulture(betlistSOAP.Language);
-            var betlistCriteria = GenerateBetlistCriteria(betlistSOAP);
+            var betlistCriteria = _betlistService.GenerateBetlistCriteria(betlistSOAP);
             var ticketResults = _betlistService.GetBetList(betlistCriteria);
 
             if (ticketResults == null)
@@ -297,12 +69,12 @@ namespace Fanex.Affiliate.WebServices
             }
 
             var templatePath = Server.MapPath("~/Views/BetList.cshtml");
-            var ticketTextList = BuildTicketTextList(ticketResults, betlistCriteria, betlistSOAP.Username, betlistSOAP.ExchangeRate);
+            var ticketTextList = AffiliateApiBetListHelper.BuildTicketTextList(ticketResults, betlistCriteria, betlistSOAP.Username, betlistSOAP.ExchangeRate);
 
             foreach (var ticket in ticketTextList)
             {
-                ticket.Stake = FormaterCurrency.Format(ticket.Stake);
-                ticket.WinLoss = FormaterCurrency.Format(ticket.WinLoss);
+                ticket.Stake = CurrencyFormatter.Format(ticket.Stake);
+                ticket.WinLoss = CurrencyFormatter.Format(ticket.WinLoss);
             }
 
             var content = new
@@ -311,10 +83,10 @@ namespace Fanex.Affiliate.WebServices
                 IsShowWinLoss = true,
                 ExchangeRate = betlistSOAP.ExchangeRate,
                 TicketTextList = ticketTextList,
-                SumWinLoss = FormaterCurrency.Format(ticketResults.SumWinLoss * betlistSOAP.ExchangeRate)
+                SumWinLoss = CurrencyFormatter.Format(ticketResults.SumWinLoss * betlistSOAP.ExchangeRate)
             };
 
-            return BindDataToTemplate(templatePath, content);
+            return AffiliateApiBetListHelper.BindDataToTemplate(templatePath, content);
         }
 
         [WebMethod]
@@ -323,8 +95,8 @@ namespace Fanex.Affiliate.WebServices
             _langManager.SetCulture(language);
             var tickets = GetBetListParlay(affiliateName, transactionId);
 
-            var ticketTextList = BuildTicketTextList(tickets, new BetListCriteria(), string.Empty, decimal.Parse(exchangeRate), 1, true);
-            return BuildHtmlString(ticketTextList);
+            var ticketTextList = AffiliateApiBetListHelper.BuildTicketTextList(tickets, new BetListCriteria(), string.Empty, decimal.Parse(exchangeRate), 1, true);
+            return AffiliateApiBetListHelper.BuildHtmlString(ticketTextList);
         }
 
         [WebMethod]
@@ -361,26 +133,18 @@ namespace Fanex.Affiliate.WebServices
                 }
             }
 
-            var ticketTextList = BuildTicketTextList(ticketResult, new BetListCriteria(), string.Empty, decimal.Parse(exchangeRate), 1, true);
+            var ticketTextList = AffiliateApiBetListHelper.BuildTicketTextList(ticketResult, new BetListCriteria(), string.Empty, decimal.Parse(exchangeRate), 1, true);
             var htmlContent = new StringBuilder();
             foreach (var item in texts)
             {
                 htmlContent.Append(item);
             }
 
-            htmlContent.Append(BuildHtmlString(ticketTextList));
+            htmlContent.Append(AffiliateApiBetListHelper.BuildHtmlString(ticketTextList));
 
             return htmlContent.ToString();
         }
 
-        /// <summary>
-        /// Get Bet list System Parlay.
-        /// </summary>
-        /// <param name="affiliateName">Affiliate Name.</param>
-        /// <param name="exchangeRate">Exchange Rate.</param>
-        /// <param name="criteria">Bet List System Parlay Detail Criteria.</param>
-        /// <param name="language">Language Input.</param>
-        /// <returns>System Parlay Data.</returns>
         [WebMethod]
         public string GetBetlistSystemParlay(string affiliateName, string exchangeRate, BetListSystemParlayDetailCriteria criteria, string language = "en-US")
         {
@@ -392,7 +156,7 @@ namespace Fanex.Affiliate.WebServices
             criteria.BalanceUpDay = balanceUpMoveBetCriteria.BalanceUpDay;
 
             var systemParlayData = _betlistService.GetSystemParlayDetail(criteria);
-            ExchangeSystemParlayTickets(systemParlayData, decimal.Parse(exchangeRate));
+            AffiliateApiBetListHelper.ExchangeSystemParlayTickets(systemParlayData, decimal.Parse(exchangeRate));
             var builder = new BetListHTMLBuilder();
 
             return builder.BuildSystemParlayDetail(new TicketHelper(), systemParlayData);
@@ -404,7 +168,7 @@ namespace Fanex.Affiliate.WebServices
             const string spKey = "Aff_BetList_RNG_Detail";
             var ticketResults = _betlistService.GetBetListDetail(criteria, spKey);
 
-            return GetTicketDetailHtml(ticketResults, criteria, userName);
+            return AffiliateApiBetListHelper.GetTicketDetailHtml(ticketResults, criteria, userName);
         }
 
         [WebMethod]
@@ -419,7 +183,7 @@ namespace Fanex.Affiliate.WebServices
             const string spKey = "Aff_BetList_LC_Detail";
             var ticketResults = _betlistService.GetBetListDetail(criteria, spKey);
 
-            return GetTicketDetailHtml(ticketResults, criteria, userName);
+            return AffiliateApiBetListHelper.GetTicketDetailHtml(ticketResults, criteria, userName);
         }
 
         [WebMethod]
@@ -436,95 +200,13 @@ namespace Fanex.Affiliate.WebServices
 
             var templatePath = Server.MapPath("~/Views/CashOutDetail.cshtml");
 
-            return BindDataToTemplate(templatePath, content, "CashOutDetail");
+            return AffiliateApiBetListHelper.BindDataToTemplate(templatePath, content, "CashOutDetail");
         }      
-
-        private string GetTicketDetailHtml(TicketResult ticketResults, BetListDetailCriteria criteria, string userName)
-        {
-            if (ticketResults.MainTicketList == null)
-            {
-                return string.Empty;
-            }
-
-            var templatePath = Server.MapPath("~/Views/BetList.cshtml");
-            var ticketTextList = BuildTicketTextList(ticketResults, criteria, userName, criteria.ExchangeRate);
-
-            foreach (var ticket in ticketTextList)
-            {
-                ticket.Stake = FormaterCurrency.Format(ticket.Stake);
-                ticket.WinLoss = FormaterCurrency.Format(ticket.WinLoss);
-            }
-
-            var content = new
-            {
-                IsShowSystemIdAndExternalId = false,
-                IsShowWinLoss = true,
-                TicketTextList = ticketTextList,
-                SumWinLoss = FormaterCurrency.Format(ticketResults.SumWinLoss * criteria.ExchangeRate)
-            };
-
-            return BindDataToTemplate(templatePath, content);
-        }
 
         #endregion Affiliate's Betlist - Web Methods
 
-        #region Affiliate's Results - Utilities
-
-        /// <summary>
-        /// Get normal pop up data.
-        /// </summary>
-        /// <param name="criteria">The metal model.</param>
-        /// <param name="sportType">The sport type.</param>
-        /// <param name="setting">The setting result.</param>
-        /// <returns>HTML formatted of data.</returns>
-        private string GetResultsData(
-            BetListResultsCriteria criteria,
-            SportType sportType,
-            ResultSetting setting)
-        {
-            switch (sportType)
-            {
-                case SportType.HorseRacing:
-                case SportType.Greyhound:
-                case SportType.Harness:
-                case SportType.VirtualHorseRacing:
-                case SportType.VirtualGreyhounds:
-                case SportType.VirtualMotorRacing:
-                case SportType.VirtualSpeedway:
-                case SportType.VirtualCycling:
-                    if (criteria.RaceNo == null)
-                    {
-                        return string.Empty;
-                    }
-
-                    var dataRc = _resultService.GetRacingResults(criteria.MatchId, criteria.RaceNo.Value);
-                    return dataRc != null ? ResultEngine.HtmlParser(dataRc, setting) : string.Empty;
-
-                case SportType.LiveCasino:
-                    var dataLc = _resultService.GetLiveCasinoResults(criteria.MatchId);
-                    return dataLc != null ? ResultEngine.HtmlParser(dataLc, setting) : string.Empty;
-
-                case SportType.NumberGame:
-                    var dataNg = _resultService.GetNumberGameResults(criteria.MatchId);
-                    return dataNg != null ? ResultEngine.HtmlParser(dataNg, setting) : string.Empty;
-
-                default:
-                    var dataSb = _resultService.GetSportsbookResults(criteria);
-                    return dataSb != null ? ResultEngine.HtmlParser(dataSb, setting) : string.Empty;
-            }
-        }
-
-        #endregion Affiliate's Results - Utilities
-
         #region Affiliate's Results - Web Methods
 
-        /// <summary>
-        /// Get results html string.
-        /// </summary>
-        /// <param name="affiliateName">Affiliate Name.</param>
-        /// <param name="sessionLanguage">Session Language.</param>
-        /// <param name="criteria">Input criteria.</param>
-        /// <returns>Result's Html string.</returns>
         [WebMethod]
         public string GetBetlistResults(string affiliateName, string sessionLanguage, BetListResultsCriteria criteria, string language = "en-US")
         {
@@ -536,18 +218,16 @@ namespace Fanex.Affiliate.WebServices
                 IsOutright = criteria.IsOutRight.HasValue && criteria.IsOutRight.Value > 0,
                 IsParlayPopUp = criteria.Bettype == (int)BetType.MixParlay || criteria.Bettype == (int)BetType.CombinationMixParlay,
                 IsPopUp = true,
-                LanguageCode = _resultsSupportedLanguages.Any(i => i.Equals(sessionLanguage)) ? sessionLanguage : "en-US",
+                LanguageCode = ResultSupportedLanguages.Any(i => i.Equals(sessionLanguage)) ? sessionLanguage : "en-US",
                 EnableCheckScoreCalculated = true
             };
 
             if (displaySettings.IsParlayPopUp && criteria.RefNo != null)
             {
-                var parlayData = _resultService.GetParlayResults(criteria.RefNo.Value);
-                return ResultEngine.HtmlParser(parlayData, displaySettings);
+                return _resultService.GetParlayResultHtml(criteria.RefNo.Value, displaySettings);
             }
 
-            var result = GetResultsData(criteria, sportType, displaySettings);
-            return result;
+            return _resultService.GetResultHtml(criteria, sportType, displaySettings);
         }
 
         #endregion Affiliate's Results - Web Methods
@@ -561,47 +241,7 @@ namespace Fanex.Affiliate.WebServices
                 TransID = long.Parse(transactionId)
             };
 
-            var tickets = _betlistService.GetBetListParlay(criteria);
-            return tickets;
-        }
-
-        private static string BuildHtmlString(IEnumerable<TicketText> tickets)
-        {
-            var result = new StringBuilder();
-            var counter = 0;
-            var length = tickets.Count();
-            foreach (var ticket in tickets)
-            {
-                result.Append(ticket.Choice);
-                if (counter != length - 1)
-                {
-                    result.Append("<div class='line'></div>");
-                }
-
-                counter++;
-            }
-
-            return result.ToString();
-        }
-
-        private static string GenerateClientDetailSystemParlayFunction(ITicketHelper tickerHelper, string baseCurrency, AffTicket ticket, long custid)
-        {
-            const string FormatDetail = @"showCombMPDetail({0},{1},{2},{3},&quot;{4}&quot;,&quot;{5}&quot;)";
-            var comboName = tickerHelper.GetCombinationMPOfferName(ticket.BetTeam);
-            var betTeam = tickerHelper.GetBetTypeNameById(ticket.BetTypeId);
-            if (!string.IsNullOrEmpty(comboName))
-            {
-                betTeam += " - " + comboName;
-            }
-
-            return string.Format(
-                FormatDetail,
-                ticket.TransId,
-                ticket.RefNo,
-                ticket.BetId,
-                custid,
-                betTeam,
-                baseCurrency);
+            return _betlistService.GetBetListParlay(criteria);
         }
     }
 }
