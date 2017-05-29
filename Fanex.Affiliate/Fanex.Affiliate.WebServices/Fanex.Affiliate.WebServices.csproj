@@ -379,7 +379,9 @@
       <DependentUpon>AffiliateAPI.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DataAccess\CashOutBetListDataAccess.cs" />
     <Compile Include="DataAccess\Helpers\BetListDataAccessHelper.cs" />
+    <Compile Include="DataAccess\ICashOutBetListDataAccess.cs" />
     <Compile Include="DataAccess\IResultDataAccess.cs" />
     <Compile Include="DataAccess\IBetListDataAccess.cs" />
     <Compile Include="DataAccess\ResultDataAccess.cs" />

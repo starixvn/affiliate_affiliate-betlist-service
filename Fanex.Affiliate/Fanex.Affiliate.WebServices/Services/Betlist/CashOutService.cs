@@ -19,22 +19,22 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
 
     public class CashOutService : ICashOutService
     {
-        private readonly IBetListDataAccess _betlistDataAccess;
+        private readonly ICashOutBetListDataAccess _cashOutBetListDataAccess;
 
         public CashOutService()
             : this(null)
         {
         }
 
-        private CashOutService(IBetListDataAccess betlistDataAccess)
+        private CashOutService(ICashOutBetListDataAccess cashOutBetListDataAccess)
         {
-            _betlistDataAccess = betlistDataAccess ?? new BetListDataAccess();
+            _cashOutBetListDataAccess = cashOutBetListDataAccess ?? new CashOutBetListDataAccess();
         }
 
         public CashOutTicketDetail GetBetListCashOutDetail(BetListDetailCriteria criteria, string spkey, bool isCashOut)
         {
             Check.Argument.IsNotNull(criteria, "criteria");
-            var tickets = _betlistDataAccess.GetBetListCashOutDetail(criteria, spkey);
+            var tickets = _cashOutBetListDataAccess.GetBetListCashOutDetail(criteria, spkey);
 
             if (tickets.OriginalTicket.Any())
             {

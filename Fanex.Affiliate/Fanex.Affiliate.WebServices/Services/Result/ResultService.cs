@@ -4,7 +4,7 @@
 // </copyright>
 // ------------------------------------------------------------------------
 
-namespace Fanex.Affiliate.WebServices.Services.Betlist
+namespace Fanex.Affiliate.WebServices.Services.Result
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -14,7 +14,6 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
     using Fanex.Result.Core.NumberGame.DTO;
     using Fanex.Result.Core.Racing.DTO;
     using Fanex.Result.Core.Sportsbook.DTO;
-    using Result;
 
     public class ResultService : IResultService
     {

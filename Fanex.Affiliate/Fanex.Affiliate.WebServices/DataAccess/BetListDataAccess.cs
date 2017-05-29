@@ -27,13 +27,13 @@ namespace Fanex.Affiliate.WebServices.DataAccess
             using (var objectDb = new ObjectDb(criteria.GetSettingKey()))
             {
                 var param = criteria.GetSpParams();
-                var ds = objectDb.ExecuteDataSet(param);
+                var dataSet = objectDb.ExecuteDataSet(param);
                 var baseCurrency = string.Empty;
 
-                var mainTable = ds.Tables.Count > 0 ? ds.Tables[0] : new DataTable();
+                var mainTable = dataSet.Tables.Count > 0 ? dataSet.Tables[0] : new DataTable();
                 result.MainTicketList = BetListDataAccessHelper.ReadMainAffTickets(mainTable, baseCurrency).ToList();
 
-                var referenceTable = ds.Tables.Count > 1 ? ds.Tables[1] : new DataTable();
+                var referenceTable = dataSet.Tables.Count > 1 ? dataSet.Tables[1] : new DataTable();
                 result.TicketDataList = BetListDataAccessHelper.ReadReferenceTickets(referenceTable, baseCurrency).ToList();
 
                 result.TotalRows = Converter.ToInt(param["totalrows"]);
@@ -49,12 +49,12 @@ namespace Fanex.Affiliate.WebServices.DataAccess
             using (var objectDb = new ObjectDb(criteria.GetSettingKey()))
             {
                 var param = criteria.GetSpParams();
-                var ds = objectDb.ExecuteDataSet(param);
+                var dataSet = objectDb.ExecuteDataSet(param);
 
-                var mainTable = ds.Tables.Count > 0 ? ds.Tables[0] : new DataTable();
+                var mainTable = dataSet.Tables.Count > 0 ? dataSet.Tables[0] : new DataTable();
                 result.MainTicketList = BetListDataAccessHelper.ReadMainAffTickets(mainTable, string.Empty).ToList();
 
-                var referenceTable = ds.Tables.Count > 1 ? ds.Tables[1] : new DataTable();
+                var referenceTable = dataSet.Tables.Count > 1 ? dataSet.Tables[1] : new DataTable();
                 result.TicketDataList = BetListDataAccessHelper.ReadReferenceTickets(referenceTable, string.Empty).ToList();
             }
 
@@ -144,50 +144,13 @@ namespace Fanex.Affiliate.WebServices.DataAccess
             {
                 objectDb.AddInParameter("RefNo", DbType.Int64, criteria.RefNo);
                 objectDb.AddInParameter("CustId", DbType.Int32, criteria.CustId);
-                var ds = objectDb.ExecuteDataSet();
+                var dataSet = objectDb.ExecuteDataSet();
 
-                var mainTable = ds.Tables.Count > 0 ? ds.Tables[0] : new DataTable();
+                var mainTable = dataSet.Tables.Count > 0 ? dataSet.Tables[0] : new DataTable();
                 result.MainTicketList = BetListDataAccessHelper.ReadMainAffTickets(mainTable, string.Empty).ToList();
             }
 
             return result;
-        }
-
-        public CashOutTicketHistory GetBetListCashOutDetail(BetListDetailCriteria criteria, string spkey)
-        {
-            var result = new CashOutTicketHistory();
-
-            using (var objectDb = new ObjectDb(spkey))
-            {
-                objectDb.AddInParameter("TransId", DbType.Int64, criteria.TransId);
-                objectDb.AddInParameter("RefNo", DbType.Int64, criteria.RefNo);
-                objectDb.AddInParameter("BetType", DbType.Int32, criteria.BetType);
-                objectDb.AddInParameter("OriginalTransId", DbType.Int64, criteria.RefNo);
-                var ds = objectDb.ExecuteDataSet();
-
-                var mainTable = ds.Tables.Count > 0 ? ds.Tables[0] : new DataTable();
-                var cashOutTable = ds.Tables.Count > 1 ? ds.Tables[1] : new DataTable();
-
-                result.OriginalTicket = BetListDataAccessHelper.ReadMainAffTickets(mainTable, string.Empty);
-                result.CashOutTicket = ReadCashOutTicketDetailData(cashOutTable);
-            }
-
-            return result;
-        }
-
-        private static IEnumerable<CashOutTicket> ReadCashOutTicketDetailData(DataTable dataTable)
-        {
-            var columns = new List<BetListColumn>
-            {
-                new BetListColumn
-                {
-                    Name = "price",
-                    HasData = dataTable.Columns.Contains("price"),
-                    MappingName = "Price",
-                    Type = DbType.Decimal
-                }
-            };
-            return BetListDataAccessHelper.ReadMainTickets<CashOutTicket>(dataTable, columns);
         }
 
         private static IList<ISystemParlaySerial> ReadSystemParlaySerialList(DataTable table)
