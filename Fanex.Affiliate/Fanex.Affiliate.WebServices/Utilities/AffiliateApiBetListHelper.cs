@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Text;
     using System.Web.Hosting;
+    using System.Xml;
     using BetList.Core.Builder;
     using BetList.Core.Entities;
     using BetList.Core.TicketHelper;
@@ -16,6 +17,8 @@
 
     public static class AffiliateApiBetListHelper
     {
+        private const int CashOutBetdaqId = 0;
+
         public static string BindDataToTemplate(string templatePath, object model, string key = "key")
         {
             var template = File.ReadAllText(templatePath);
@@ -47,6 +50,8 @@
                 ticketHelper.IsShowOddsWithChoice = showOdds;
                 ticket.Stake *= exchangeRate;
                 ticket.ActualStake *= exchangeRate;
+                ReadOriginalStakeForCashOut(ticket, exchangeRate);
+
                 var ticketText = new TicketText
                 {
                     Index = startIndex++,
@@ -151,6 +156,27 @@
                 custid,
                 betTeam,
                 baseCurrency);
+        }
+
+        private static void ReadOriginalStakeForCashOut(AffTicket ticket, decimal exchangeRate)
+        {
+            if (ticket.BetdaqId != CashOutBetdaqId)
+            {
+                return;
+            }
+
+            // if BetdaqId is 0, the ticket has been cashed out => need to get Original Stake from ExtraInfo field
+            decimal originalStake;
+
+            var extraInfoXml = new XmlDocument();
+            extraInfoXml.LoadXml(ticket.ExtraInfo);
+
+            var originalStakeNote = extraInfoXml.GetElementsByTagName("p25");
+
+            if (originalStakeNote.Count > 0 && originalStakeNote[0].Attributes["s"] != null)
+            {
+                ticket.OriginalStake = decimal.TryParse(originalStakeNote[0].Attributes["s"].Value, out originalStake) ? originalStake * exchangeRate : ticket.OriginalStake;
+            }           
         }
     }
 }

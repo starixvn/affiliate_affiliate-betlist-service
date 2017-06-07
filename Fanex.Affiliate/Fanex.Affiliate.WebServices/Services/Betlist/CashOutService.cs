@@ -73,6 +73,7 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
 
                 ticket.Stake *= criteria.ExchangeRate;
                 ticket.ActualStake *= criteria.ExchangeRate;
+                ticket.OriginalStake *= criteria.ExchangeRate;
                 var ticketText = new TicketText
                 {
                     TransTime = builder.BuildTrans(ticket),

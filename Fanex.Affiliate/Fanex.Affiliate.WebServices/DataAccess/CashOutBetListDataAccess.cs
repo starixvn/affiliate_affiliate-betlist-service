@@ -24,7 +24,7 @@
                 var mainTable = ds.Tables.Count > 0 ? ds.Tables[0] : new DataTable();
                 var cashOutTable = ds.Tables.Count > 1 ? ds.Tables[1] : new DataTable();
 
-                result.OriginalTicket = BetListDataAccessHelper.ReadMainAffTickets(mainTable, string.Empty);
+                result.OriginalTicket = ReadOriginalTicketDetailData(mainTable);
                 result.CashOutTicket = ReadCashOutTicketDetailData(cashOutTable);
             }
 
@@ -44,6 +44,21 @@
                 }
             };
             return BetListDataAccessHelper.ReadMainTickets<CashOutTicket>(dataTable, columns);
+        }
+
+        private static IEnumerable<AffTicket> ReadOriginalTicketDetailData(DataTable dataTable)
+        {
+            var columns = new List<BetListColumn>
+            {
+                new BetListColumn
+                {
+                    Name = "originalstake",
+                    HasData = dataTable.Columns.Contains("originalstake"),
+                    MappingName = "OriginalStake",
+                    Type = DbType.Decimal
+                }
+            };
+            return BetListDataAccessHelper.ReadMainTickets<AffTicket>(dataTable, columns);
         }
     }
 }
