@@ -602,7 +602,7 @@ namespace Fanex.Affiliate.WebServices
                 IsParlayPopUp = criteria.Bettype == (int)BetType.MixParlay || criteria.Bettype == (int)BetType.CombinationMixParlay,
                 IsPopUp = true,
                 LanguageCode = _resultsSupportedLanguages.Exists(i => i.Equals(sessionLanguage)) ? sessionLanguage : "en-US",
-                EnableCheckScoreCalculated = sportType == SportType.Soccer
+                EnableCheckScoreCalculated = true
             };
 
             if (displaySettings.IsParlayPopUp && criteria.RefNo != null)

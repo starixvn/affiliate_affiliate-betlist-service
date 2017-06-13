@@ -1,7 +1,3 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Root>
-  <SpNameConfig Environment="DEV,UAT" SpName="Test" Suffix="_xtest"></SpNameConfig>
-
-  <SpNameConfig Environment="DEV,LOCAL,UAT,SIT" SpName="Aff_BetList_SelMatchResult" Suffix="_xtest"></SpNameConfig>
-  <SpNameConfig Environment="DEV,LOCAL,UAT,SIT" SpName="Aff_BetList_SelMatchResultParlay" Suffix="_xtest"></SpNameConfig>
 </Root>
