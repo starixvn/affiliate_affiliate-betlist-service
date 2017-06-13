@@ -2,6 +2,6 @@
 <Root>
   <SpNameConfig Environment="DEV,UAT" SpName="Test" Suffix="_xtest"></SpNameConfig>
 
-  <SpNameConfig Environment="DEV,LOCAL,UAT,SIT" SpName="Aff_BetList_SelMatchResult" Suffix="_xtest"></SpNameConfig>
-  <SpNameConfig Environment="DEV,LOCAL,UAT,SIT" SpName="Aff_BetList_SelMatchResultParlay" Suffix="_xtest"></SpNameConfig>
+  <SpNameConfig Environment="DEV,UAT" SpName="Aff_BetList_SelMatchResult" Suffix="_UAT3"></SpNameConfig>
+  <SpNameConfig Environment="DEV,UAT" SpName="Aff_BetList_SelMatchResultParlay" Suffix="_UAT3"></SpNameConfig>
 </Root>
