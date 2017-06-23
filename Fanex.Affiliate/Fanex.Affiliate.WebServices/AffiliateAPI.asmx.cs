@@ -187,10 +187,11 @@ namespace Fanex.Affiliate.WebServices
         }
 
         [WebMethod]
-        public string GetBetListCashOutDetail(BetListDetailCriteria criteria, bool isCashOut)
+        public string GetBetListCashOutDetail(BetListDetailCriteria criteria, bool isCashOut, string language = "en-US")
         {
-            const string spKey = "Aff_BetList_CashOut_Detail";          
+            _langManager.SetCulture(language);
 
+            const string spKey = "Aff_BetList_CashOut_Detail";          
             var content = _cashOutService.GetBetListCashOutDetail(criteria, spKey, isCashOut);
 
             if (!content.OriginalTextList.Any())

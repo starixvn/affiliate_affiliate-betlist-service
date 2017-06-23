@@ -114,7 +114,7 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
                 ticket.Price *= criteria.ExchangeRate;
                 var ticketText = new CashOutTicketText
                 {
-                    TransTime = Lang.RefNo + ": " + ticket.TransId + "<div class='time'>" + ticket.TransDate + "</div>",
+                    TransTime = builder.BuildTrans(ticket),
                     Stake = ticket.Stake.ToString("0"),
                     Price = ticket.Price.ToString("0"),
                     WinLoss = ticket.Winlost.ToString("0.00"),
