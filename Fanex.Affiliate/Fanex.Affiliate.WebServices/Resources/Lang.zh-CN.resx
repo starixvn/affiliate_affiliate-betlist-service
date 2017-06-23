@@ -117,11 +117,39 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BoughtAmount" xml:space="preserve">
+    <value>买的金额</value>
+    <comment>#74874</comment>
+  </data>
+  <data name="BoughtStake" xml:space="preserve">
+    <value>买的投注额</value>
+    <comment>#74874</comment>
+  </data>
+  <data name="BoughtTickets" xml:space="preserve">
+    <value>买的注单</value>
+    <comment>#74874</comment>
+  </data>
+  <data name="CashOutAmount" xml:space="preserve">
+    <value>预先兑现金额</value>
+    <comment>#74874</comment>
+  </data>
+  <data name="CashOutStake" xml:space="preserve">
+    <value>预先兑现赌注</value>
+    <comment>#74874</comment>
+  </data>
+  <data name="CashOutTickets" xml:space="preserve">
+    <value>预先兑现投注单</value>
+    <comment>#74874</comment>
+  </data>
   <data name="Choice" xml:space="preserve">
     <value>选择</value>
   </data>
   <data name="ExternalID" xml:space="preserve">
     <value>外部ID</value>
+  </data>
+  <data name="Loss" xml:space="preserve">
+    <value>输</value>
+    <comment>#74874</comment>
   </data>
   <data name="Odds" xml:space="preserve">
     <value>赔率</value>
@@ -143,6 +171,10 @@
   </data>
   <data name="TransTime" xml:space="preserve">
     <value>交易时间</value>
+  </data>
+  <data name="Win" xml:space="preserve">
+    <value>独赢</value>
+    <comment>#74874</comment>
   </data>
   <data name="WinLoss" xml:space="preserve">
     <value>输赢</value>
