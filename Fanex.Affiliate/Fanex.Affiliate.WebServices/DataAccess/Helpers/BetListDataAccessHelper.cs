@@ -190,6 +190,9 @@
                     case DbType.Decimal:
                         setter.Invoke(ticket, new object[] { Converter.ToDecimal(columnValue) });
                         break;
+
+                    default:
+                        throw new ArgumentException($"Unsupported type: {item.Type}");
                 }
             }
         }

@@ -37,7 +37,7 @@
                 return JsonConvert.SerializeObject(new
                 {
                     Success = true,
-                    Result = GetRngCasinoPopupUrl(result.Token.ToString(), refNo)
+                    Result = GetRngCasinoPopupUrl(result.Token.ToString(), refNo).ToString()
                 });
             }
 
@@ -101,7 +101,7 @@
             return queryString;
         }
 
-        private static string GetRngCasinoPopupUrl(string token, string refNo)
+        private static Uri GetRngCasinoPopupUrl(string token, string refNo)
         {
             var queryString = GetQueryString(token, refNo);
             var encryptedKey = AppSettings.RNGCasinoEncryptedKey;
@@ -109,13 +109,13 @@
             var paramEncode = HttpUtility.UrlEncode(encryptParam);
             var popupUrl = AppSettings.RNGCasinoResultPopupUrl;
 
-            return popupUrl + "?o=" + paramEncode;
+            return new Uri(popupUrl + "?o=" + paramEncode);
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Reviewed.")]
         private static string GetRngCasinoServerToken()
         {
-            var uri = new Uri(AppSettings.RNGCasinoGetServerTokenAPIUrl);
+            var uri = AppSettings.RNGCasinoGetServerTokenAPIUrl;
             var paramString = CreateServerTokenParameters();
             var serverResponse = string.Empty;
 

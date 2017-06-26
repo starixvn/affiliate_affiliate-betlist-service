@@ -22,7 +22,7 @@
 
         public override string GetSettingKey()
         {
-            return "affiliate_" + AffiliateName.ToLower() + "_CheckBelonging";
+            return "affiliate_" + AffiliateName.ToLowerInvariant() + "_CheckBelonging";
         }
 
         public override bool IsValid()

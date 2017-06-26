@@ -14,7 +14,6 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
     using Criteria.BetList;
     using DTO.BetList;
     using Fanex.Affiliate.WebServices.DataAccess;
-    using Resources;
     using Utilities;
 
     public class CashOutService : ICashOutService
@@ -130,7 +129,7 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
 
         private static bool IsCashOutBetTicket(long betdaqid, int bettype)
         {
-            var cashOutBetTypes = new int[] { 900, 912 };
+            var cashOutBetTypes = new[] { 900, 912 };
             return betdaqid == 1 && !cashOutBetTypes.Contains(bettype);
         }
     }

@@ -22,7 +22,7 @@
         public static string BindDataToTemplate(string templatePath, object model, string key = "key")
         {
             var template = File.ReadAllText(templatePath);
-            return Engine.Razor.RunCompile(template, key, null, model);
+            return Engine.Razor.RunCompile(template, key, model: model);
         }
 
         public static IList<TicketText> BuildTicketTextList(
@@ -36,7 +36,6 @@
             var builder = new BetListHTMLBuilder();
             var ticketTextList = new List<TicketText>();
             var ticketHelper = new TicketHelper();
-            var baseCurrency = criteria == null ? string.Empty : criteria.BaseCurrency;
             decimal sumWinloss = 0;
 
             foreach (var ticket in ticketResult.MainTicketList)
@@ -44,7 +43,7 @@
                 if (ticket.BetTypeId == (int)BetType.CombinationMixParlay)
                 {
                     var custid = ticket.CustId != 0 ? ticket.CustId : criteria.CustId;
-                    ticketHelper.ClientDetailSystemParlayFunction = GenerateClientDetailSystemParlayFunction(ticketHelper, baseCurrency, ticket, custid);
+                    ticketHelper.ClientDetailSystemParlayFunction = GenerateClientDetailSystemParlayFunction(ticketHelper, criteria.BaseCurrency, ticket, custid);
                 }
 
                 ticketHelper.IsShowOddsWithChoice = showOdds;
@@ -176,7 +175,7 @@
             if (originalStakeNote.Count > 0 && originalStakeNote[0].Attributes["s"] != null)
             {
                 ticket.OriginalStake = decimal.TryParse(originalStakeNote[0].Attributes["s"].Value, out originalStake) ? originalStake * exchangeRate : ticket.OriginalStake;
-            }           
+            }
         }
     }
 }

@@ -17,6 +17,18 @@ namespace Fanex.Affiliate.WebServices.Utilities
 
     public static class AffBetListHtmlBuilder
     {
+        private static readonly IDictionary<string, string> StatusTextMapping = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { BetStatus.Running,  CoreBetList.running },
+                { BetStatus.Reject,  CoreBetList.reject },
+                { BetStatus.Won,  CoreBetList.won },
+                { BetStatus.Lose,  CoreBetList.lose },
+                { BetStatus.Draw,  CoreBetList.draw },
+                { BetStatus.Waiting,  CoreBetList.waiting },
+                { BetStatus.Void,  CoreBetList.voided },
+                { BetStatus.Refund,  CoreBetList.refund },
+            };
+
         public static string BuildAffBetListResultStatus(
             this BetListHTMLBuilder builder,
             AffTicket ticket,
@@ -26,7 +38,7 @@ namespace Fanex.Affiliate.WebServices.Utilities
             string username)
         {
             const string StatusTemp = "<div class='status'>{0}</div>";
-            var statusText = GetStatusText(ticket);
+            var statusText = GetStatusText(ticket.Status);
             var statusNormalText = string.Format(StatusTemp, statusText);
             ticket.UserName = username;
 
@@ -88,46 +100,9 @@ namespace Fanex.Affiliate.WebServices.Utilities
             return param;
         }
 
-        private static string GetStatusText(AffTicket ticket)
+        private static string GetStatusText(string status)
         {
-            var statusText = string.Empty;
-
-            switch (ticket.Status.ToLower())
-            {
-                case BetStatus.Running:
-                    statusText = CoreBetList.running;
-                    break;
-
-                case BetStatus.Reject:
-                    statusText = CoreBetList.reject;
-                    break;
-
-                case BetStatus.Won:
-                    statusText = CoreBetList.won;
-                    break;
-
-                case BetStatus.Lose:
-                    statusText = CoreBetList.lose;
-                    break;
-
-                case BetStatus.Draw:
-                    statusText = CoreBetList.draw;
-                    break;
-
-                case BetStatus.Waiting:
-                    statusText = CoreBetList.waiting;
-                    break;
-
-                case BetStatus.Void:
-                    statusText = CoreBetList.voided;
-                    break;
-
-                case BetStatus.Refund:
-                    statusText = CoreBetList.refund;
-                    break;
-            }
-
-            return statusText;
+            return StatusTextMapping.ContainsKey(status) ? StatusTextMapping[status] : string.Empty;
         }
     }
 }

@@ -90,7 +90,7 @@
         {
             var param = new
             {
-                matchId = matchId,
+                matchId,
                 raceno = raceNo > -1 ? raceNo.ToString(CultureInfo.InvariantCulture) : null
             };
 
@@ -249,8 +249,8 @@
                 LeagueId = int.Parse(reader["meetingid"].ToString()),
                 EngineId = reader["HorseId"].ToString(),
                 EngineNo = reader["HorseNo"].ToString(),
-                IsFavor = reader["IsFavor"] != DBNull.Value && reader["IsFavor"].ToString().Equals("1") ? true : false,
-                IsSCR = reader["IsSCR"] != DBNull.Value && reader["IsSCR"].ToString().Equals("1") ? true : false,
+                IsFavor = reader["IsFavor"] != DBNull.Value && reader["IsFavor"].ToString().Equals("1"),
+                IsSCR = reader["IsSCR"] != DBNull.Value && reader["IsSCR"].ToString().Equals("1"),
                 Place = int.Parse(reader["place"].ToString()),
                 PlaceOdds = decimal.Parse(reader["placeodds"].ToString()),
                 WinOdds = decimal.Parse(reader["odds"].ToString()),

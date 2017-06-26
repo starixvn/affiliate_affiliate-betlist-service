@@ -7,6 +7,7 @@
 namespace Fanex.Affiliate.WebServices.Services.Betlist
 {
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using BetList.Core.Entities;
     using Criteria.BetList;
@@ -95,12 +96,9 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
 
         private static void AssignAllShowProductForCriteria(BetListCriteria criteria, string products, IEnumerable<Product> supportedProducts)
         {
-            if (products.Trim() == "All")
-            {
-                products = string.Join(",", supportedProducts.Select(t => t.ProductName));
-            }
-
-            var productList = products.Split(',');
+            var productList = products.Trim() == "All" ?
+                supportedProducts.Select(t => t.ProductName).ToArray() :
+                products.Split(',');
 
             foreach (var pro in productList)
             {
@@ -111,9 +109,11 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
             }
         }
 
+        [SuppressMessage("StyleCop.CSharp.StylecopPlus.Rules", "SP2101:MethodMustNotContainMoreLinesThan",
+            Justification = "Reviewed. Suppression is OK here.")]
         private static void AssignShowProductForCriteria(BetListCriteria criteria, string product)
         {
-            switch (product.ToLower())
+            switch (product.ToLowerInvariant())
             {
                 case "sportsbook":
                     criteria.ShowSB = true;
