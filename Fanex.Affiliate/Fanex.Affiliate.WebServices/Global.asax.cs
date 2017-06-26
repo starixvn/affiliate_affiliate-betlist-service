@@ -12,6 +12,7 @@ namespace Fanex.Affiliate.WebServices
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Web;
     using System.Web.Security;
@@ -23,6 +24,7 @@ namespace Fanex.Affiliate.WebServices
     /// </summary>
     public class Global : System.Web.HttpApplication
     {
+        [SuppressMessage("SonarQube", "S2325:Methods and properties that don't access instance data should be static", Justification = "Reviewed")]
         protected void Application_Start(object sender, EventArgs e)
         {
             DbSettingProviderManager.Current.Start();

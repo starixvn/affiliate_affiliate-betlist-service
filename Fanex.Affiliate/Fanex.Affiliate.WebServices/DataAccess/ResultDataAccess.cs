@@ -176,6 +176,7 @@
             return results;
         }
 
+        [SuppressMessage("SonarQube", "S1541:Methods and properties should not be too complex", Justification = "Reviewed")]
         private static Sportsbook BindSportsbook(IDataReader reader)
         {
             var item = new Sportsbook

@@ -21,6 +21,13 @@ namespace Fanex.Affiliate.WebServices.Services.Result
     {
         private readonly IResultDataAccess _resultDataAccess;
 
+        private static readonly IList<SportType> _racingSportTypes = new List<SportType>
+        {
+            SportType.HorseRacing, SportType.Greyhound, SportType.Harness,
+            SportType.VirtualHorseRacing, SportType.VirtualGreyhounds, SportType.VirtualMotorRacing,
+            SportType.VirtualSpeedway, SportType.VirtualCycling
+        };
+
         public ResultService()
             : this(null)
         {
@@ -36,35 +43,30 @@ namespace Fanex.Affiliate.WebServices.Services.Result
             SportType sportType,
             ResultSetting setting)
         {
-            switch (sportType)
+            if (_racingSportTypes.Contains(sportType))
             {
-                case SportType.HorseRacing:
-                case SportType.Greyhound:
-                case SportType.Harness:
-                case SportType.VirtualHorseRacing:
-                case SportType.VirtualGreyhounds:
-                case SportType.VirtualMotorRacing:
-                case SportType.VirtualSpeedway:
-                case SportType.VirtualCycling:
-                    if (criteria.RaceNo == null)
-                    {
-                        return string.Empty;
-                    }
+                if (criteria.RaceNo == null)
+                {
+                    return string.Empty;
+                }
 
-                    var dataRc = GetRacingResults(criteria.MatchId, criteria.RaceNo.Value);
-                    return ResultEngine.HtmlParser(dataRc, setting);
-
-                case SportType.LiveCasino:
-                    var dataLc = GetLiveCasinoResults(criteria.MatchId);
-                    return ResultEngine.HtmlParser(dataLc, setting);
-
-                case SportType.NumberGame:
-                    var dataNg = GetNumberGameResults(criteria.MatchId);
-                    return ResultEngine.HtmlParser(dataNg, setting);
-
-                default:
-                    var dataSb = GetSportsbookResults(criteria);
-                    return ResultEngine.HtmlParser(dataSb, setting);
+                var dataRc = GetRacingResults(criteria.MatchId, criteria.RaceNo.Value);
+                return ResultEngine.HtmlParser(dataRc, setting);
+            }
+            else if (sportType == SportType.LiveCasino)
+            {
+                var dataLc = GetLiveCasinoResults(criteria.MatchId);
+                return ResultEngine.HtmlParser(dataLc, setting);
+            }
+            else if (sportType == SportType.NumberGame)
+            {
+                var dataNg = GetNumberGameResults(criteria.MatchId);
+                return ResultEngine.HtmlParser(dataNg, setting);
+            }
+            else
+            {
+                var dataSb = GetSportsbookResults(criteria);
+                return ResultEngine.HtmlParser(dataSb, setting);
             }
         }
 
