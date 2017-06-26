@@ -42,9 +42,7 @@ namespace Fanex.Affiliate.WebServices
         private readonly IRNGCasinoSingleWalletService _rngCasinoSingleWalletService;
 
         private readonly ICashOutService _cashOutService;
-
-        private readonly LanguageManager _langManager = new LanguageManager();
-
+        
         public AffiliateAPI()
         {
             DbSettingProviderManager.Current.Start();
@@ -59,7 +57,7 @@ namespace Fanex.Affiliate.WebServices
         [WebMethod]
         public string GetBetlist(BetlistSOAP betlistSOAP)
         {
-            _langManager.SetCulture(betlistSOAP.Language);
+            LanguageHelper.SetCulture(betlistSOAP.Language);
             var betlistCriteria = _betlistService.GenerateBetlistCriteria(betlistSOAP);
             var ticketResults = _betlistService.GetBetList(betlistCriteria);
 
@@ -92,7 +90,7 @@ namespace Fanex.Affiliate.WebServices
         [WebMethod]
         public string GetBetlistParlay(string affiliateName, string transactionId, string exchangeRate, string language = "en-US")
         {
-            _langManager.SetCulture(language);
+            LanguageHelper.SetCulture(language);
             var tickets = GetBetListParlay(affiliateName, transactionId);
 
             var ticketTextList = AffiliateApiBetListHelper.BuildTicketTextList(tickets, new BetListCriteria(), string.Empty, decimal.Parse(exchangeRate), 1, true);
@@ -102,7 +100,7 @@ namespace Fanex.Affiliate.WebServices
         [WebMethod]
         public string GetNewBetlistParlay(string affiliateName, string transactionId, string exchangeRate, string betTeam, string betCheck, decimal handicap1, decimal handicap2, string language = "en-US")
         {
-            _langManager.SetCulture(language);
+            LanguageHelper.SetCulture(language);
 
             var ticketResult = GetBetListParlay(affiliateName, transactionId);
             var texts = CacheRef.GetCombinationTypeCombo(betTeam, betCheck, Convert.ToInt32(handicap1), Convert.ToInt32(handicap2));
@@ -148,7 +146,7 @@ namespace Fanex.Affiliate.WebServices
         [WebMethod]
         public string GetBetlistSystemParlay(string affiliateName, string exchangeRate, BetListSystemParlayDetailCriteria criteria, string language = "en-US")
         {
-            _langManager.SetCulture(language);
+            LanguageHelper.SetCulture(language);
             criteria.AffiliateGroup = affiliateName.Trim() == "12bet" ? "_12bet" : string.Empty;
             var balanceUpMoveBetCriteria = new BalanceUpMoveBetCriteria { AffiliateGroup = criteria.AffiliateGroup };
             _betlistService.GetBalanceUpMoveBetDate(balanceUpMoveBetCriteria);
@@ -189,7 +187,7 @@ namespace Fanex.Affiliate.WebServices
         [WebMethod]
         public string GetBetListCashOutDetail(BetListDetailCriteria criteria, bool isCashOut, string language = "en-US")
         {
-            _langManager.SetCulture(language);
+            LanguageHelper.SetCulture(language);
 
             const string spKey = "Aff_BetList_CashOut_Detail";          
             var content = _cashOutService.GetBetListCashOutDetail(criteria, spKey, isCashOut);
@@ -211,7 +209,7 @@ namespace Fanex.Affiliate.WebServices
         [WebMethod]
         public string GetBetlistResults(string affiliateName, string sessionLanguage, BetListResultsCriteria criteria, string language = "en-US")
         {
-            _langManager.SetCulture(language);
+            LanguageHelper.SetCulture(language);
             var sportType = (SportType)criteria.SportType;
             var displaySettings = new ResultSetting
             {

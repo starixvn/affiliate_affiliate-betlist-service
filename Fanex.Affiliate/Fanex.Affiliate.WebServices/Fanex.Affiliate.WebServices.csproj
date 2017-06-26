@@ -432,7 +432,7 @@
     <Compile Include="Utilities\AffBetListHtmlBuilder.cs" />
     <Compile Include="Utilities\AffiliateApiBetListHelper.cs" />
     <Compile Include="Utilities\CurrencyFormatter.cs" />
-    <Compile Include="Utilities\LanguageManager.cs" />
+    <Compile Include="Utilities\LanguageHelper.cs" />
     <Compile Include="ViewModels\Betlist\BetListViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
