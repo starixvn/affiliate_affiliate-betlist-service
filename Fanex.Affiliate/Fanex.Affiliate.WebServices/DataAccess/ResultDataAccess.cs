@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Data;
-    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using Criteria.BetList;
@@ -109,8 +108,6 @@
             return results;
         }
 
-        [SuppressMessage("StyleCop.CSharp.StylecopPlus.Rules", "SP2101:MethodMustNotContainMoreLinesThan",
-     Justification = "Reviewed. Suppression is OK here.")]
         public IEnumerable<Parlay> GetParlayResults(long refNo)
         {
             var results = new List<Parlay>();
@@ -176,7 +173,6 @@
             return results;
         }
 
-        [SuppressMessage("SonarQube", "S1541:Methods and properties should not be too complex", Justification = "Reviewed")]
         private static Sportsbook BindSportsbook(IDataReader reader)
         {
             var item = new Sportsbook

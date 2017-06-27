@@ -6,10 +6,8 @@
 
 namespace Fanex.Affiliate.WebServices.Services.Result
 {
-    using System.Collections.Generic;
     using Criteria.BetList;
     using Fanex.Result.Core.Base;
-    using Fanex.Result.Core.Sportsbook.DTO;
 
     public interface IResultService
     {

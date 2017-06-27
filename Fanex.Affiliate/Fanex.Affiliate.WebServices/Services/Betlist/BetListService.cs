@@ -7,7 +7,6 @@
 namespace Fanex.Affiliate.WebServices.Services.Betlist
 {
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using BetList.Core.Entities;
     using Criteria.BetList;
@@ -109,7 +108,6 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
             }
         }
 
-        [SuppressMessage("SonarQube", "S1541:Methods and properties should not be too complex", Justification = "Reviewed")]
         private static void AssignShowProductForCriteria(BetListCriteria criteria, string product)
         {
             switch (product.ToLowerInvariant())

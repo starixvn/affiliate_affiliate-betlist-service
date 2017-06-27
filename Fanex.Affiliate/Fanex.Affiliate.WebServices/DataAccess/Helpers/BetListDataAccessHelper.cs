@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Data;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Reflection;
     using BetList.Core.Entities;
@@ -128,11 +127,9 @@
                             .ToDictionary(j => j.Key, j => j.Value);
         }
 
-        [SuppressMessage("SonarQube", "S126:'if ... else if' constructs should end with 'else' clauses", Justification = "Reviewed")]
         private static T CreateAffTicket<T>(IDictionary<string, MethodInfo> setters, IEnumerable<BetListColumn> columns, Type ticketType, DataRow row) where T : class
         {
             var ticket = Activator.CreateInstance(ticketType) as T;
-
             foreach (var column in columns)
             {
                 if (!setters.ContainsKey(column.MappingName))
@@ -145,13 +142,17 @@
                 {
                     AssignDataToAffTicket(ticket, setter, row, column);
                 }
-                else if (column.Type == DbType.String)
+                else
                 {
-                    setter.Invoke(ticket, new object[] { string.Empty });
-                }
-                else if (column.Type == DbType.DateTime)
-                {
-                    setter.Invoke(ticket, new object[] { DateTime.Now });
+                    if (column.Type == DbType.String)
+                    {
+                        setter.Invoke(ticket, new object[] { string.Empty });
+                    }
+
+                    if (column.Type == DbType.DateTime)
+                    {
+                        setter.Invoke(ticket, new object[] { DateTime.Now });
+                    }
                 }
             }
 

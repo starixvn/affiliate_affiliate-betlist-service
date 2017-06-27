@@ -8,10 +8,8 @@ namespace Fanex.Affiliate.WebServices.DTO.BetList
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using Fanex.BetList.Core.Entities;
 
-    [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "Reviewed. Suppression is OK here")]
     [Serializable]
     public class TicketResult
     {

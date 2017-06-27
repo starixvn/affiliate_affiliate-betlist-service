@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Net;
     using System.Web;
@@ -112,7 +111,6 @@
             return new Uri(popupUrl + "?o=" + paramEncode);
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Reviewed.")]
         private static string GetRngCasinoServerToken()
         {
             var uri = AppSettings.RNGCasinoGetServerTokenAPIUrl;
