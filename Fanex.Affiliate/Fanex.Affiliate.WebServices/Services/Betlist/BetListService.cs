@@ -155,9 +155,6 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
                 case "cock fighting":
                     criteria.ShowCF = true;
                     break;
-
-                default:
-                    throw new KeyNotFoundException($"Not found product {product}");
             }
         }
 

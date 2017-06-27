@@ -21,7 +21,7 @@ namespace Fanex.Affiliate.WebServices.Services.Result
     {
         private readonly IResultDataAccess _resultDataAccess;
 
-        private static readonly IList<SportType> _racingSportTypes = new List<SportType>
+        private static readonly IEnumerable<SportType> _racingSportTypes = new List<SportType>
         {
             SportType.HorseRacing, SportType.Greyhound, SportType.Harness,
             SportType.VirtualHorseRacing, SportType.VirtualGreyhounds, SportType.VirtualMotorRacing,
