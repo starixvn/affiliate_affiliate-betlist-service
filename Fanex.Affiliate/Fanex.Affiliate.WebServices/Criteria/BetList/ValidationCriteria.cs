@@ -1,4 +1,4 @@
-﻿namespace Fanex.Affiliate.WebServices.Criteria
+﻿namespace Fanex.Affiliate.WebServices.Criteria.BetList
 {
     using Fanex.Data.Repository;
 
@@ -22,7 +22,7 @@
 
         public override string GetSettingKey()
         {
-            return "affiliate_" + AffiliateName.ToLower() + "_CheckBelonging";
+            return "affiliate_" + AffiliateName.ToLowerInvariant() + "_CheckBelonging";
         }
 
         public override bool IsValid()

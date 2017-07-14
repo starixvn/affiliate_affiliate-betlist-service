@@ -1,9 +1,15 @@
-﻿namespace Fanex.Affiliate.WebServices.Criteria
+﻿namespace Fanex.Affiliate.WebServices.Criteria.BetList
 {
     public class BetListDetailCriteria : BetListCriteria
     {
         public long RefNo { get; set; }
 
         public decimal ExchangeRate { get; set; }
+
+        public long TransId { get; set; }
+
+        public long BetdaqId { get; set; }
+
+        public int BetType { get; set; }
     }
 }

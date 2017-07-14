@@ -1,0 +1,108 @@
+﻿@using Fanex.Affiliate.WebServices.Resources
+
+<div class="original-ticket">
+    <p>@Lang.OriginalBetTicket:</p>
+    <p>
+        <table cellspacing="0" cellpadding="0" class="tblBetList tblCashOutDetail">
+            <thead>
+                <tr>
+                    <th style="width: 140px">
+                        @Lang.TransTime
+                    </th>
+                    <th style="width: 450px">
+                        @Lang.Choice
+                    </th>
+                    <th style="width: 80px">
+                        @Lang.Odds
+                    </th>
+                    <th style="width: 70px">
+                        @Lang.Stake
+                    </th>
+                    <th style="width: 100px">
+                        @Lang.WinLoss/@Lang.Comm
+                    </th>
+                    <th style="width: 90px">
+                        @Lang.Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var highlightClass = Model.IsHighlightOriginalTicket ? "highlight" : string.Empty;
+                }
+                @foreach (var original in Model.OriginalTextList)
+                {
+                    <tr>
+                        <td class="c @highlightClass">
+                            @Raw(original.TransTime)
+                        </td>
+                        <td class="@highlightClass">
+                            @Raw(original.Choice)
+                        </td>
+                        <td class="bl_underdog @highlightClass">
+                            @Raw(original.Odds)
+                        </td>
+                        <td class="bl_underdog @highlightClass">
+                            @Raw(original.Stake)
+                        </td>
+                        <td class="bl_underdog @highlightClass">
+                            @Raw(original.WinLoss)
+                        </td>
+                        <td class="c @highlightClass">
+                            @Raw(original.Status)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </p>
+</div>
+<div class="cashout-ticket">
+    <p>@(Model.IsCashOut ? Lang.CashOutTickets : Lang.BoughtTickets):</p>
+    <p>
+        <table cellspacing="0" cellpadding="0" class="tblBetList tblCashOutDetail">
+            <thead>
+                <tr>
+                    <th style="width: 140px">
+                        @Lang.TransTime
+                    </th>
+                    <th style="width: 450px">
+                        @(Model.IsCashOut ? Lang.CashOutStake : Lang.BoughtStake)
+                    </th>
+                    <th style="width: 80px">
+                        @(Model.IsCashOut ? Lang.CashOutAmount : Lang.BoughtAmount)
+                    </th>
+                    <th style="width: 70px">
+                        @Lang.Win/@Lang.Loss
+                    </th>
+                    <th style="width: 100px">
+                        @Lang.Status
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cashOut in Model.CashOutTextList)
+                {
+                    highlightClass = cashOut.IsHighlight ? "highlight" : string.Empty;
+                    <tr>
+                        <td class="c @highlightClass">
+                            @Raw(cashOut.TransTime)
+                        </td>
+                        <td class="bl_underdog @highlightClass">
+                            @Raw(cashOut.Stake)
+                        </td>
+                        <td class="bl_underdog @highlightClass">
+                            @Raw(cashOut.Price)
+                        </td>
+                        <td class="bl_underdog @highlightClass">
+                            @Raw(cashOut.WinLoss)
+                        </td>
+                        <td class="c @highlightClass">
+                            @Raw(cashOut.Status)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </p>
+</div>

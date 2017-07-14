@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Net;
     using System.Web;
@@ -12,7 +11,7 @@
 
     public class RNGCasinoSingleWalletService : IRNGCasinoSingleWalletService
     {
-        private static IDictionary<string, string> _mapLanguages = new Dictionary<string, string>()
+        private static readonly IDictionary<string, string> SiteLanguages = new Dictionary<string, string>
             {
                 { "en-US", "en" },
                 { "zh-TW", "ch" },
@@ -37,7 +36,7 @@
                 return JsonConvert.SerializeObject(new
                 {
                     Success = true,
-                    Result = GetRngCasinoPopupUrl(result.Token.ToString(), refNo)
+                    Result = GetRngCasinoPopupUrl(result.Token.ToString(), refNo).ToString()
                 });
             }
 
@@ -50,34 +49,6 @@
                     ErrorDescription = result.ErrorDescription.ToString()
                 }
             });
-        }
-
-        private static string EncryptQueryString(string parameters, string encryptedKey)
-        {
-            return IBCCrypt.IBCCrypt.Encrypt(parameters, encryptedKey);
-        }
-
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "Reviewed.")]
-        private static string GetRngCasinoServerToken()
-        {
-            var uri = new Uri(AppSettings.RNGCasinoGetServerTokenAPIUrl);
-            var paramString = CreateServerTokenParameters();
-            var serverResponse = string.Empty;
-
-            try
-            {
-                using (WebClient webClient = new WebClient())
-                {
-                    webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
-
-                    serverResponse = webClient.UploadString(uri, paramString);
-                }
-            }
-            catch (Exception)
-            {
-            }
-
-            return serverResponse;
         }
 
         private static string CreateServerTokenParameters()
@@ -101,15 +72,21 @@
                 });
         }
 
-        private static string GetRngCasinoPopupUrl(string token, string refNo)
+        private static string EncryptQueryString(string parameters, string encryptedKey)
         {
-            var queryString = GetQueryString(token, refNo);
-            var encryptedKey = AppSettings.RNGCasinoEncryptedKey;
-            var encryptParam = EncryptQueryString(queryString, encryptedKey);
-            var paramEncode = HttpUtility.UrlEncode(encryptParam);
-            var popupUrl = AppSettings.RNGCasinoResultPopupUrl;
+            return IBCCrypt.IBCCrypt.Encrypt(parameters, encryptedKey);
+        }
 
-            return popupUrl + "?o=" + paramEncode;
+        private static string GetLanguageCode()
+        {
+            var languageCode = CultureInfo.CurrentUICulture.IetfLanguageTag;
+            string result;
+            if (!SiteLanguages.TryGetValue(languageCode, out result))
+            {
+                return "en";
+            }
+
+            return result;
         }
 
         private static string GetQueryString(string token, string refNo)
@@ -118,22 +95,43 @@
             var template = AppSettings.RNGCasinoTemplate;
             var role = AppSettings.RNGCasinoRole;
 
-            var queryString = string.Format(
-                "Token={0}&RefID={1}&Lang={2}&Template={3}&Role={4}", token, refNo, languageCode, template, role);
+            var queryString = $"Token={token}&RefID={refNo}&Lang={languageCode}&Template={template}&Role={role}";
 
             return queryString;
         }
 
-        private static string GetLanguageCode()
+        private static Uri GetRngCasinoPopupUrl(string token, string refNo)
         {
-            var languageCode = CultureInfo.CurrentUICulture.IetfLanguageTag;
-            string result;
-            if (!_mapLanguages.TryGetValue(languageCode, out result))
+            var queryString = GetQueryString(token, refNo);
+            var encryptedKey = AppSettings.RNGCasinoEncryptedKey;
+            var encryptParam = EncryptQueryString(queryString, encryptedKey);
+            var paramEncode = HttpUtility.UrlEncode(encryptParam);
+            var popupUrl = AppSettings.RNGCasinoResultPopupUrl;
+
+            return new Uri(popupUrl + "?o=" + paramEncode);
+        }
+
+        private static string GetRngCasinoServerToken()
+        {
+            var uri = AppSettings.RNGCasinoGetServerTokenAPIUrl;
+            var paramString = CreateServerTokenParameters();
+            var serverResponse = string.Empty;
+
+            try
             {
-                return "en";
+                using (WebClient webClient = new WebClient())
+                {
+                    webClient.Headers[HttpRequestHeader.ContentType] = "application/json";
+
+                    serverResponse = webClient.UploadString(uri, paramString);
+                }
+            }
+            catch (Exception exception)
+            {
+                LogService.Error(exception.Message, exception);
             }
 
-            return result;
+            return serverResponse;
         }
     }
 }

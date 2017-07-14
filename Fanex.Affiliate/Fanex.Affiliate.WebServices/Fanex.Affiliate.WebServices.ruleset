@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="SonarQube - Sparta / AFF-BetList-Service Sonar way" ToolsVersion="14.0">
+  <Include Path="..\sonarqube\aff-betlist-servicecsharp.ruleset" Action="Default" />
+</RuleSet>

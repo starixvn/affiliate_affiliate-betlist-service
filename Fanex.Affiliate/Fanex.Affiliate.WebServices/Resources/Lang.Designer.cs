@@ -61,6 +61,60 @@ namespace Fanex.Affiliate.WebServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bought Amount.
+        /// </summary>
+        public static string BoughtAmount {
+            get {
+                return ResourceManager.GetString("BoughtAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bought Stake.
+        /// </summary>
+        public static string BoughtStake {
+            get {
+                return ResourceManager.GetString("BoughtStake", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bought Ticket[s].
+        /// </summary>
+        public static string BoughtTickets {
+            get {
+                return ResourceManager.GetString("BoughtTickets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cash Out Amount.
+        /// </summary>
+        public static string CashOutAmount {
+            get {
+                return ResourceManager.GetString("CashOutAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cash Out Stake.
+        /// </summary>
+        public static string CashOutStake {
+            get {
+                return ResourceManager.GetString("CashOutStake", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cash Out Ticket[s].
+        /// </summary>
+        public static string CashOutTickets {
+            get {
+                return ResourceManager.GetString("CashOutTickets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Choice.
         /// </summary>
         public static string Choice {
@@ -88,11 +142,38 @@ namespace Fanex.Affiliate.WebServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loss.
+        /// </summary>
+        public static string Loss {
+            get {
+                return ResourceManager.GetString("Loss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Odds.
         /// </summary>
         public static string Odds {
             get {
                 return ResourceManager.GetString("Odds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Original Bet Ticket.
+        /// </summary>
+        public static string OriginalBetTicket {
+            get {
+                return ResourceManager.GetString("OriginalBetTicket", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ref No.
+        /// </summary>
+        public static string RefNo {
+            get {
+                return ResourceManager.GetString("RefNo", resourceCulture);
             }
         }
         
@@ -133,6 +214,15 @@ namespace Fanex.Affiliate.WebServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ticket Details.
+        /// </summary>
+        public static string TicketDetails {
+            get {
+                return ResourceManager.GetString("TicketDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Total.
         /// </summary>
         public static string Total {
@@ -147,6 +237,15 @@ namespace Fanex.Affiliate.WebServices.Resources {
         public static string TransTime {
             get {
                 return ResourceManager.GetString("TransTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Win.
+        /// </summary>
+        public static string Win {
+            get {
+                return ResourceManager.GetString("Win", resourceCulture);
             }
         }
         

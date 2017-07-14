@@ -4,7 +4,7 @@
 // </copyright>
 // ------------------------------------------------------------------------
 
-namespace Fanex.Affiliate.WebServices.Criteria
+namespace Fanex.Affiliate.WebServices.Criteria.BetList
 {
     using System;
     using Fanex.Data.Repository;

@@ -8,30 +8,27 @@ namespace Fanex.Affiliate.WebServices.Utilities
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using BetList.Core.App_GlobalResources;
     using BetList.Core.Builder;
     using BetList.Core.Entities;
-    using Criteria;
+    using Criteria.BetList;
     using DTO.BetList;
     using Fanex.Affiliate.WebServices.Resources;
 
-    /// <summary>
-    /// Affiliate BetList HTML Builder.
-    /// </summary>
     public static class AffBetListHtmlBuilder
     {
-        /// <summary>
-        /// Get ticket status.
-        /// </summary>
-        /// <param name="builder">Bet list builder.</param>
-        /// <param name="ticket">Affiliate ticket object.</param>
-        /// <param name="ticketHelper">Ticket helper.</param>
-        /// <param name="ticketData">List of ticket data.</param>
-        /// <param name="criteria">Meta model.</param>
-        /// <param name="username">User Name.</param>
-        /// <returns>Ticket status text.</returns>
-        [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists", Justification = "Since Betlist.dll used that data-structure.")]
+        private static readonly IDictionary<string, string> StatusTextMapping = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { BetStatus.Running,  CoreBetList.running },
+                { BetStatus.Reject,  CoreBetList.reject },
+                { BetStatus.Won,  CoreBetList.won },
+                { BetStatus.Lose,  CoreBetList.lose },
+                { BetStatus.Draw,  CoreBetList.draw },
+                { BetStatus.Waiting,  CoreBetList.waiting },
+                { BetStatus.Void,  CoreBetList.voided },
+                { BetStatus.Refund,  CoreBetList.refund },
+            };
+
         public static string BuildAffBetListResultStatus(
             this BetListHTMLBuilder builder,
             AffTicket ticket,
@@ -41,7 +38,7 @@ namespace Fanex.Affiliate.WebServices.Utilities
             string username)
         {
             const string StatusTemp = "<div class='status'>{0}</div>";
-            var statusText = GetStatusText(ticket);
+            var statusText = GetStatusText(ticket.Status);
             var statusNormalText = string.Format(StatusTemp, statusText);
             ticket.UserName = username;
 
@@ -55,6 +52,7 @@ namespace Fanex.Affiliate.WebServices.Utilities
                         ticket.RefNo,
                         GetCasinoHandHistoryParam(ticket, criteria, username),
                         Lang.Results);
+
                 case 72:
                 case 73:
                     return statusNormalText;
@@ -67,15 +65,15 @@ namespace Fanex.Affiliate.WebServices.Utilities
         public static string BuildCustomerWL(this BetListHTMLBuilder builder, Ticket ticket, decimal exchangeRate)
         {
             var running = string.Compare(ticket.Status, "running", StringComparison.OrdinalIgnoreCase) == 0;
-            var positiveNumberFormat = "<div class='underdog'>{0:#,##0.00}</div>";
-            var negativeNumberFormat = "<div class='underdog' style='color:red;'>({0:#,##0.00})</div>";
+            const string PositiveNumberFormat = "<div class='underdog'>{0:#,##0.00}</div>";
+            const string PegativeNumberFormat = "<div class='underdog' style='color:red;'>({0:#,##0.00})</div>";
 
-            var winlostNumberFormat = ticket.Winlost < 0 ? negativeNumberFormat : positiveNumberFormat;
+            var winlostNumberFormat = ticket.Winlost < 0 ? PegativeNumberFormat : PositiveNumberFormat;
             var winloss = running
                             ? "-"
                             : string.Format(winlostNumberFormat, Math.Abs(ticket.Winlost) * exchangeRate);
 
-            var playerCommNumberFormat = ticket.PlayerComm < 0 ? negativeNumberFormat : positiveNumberFormat;
+            var playerCommNumberFormat = ticket.PlayerComm < 0 ? PegativeNumberFormat : PositiveNumberFormat;
             winloss += running
                 ? string.Empty
                 : string.Format(playerCommNumberFormat, Math.Abs(ticket.PlayerComm) * exchangeRate);
@@ -83,13 +81,6 @@ namespace Fanex.Affiliate.WebServices.Utilities
             return winloss;
         }
 
-        /// <summary>
-        /// Get Casino Hand History Parameter.
-        /// </summary>
-        /// <param name="ticket">LRF Ticket object.</param>
-        /// <param name="criteria">Meta model object.</param>
-        /// <param name="username">User's Name.</param>
-        /// <returns>Parameter for Casino Hand History.</returns>
         private static string GetCasinoHandHistoryParam(
             AffTicket ticket,
             BetListCriteria criteria,
@@ -109,51 +100,9 @@ namespace Fanex.Affiliate.WebServices.Utilities
             return param;
         }
 
-        /// <summary>
-        /// Get status text by status id.
-        /// </summary>
-        /// <param name="ticket">LRF ticket object.</param>
-        /// <returns>Status text.</returns>
-        private static string GetStatusText(AffTicket ticket)
+        private static string GetStatusText(string status)
         {
-            var statusText = string.Empty;
-
-            switch (ticket.Status.ToLower())
-            {
-                case BetStatus.Running:
-                    statusText = CoreBetList.running;
-                    break;
-
-                case BetStatus.Reject:
-                    statusText = CoreBetList.reject;
-                    break;
-
-                case BetStatus.Won:
-                    statusText = CoreBetList.won;
-                    break;
-
-                case BetStatus.Lose:
-                    statusText = CoreBetList.lose;
-                    break;
-
-                case BetStatus.Draw:
-                    statusText = CoreBetList.draw;
-                    break;
-
-                case BetStatus.Waiting:
-                    statusText = CoreBetList.waiting;
-                    break;
-
-                case BetStatus.Void:
-                    statusText = CoreBetList.voided;
-                    break;
-
-                case BetStatus.Refund:
-                    statusText = CoreBetList.refund;
-                    break;
-            }
-
-            return statusText;
+            return StatusTextMapping.ContainsKey(status) ? StatusTextMapping[status] : string.Empty;
         }
     }
 }

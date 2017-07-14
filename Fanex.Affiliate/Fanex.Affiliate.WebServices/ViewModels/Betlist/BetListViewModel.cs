@@ -4,18 +4,15 @@
 // </copyright>
 // ------------------------------------------------------------------------
 
-namespace Fanex.Affiliate.WebServices.ViewModels
+namespace Fanex.Affiliate.WebServices.ViewModels.Betlist
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using DTO.BetList;
 
     /// <summary>
     /// Bet List View Model.
     /// </summary>
-    [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly", Justification = "Reviewed. Suppression is OK here")]
-    [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists", Justification = "Since Betlist.dll used that data-structure.")]
     [Serializable]
     public class BetListViewModel
     {

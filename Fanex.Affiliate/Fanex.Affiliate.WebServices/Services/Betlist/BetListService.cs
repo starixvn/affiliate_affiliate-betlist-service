@@ -4,111 +4,46 @@
 // </copyright>
 // ------------------------------------------------------------------------
 
-namespace Fanex.Affiliate.WebServices.Services
+namespace Fanex.Affiliate.WebServices.Services.Betlist
 {
     using System.Collections.Generic;
     using System.Linq;
     using BetList.Core.Entities;
-    using Common.Helper;
-    using Criteria;
+    using Criteria.BetList;
     using DataAccess;
     using DTO.BetList;
-    using Fanex.Result.Core.LiveCasino.DTO;
-    using Fanex.Result.Core.NumberGame.DTO;
-    using Fanex.Result.Core.Racing.DTO;
-    using Fanex.Result.Core.Sportsbook.DTO;
+    using Fanex.Common.Helper;
 
-    /// <summary>
-    /// Account Service.
-    /// </summary>
-    public class BetListService : QueryService, IBetListService
+    public class BetListService : IBetListService
     {
-        #region Fields
-
-        /// <summary>
-        /// Define Account DataAccess.
-        /// </summary>
         private readonly IBetListDataAccess _betlistDataAccess;
 
-        private readonly string _subDomainPath = string.Empty;
-
-        #endregion Fields
-
-        #region Constructor
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BetListService" /> class.
-        /// </summary>
         public BetListService()
             : this(null)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BetListService" /> class.
-        /// </summary>
-        /// <param name="betlistDataAccess">Account data access.</param>
         private BetListService(IBetListDataAccess betlistDataAccess)
         {
             _betlistDataAccess = betlistDataAccess ?? new BetListDataAccess();
         }
 
-        #endregion Constructor
-
-        #region BetList
-
-        /// <summary>
-        /// Get Bet List.
-        /// </summary>
-        /// <param name="criteria">Input criteria.</param>
-        /// <returns>Ticket results.</returns>
         public TicketResult GetBetList(BetListCriteria criteria)
         {
             Check.Argument.IsNotNull(criteria, "criteria");
             return _betlistDataAccess.GetBetList(criteria);
         }
 
-        /// <summary>
-        /// Get Bet List Parlay.
-        /// </summary>
-        /// <param name="criteria">Bet list parlay.</param>
-        /// <returns>Ticket results.</returns>
         public TicketResult GetBetListParlay(BetListParlayCriteria criteria)
         {
             Check.Argument.IsNotNull(criteria, "criteria");
             return _betlistDataAccess.GetBetListParlay(criteria);
         }
 
-        /// <summary>
-        /// Get System Parlay Detail data.
-        /// </summary>
-        /// <param name="criteria">The metal model.</param>
-        /// <returns>The system parlay.</returns>
         public SystemParlayData GetSystemParlayDetail(BetListSystemParlayDetailCriteria criteria)
         {
             Check.Argument.IsNotNull(criteria, "criteria");
             return _betlistDataAccess.GetSystemParlayDetail(criteria);
-        }
-
-        /// <summary>
-        /// Get balance up and move bet dates.
-        /// </summary>
-        /// <param name="criteria">Balance up and move bet criteria.</param>
-        public void GetBalanceUpMoveBetDate(BalanceUpMoveBetCriteria criteria)
-        {
-            Check.Argument.IsNotNull(criteria, "criteria");
-            _betlistDataAccess.GetBalanceUpMoveBetDate(criteria);
-        }
-
-        /// <summary>
-        /// Get player's username.
-        /// </summary>
-        /// <param name="affiliateGroup">Affiliate group.</param>
-        /// <param name="playerUsername">Affiliate username.</param>
-        /// <returns>Return player's Info.</returns>
-        public CustomerInfoBetList GetPlayerIbcInfo(string affiliateGroup, string playerUsername)
-        {
-            return _betlistDataAccess.GetPlayerIbcInfo(affiliateGroup, playerUsername);
         }
 
         public TicketResult GetBetListDetail(BetListDetailCriteria criteria, string spkey)
@@ -117,66 +52,115 @@ namespace Fanex.Affiliate.WebServices.Services
             return _betlistDataAccess.GetBetListDetail(criteria, spkey);
         }
 
-        #endregion BetList
-
-        #region BetList.Results
-
-        /// <summary>
-        /// Get Sports-book results.
-        /// </summary>
-        /// <param name="criteria">Bet List Results Criteria.</param>
-        /// <returns>The Sports-book results.</returns>
-        public IList<Sportsbook> GetSportsbookResults(BetListResultsCriteria criteria)
+        public BetListCriteria GenerateBetlistCriteria(BetlistSOAP betlistSOAP)
         {
-            return _betlistDataAccess.GetSportsbookResults(criteria).ToList();
+            var affiliateGroup = betlistSOAP.AffiliateName.Trim() == "12bet" ? "_12bet" : string.Empty;
+            var balanceUpMoveBetCriteria = new BalanceUpMoveBetCriteria { AffiliateGroup = affiliateGroup };
+            GetBalanceUpMoveBetDate(balanceUpMoveBetCriteria);
+            var customerInfoBetList = GetPlayerIbcInfo(affiliateGroup, betlistSOAP.AffiliateName + "$" + betlistSOAP.Username);
+
+            BetListCriteria criteria;
+            if (betlistSOAP.FromDate < balanceUpMoveBetCriteria.BalanceUpDay)
+            {
+                criteria = new BetListArchiveCriteria
+                {
+                    CustId = customerInfoBetList.CustId,
+                    FromDate = betlistSOAP.FromDate,
+                    ToDate = betlistSOAP.ToDate,
+                    AffiliateGroup = affiliateGroup
+                };
+            }
+            else
+            {
+                criteria = new BetListNormalCriteria
+                {
+                    CustId = customerInfoBetList.CustId,
+                    FromDate = betlistSOAP.FromDate,
+                    ToDate = betlistSOAP.ToDate,
+                    MoveBetsDay = balanceUpMoveBetCriteria.MoveBetsDay,
+                    AffiliateGroup = affiliateGroup
+                };
+            }
+
+            AssignAllShowProductForCriteria(criteria, betlistSOAP.Product, betlistSOAP.SupportedProducts);
+
+            return criteria;
         }
 
-        /// <summary>
-        /// Get LiveCasino's results.
-        /// </summary>
-        /// <param name="matchId">Match ID value.</param>
-        /// <returns>The LiveCasino's results.</returns>
-        public IList<LiveCasino> GetLiveCasinoResults(int matchId)
+        public void GetBalanceUpMoveBetDate(BalanceUpMoveBetCriteria criteria)
         {
-            return _betlistDataAccess.GetLiveCasinoResults(matchId).ToList();
+            Check.Argument.IsNotNull(criteria, "criteria");
+            _betlistDataAccess.GetBalanceUpMoveBetDate(criteria);
         }
 
-        /// <summary>
-        /// Get NumberGame's results.
-        /// </summary>
-        /// <param name="matchId">Match ID value.</param>
-        /// <returns>The NumberGame's results.</returns>
-        public IList<NumberGame> GetNumberGameResults(int matchId)
+        private static void AssignAllShowProductForCriteria(BetListCriteria criteria, string products, IEnumerable<Product> supportedProducts)
         {
-            return _betlistDataAccess.GetNumberGameResults(matchId).ToList();
+            var productList = products.Trim() == "All" ?
+                supportedProducts.Select(t => t.ProductName).ToArray() :
+                products.Split(',');
+
+            foreach (var pro in productList)
+            {
+                if (supportedProducts.Any(t => t.ProductName.Equals(pro.Trim())))
+                {
+                    AssignShowProductForCriteria(criteria, pro);
+                }
+            }
         }
 
-        /// <summary>
-        /// Get Racing's results.
-        /// </summary>
-        /// <param name="matchId">Match ID value.</param>
-        /// <param name="raceNo">Race Number value.</param>
-        /// <returns>The Racing's results.</returns>
-        public IList<Racing> GetRacingResults(int matchId, int raceNo)
+        private static void AssignShowProductForCriteria(BetListCriteria criteria, string product)
         {
-            return _betlistDataAccess.GetRacingResults(matchId, raceNo).ToList();
+            switch (product.ToLowerInvariant())
+            {
+                case "sportsbook":
+                    criteria.ShowSB = true;
+                    break;
+
+                case "rng casino":
+                    criteria.ShowCS = true;
+                    break;
+
+                case "racing":
+                    criteria.ShowRB = true;
+                    break;
+
+                case "number game":
+                    criteria.ShowNG = true;
+                    break;
+
+                case "keno":
+                    criteria.ShowKN = true;
+                    break;
+
+                case "virtual sports":
+                    criteria.ShowVS = true;
+                    break;
+
+                case "live casino":
+                    criteria.ShowLC = true;
+                    break;
+
+                case "ag casino":
+                    criteria.ShowAG = true;
+                    break;
+
+                case "gold deluxe":
+                    criteria.ShowGD = true;
+                    break;
+
+                case "colossus bets":
+                    criteria.ShowCB = true;
+                    break;
+
+                case "cock fighting":
+                    criteria.ShowCF = true;
+                    break;
+            }
         }
 
-        /// <summary>
-        /// Get Parlay's results.
-        /// </summary>
-        /// <param name="refNo">Reference Number value.</param>
-        /// <returns>The Parlay's results.</returns>
-        public IList<Parlay> GetParlayResults(long refNo)
+        private CustomerInfoBetList GetPlayerIbcInfo(string affiliateGroup, string playerUsername)
         {
-            return _betlistDataAccess.GetParlayResults(refNo).ToList();
+            return _betlistDataAccess.GetPlayerIbcInfo(affiliateGroup, playerUsername);
         }
-
-        public void ValidatePermission(ValidationCriteria criteria)
-        {
-            _betlistDataAccess.ValidatePermission(criteria);
-        }
-
-        #endregion BetList.Results
     }
 }

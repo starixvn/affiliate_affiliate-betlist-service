@@ -4,7 +4,7 @@
 // </copyright>
 // ------------------------------------------------------------------------
 
-namespace Fanex.Affiliate.WebServices.Criteria
+namespace Fanex.Affiliate.WebServices.Criteria.BetList
 {
     using System;
     using Fanex.Data.Repository;
@@ -45,7 +45,7 @@ namespace Fanex.Affiliate.WebServices.Criteria
         public int CurrencyId { get; set; }
 
         public int CustId { get; set; }
-        
+
         public DateTime FromDate { get; set; }
 
         public DateTime ToDate { get; set; }

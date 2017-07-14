@@ -35,6 +35,7 @@
     <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>Fanex.Affiliate.WebServices.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,6 +44,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>Fanex.Affiliate.WebServices.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CasinoLibrary, Version=1.0.2.6, Culture=neutral, processorArchitecture=MSIL">
@@ -60,11 +62,15 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Fanex.BetList.BetTrade, Version=1.0.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.BetList.Core.2.22.0.1\lib\net40\Fanex.BetList.BetTrade.dll</HintPath>
+      <HintPath>..\packages\Fanex.BetList.Core.2.29.0.0-beta\lib\net40\Fanex.BetList.BetTrade.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Fanex.BetList.Core, Version=2.22.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Fanex.BetList.Core.2.22.0.1\lib\net40\Fanex.BetList.Core.dll</HintPath>
+    <Reference Include="Fanex.BetList.CashOut, Version=1.0.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fanex.BetList.CashOut.1.0.0.6\lib\net40\Fanex.BetList.CashOut.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Fanex.BetList.Core, Version=2.29.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Fanex.BetList.Core.2.29.0.0-beta\lib\net40\Fanex.BetList.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Fanex.BetList.RnGCasino, Version=1.0.1.2, Culture=neutral, processorArchitecture=MSIL">
@@ -346,10 +352,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AffiliateEmailInfo.cs" />
-    <Compile Include="AffiliateInfo.cs" />
     <Compile Include="Core\AppSettings.cs" />
-    <Compile Include="Criteria\AffEmail\AffiliateInfoCriteria.cs" />
     <Compile Include="Criteria\BetList\BalanceUpMoveBetCriteria.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -373,18 +376,25 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Criteria\BetList\ValidationCriteria.cs" />
-    <Compile Include="DataAccess\AffEmail\AffiliateDataAccess.cs" />
-    <Compile Include="DataAccess\Betlist\BetListDataAccess.cs" />
-    <Compile Include="DataAccess\AffEmail\IAffiliateDataAccess.cs" />
+    <Compile Include="DataAccess\BetListDataAccess.cs" />
     <Compile Include="AffiliateAPI.asmx.cs">
       <DependentUpon>AffiliateAPI.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="DataAccess\Betlist\IBetListDataAccess.cs" />
+    <Compile Include="DataAccess\CashOutBetListDataAccess.cs" />
+    <Compile Include="DataAccess\Helpers\BetListDataAccessHelper.cs" />
+    <Compile Include="DataAccess\ICashOutBetListDataAccess.cs" />
+    <Compile Include="DataAccess\IResultDataAccess.cs" />
+    <Compile Include="DataAccess\IBetListDataAccess.cs" />
+    <Compile Include="DataAccess\ResultDataAccess.cs" />
     <Compile Include="DTO\BetList\AffTicket.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DTO\BetList\BetListColumn.cs" />
     <Compile Include="DTO\BetList\BetlistSOAP.cs" />
+    <Compile Include="DTO\BetList\CashOutTicket.cs" />
+    <Compile Include="DTO\BetList\CashOutTicketHistory.cs" />
+    <Compile Include="DTO\BetList\CashOutTicketDetail.cs" />
     <Compile Include="DTO\BetList\CustomerInfoBetList.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -395,6 +405,7 @@
     <Compile Include="DTO\BetList\TicketText.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DTO\BetList\CashOutTicketText.cs" />
     <Compile Include="Enumerations\BetType.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -410,17 +421,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Lang.zh-TW.resx</DependentUpon>
     </Compile>
-    <Compile Include="Services\AffEmail\AffiliateService.cs" />
-    <Compile Include="Services\AffEmail\IAffiliateService.cs" />
     <Compile Include="Services\Betlist\BetListService.cs" />
+    <Compile Include="Services\Betlist\CashOutService.cs" />
     <Compile Include="Services\Betlist\IBetListService.cs" />
+    <Compile Include="Services\Betlist\ICashOutService.cs" />
     <Compile Include="Services\Betlist\IRNGCasinoSingleWalletService.cs" />
     <Compile Include="Services\Betlist\RNGCasinoSingleWalletService.cs" />
-    <Compile Include="Services\Common\QueryService.cs" />
-    <Compile Include="Services\Common\ServiceBase.cs" />
+    <Compile Include="Services\Result\ResultService.cs" />
+    <Compile Include="Services\Result\IResultService.cs" />
     <Compile Include="Utilities\AffBetListHtmlBuilder.cs" />
-    <Compile Include="Utilities\FormaterCurrency.cs" />
-    <Compile Include="Utilities\LanguageManager.cs" />
+    <Compile Include="Utilities\AffiliateApiBetListHelper.cs" />
+    <Compile Include="Utilities\CurrencyFormatter.cs" />
+    <Compile Include="Utilities\LanguageHelper.cs" />
     <Compile Include="ViewModels\Betlist\BetListViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -445,7 +457,11 @@
   <ItemGroup>
     <Content Include="Web.ConnectionString.uat.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.5.11.0.1761\analyzers\Google.Protobuf.dll" />
+    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.5.11.0.1761\analyzers\SonarAnalyzer.CSharp.dll" />
+    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.5.11.0.1761\analyzers\SonarAnalyzer.dll" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Views\BetList.cshtml" />
     <Content Include="Web.local.config">
@@ -487,6 +503,8 @@
     <Content Include="Web.sit.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Views\CashOutDetail.cshtml" />
+    <Content Include="Fanex.Affiliate.WebServices.ruleset" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Lang.ko-KR.resx" />
@@ -527,7 +545,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_UpdateAssemblyVersion="True" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_StartDate="2014/3/28" BuildVersion_UpdateFileVersion="True" />
+      <UserProperties BuildVersion_UpdateFileVersion="True" BuildVersion_StartDate="2014/3/28" BuildVersion_BuildVersioningStyle="None.None.Increment.TimeStamp" BuildVersion_UpdateAssemblyVersion="True" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

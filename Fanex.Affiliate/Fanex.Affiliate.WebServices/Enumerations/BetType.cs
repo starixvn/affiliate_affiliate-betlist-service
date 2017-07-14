@@ -6,9 +6,6 @@
 
 namespace Fanex.Affiliate.WebServices.Enumerations
 {
-    using System.Diagnostics.CodeAnalysis;
-    
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1602:EnumerationItemsMustBeDocumented", Justification = "Reviewed.")]
     public enum BetType
     {
         None = 0,
@@ -73,6 +70,7 @@ namespace Fanex.Affiliate.WebServices.Enumerations
         NgHighLow = 87,
         NgWarrior = 88,
         NgNextCombo = 89,
-        NgNumberGroup = 90
+        NgNumberGroup = 90,
+        CashOut = 911
     }
 }

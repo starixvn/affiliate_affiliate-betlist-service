@@ -5,9 +5,9 @@
 
     public static class AppSettings
     {
-        public static string RNGCasinoGetServerTokenAPIUrl
+        public static Uri RNGCasinoGetServerTokenAPIUrl
         {
-            get { return GetValue("RNGCasinoGetServerTokenAPIUrl"); }
+            get { return new Uri(GetValue("RNGCasinoGetServerTokenAPIUrl")); }
         }
 
         public static string RNGCasinoLogin
@@ -40,9 +40,9 @@
             get { return GetValue("RNGCasinoEncryptedKey"); }
         }
 
-        public static string RNGCasinoResultPopupUrl
+        public static Uri RNGCasinoResultPopupUrl
         {
-            get { return GetValue("RNGCasinoResultPopupUrl"); }
+            get { return new Uri(GetValue("RNGCasinoResultPopupUrl")); }
         }
 
         public static string RNGCasinoTemplate
