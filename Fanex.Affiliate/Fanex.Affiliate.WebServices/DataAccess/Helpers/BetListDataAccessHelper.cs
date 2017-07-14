@@ -180,7 +180,7 @@
                         break;
 
                     case DbType.Int64:
-                        var value = item.IsNullable ? Convert.IsDBNull(columnValue) ? new long?(Convert.ToInt64(columnValue)) : null
+                        var value = item.IsNullable ? Convert.IsDBNull(columnValue) ? null : new long?(Convert.ToInt64(columnValue))
                             : Convert.ToInt64(columnValue);
 
                         setter.Invoke(ticket, new object[] { value });
