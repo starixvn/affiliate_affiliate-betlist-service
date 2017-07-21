@@ -118,9 +118,10 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
 
             foreach (var product in productList)
             {
-                if (supportedProducts.Any(t => t.ProductName.Equals(product.Trim())))
+                var productName = product.ToLowerInvariant();
+                if (ProductShowingHandler.ContainsKey(productName) && supportedProducts.Any(t => t.ProductName.Equals(product.Trim())))
                 {
-                    ProductShowingHandler[product.ToLowerInvariant()].Invoke(criteria);
+                    ProductShowingHandler[productName].Invoke(criteria);
                 }
             }
         }
