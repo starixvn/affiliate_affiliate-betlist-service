@@ -6,17 +6,34 @@
 
 namespace Fanex.Affiliate.WebServices.Services.Betlist
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using BetList.Core.Entities;
     using Criteria.BetList;
     using DataAccess;
     using DTO.BetList;
+    using Enumerations;
     using Fanex.Common.Helper;
 
     public class BetListService : IBetListService
     {
         private readonly IBetListDataAccess _betlistDataAccess;
+
+        private static readonly Dictionary<string, Action<BetListCriteria>> ProductShowingHandler = new Dictionary<string, Action<BetListCriteria>>
+        {
+            { ProductName.Sportsbook, (criteria) => { criteria.ShowSB = true; } },
+            { ProductName.RngCasino, (criteria) => { criteria.ShowCS = true; } },
+            { ProductName.Racing, (criteria) => { criteria.ShowRB = true; } },
+            { ProductName.NumberGame, (criteria) => { criteria.ShowNG = true; } },
+            { ProductName.Keno, (criteria) => { criteria.ShowKN = true; } },
+            { ProductName.VirtualSports, (criteria) => { criteria.ShowVS = true; } },
+            { ProductName.LiveCasino, (criteria) => { criteria.ShowLC = true; } },
+            { ProductName.AgCasino, (criteria) => { criteria.ShowAG = true; } },
+            { ProductName.GoldDeluxe, (criteria) => { criteria.ShowGD = true; } },
+            { ProductName.ColossusBets, (criteria) => { criteria.ShowCB = true; } },
+            { ProductName.CockFighting, (criteria) => { criteria.ShowCF = true; } }
+        };
 
         public BetListService()
             : this(null)
@@ -99,62 +116,12 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
                 supportedProducts.Select(t => t.ProductName).ToArray() :
                 products.Split(',');
 
-            foreach (var pro in productList)
+            foreach (var product in productList)
             {
-                if (supportedProducts.Any(t => t.ProductName.Equals(pro.Trim())))
+                if (supportedProducts.Any(t => t.ProductName.Equals(product.Trim())))
                 {
-                    AssignShowProductForCriteria(criteria, pro);
+                    ProductShowingHandler[product.ToLowerInvariant()].Invoke(criteria);
                 }
-            }
-        }
-
-        private static void AssignShowProductForCriteria(BetListCriteria criteria, string product)
-        {
-            switch (product.ToLowerInvariant())
-            {
-                case "sportsbook":
-                    criteria.ShowSB = true;
-                    break;
-
-                case "rng casino":
-                    criteria.ShowCS = true;
-                    break;
-
-                case "racing":
-                    criteria.ShowRB = true;
-                    break;
-
-                case "number game":
-                    criteria.ShowNG = true;
-                    break;
-
-                case "keno":
-                    criteria.ShowKN = true;
-                    break;
-
-                case "virtual sports":
-                    criteria.ShowVS = true;
-                    break;
-
-                case "live casino":
-                    criteria.ShowLC = true;
-                    break;
-
-                case "ag casino":
-                    criteria.ShowAG = true;
-                    break;
-
-                case "gold deluxe":
-                    criteria.ShowGD = true;
-                    break;
-
-                case "colossus bets":
-                    criteria.ShowCB = true;
-                    break;
-
-                case "cock fighting":
-                    criteria.ShowCF = true;
-                    break;
             }
         }
 

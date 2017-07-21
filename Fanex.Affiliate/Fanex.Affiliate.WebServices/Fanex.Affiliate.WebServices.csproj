@@ -411,6 +411,7 @@
     </Compile>
     <Compile Include="DTO\BetList\CashOutTicketText.cs" />
     <Compile Include="Enumerations\BetType.cs" />
+    <Compile Include="Enumerations\ProductName.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -435,6 +436,7 @@
     <Compile Include="Services\Result\IResultService.cs" />
     <Compile Include="Utilities\AffBetListHtmlBuilder.cs" />
     <Compile Include="Utilities\AffiliateApiBetListHelper.cs" />
+    <Compile Include="Utilities\DataReaderExtension.cs" />
     <Compile Include="Utilities\CurrencyFormatter.cs" />
     <Compile Include="Utilities\LanguageHelper.cs" />
     <Compile Include="ViewModels\Betlist\BetListViewModel.cs" />

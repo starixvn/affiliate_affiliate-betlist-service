@@ -11,6 +11,7 @@
     using Fanex.Result.Core.NumberGame.DTO;
     using Fanex.Result.Core.Racing.DTO;
     using Fanex.Result.Core.Sportsbook.DTO;
+    using Utilities;
 
     public class ResultDataAccess : IResultDataAccess
     {
@@ -179,26 +180,15 @@
             {
                 AwayId = int.Parse(reader["awayID"].ToString()),
                 HomeId = int.Parse(reader["homeID"].ToString()),
-                BetStatus =
-                    reader["betstatus"] != DBNull.Value ? reader["betstatus"].ToString() : string.Empty,
+                BetStatus = reader.GetStringOrDefault("betstatus"),
                 LeagueId = int.Parse(reader["leagueid"].ToString()),
                 MatchId = int.Parse(reader["matchid"].ToString()),
                 EventStatus = reader["eventstatus"].ToString(),
-                FinalAwayScore =
-                    reader["finalawayscore"] != DBNull.Value
-                        ? int.Parse(reader["finalawayscore"].ToString())
-                        : new int?(),
-                HtAwayScore =
-                    reader["htawayscore"] != DBNull.Value ? int.Parse(reader["htawayscore"].ToString()) : new int?(),
-                Color = ColumnExisted(reader, "lcolor") && reader["lcolor"] != DBNull.Value ? reader["lcolor"].ToString() : string.Empty,
-                FinalHomeScore =
-                    reader["finalhomescore"] != DBNull.Value
-                        ? int.Parse(reader["finalhomescore"].ToString())
-                        : new int?(),
-                HtHomeScore =
-                    reader["hthomescore"] != DBNull.Value
-                        ? int.Parse(reader["hthomescore"].ToString())
-                        : new int?(),
+                FinalAwayScore = reader.GetNullableInt("finalawayscore"),
+                HtAwayScore = reader.GetNullableInt("htawayscore"),
+                Color = reader.GetStringOrDefaultSafely("lcolor"),
+                FinalHomeScore = reader.GetNullableInt("finalhomescore"),
+                HtHomeScore = reader.GetNullableInt("hthomescore"),
                 EventDate = DateTime.Parse(reader["eventdate"].ToString()),
                 IsNeutral = bool.Parse(reader["IsNeutral"].ToString()),
                 IsPending = bool.Parse(reader["IsPending"].ToString()),
@@ -209,10 +199,10 @@
                 Calculate = Convert.ToBoolean(reader["Calculate"]),
                 RefNo = string.Empty,
                 GameDetails = new List<GameDetail>(),
-                Bettype = GetBetTypeFromToken(reader),
-                BetID = GetBetIDFromToken(reader),
-                LiveAwayScore = ColumnExisted(reader, "LiveAwayScore") && reader["LiveAwayScore"] != DBNull.Value ? Convert.ToInt32(reader["LiveAwayScore"]) : new int?(),
-                LiveHomeScore = ColumnExisted(reader, "LiveHomeScore") && reader["LiveHomeScore"] != DBNull.Value ? Convert.ToInt32(reader["LiveHomeScore"]) : new int?()
+                Bettype = reader.GetIntSafely("bettype"),
+                BetID = reader.GetStringOrDefaultSafely("betcheck"),
+                LiveAwayScore = reader.GetNullableIntSafely("LiveAwayScore"),
+                LiveHomeScore = reader.GetNullableIntSafely("LiveHomeScore")
             };
 
             return item;
@@ -225,16 +215,14 @@
                 ShowTime = reader["showtime"].ToString(),
                 LeagueId = int.Parse(reader["leagueid"].ToString()),
                 EventStatus = reader["eventstatus"].ToString(),
-                FinalAwayScore =
-                    reader["finalawayscore"] != DBNull.Value ? int.Parse(reader["finalawayscore"].ToString()) : new int?(),
-                FinalHomeScore =
-                    reader["finalhomescore"] != DBNull.Value ? int.Parse(reader["finalhomescore"].ToString()) : new int?(),
+                FinalAwayScore = reader.GetNullableInt("finalawayscore"),
+                FinalHomeScore = reader.GetNullableInt("finalhomescore"),
                 EventDate = DateTime.Parse(reader["eventdate"].ToString()),
                 IsPending = bool.Parse(reader["IsPending"].ToString()),
                 KickOffTime = DateTime.Parse(reader["kickofftime"].ToString()),
                 IsHTCal = Convert.ToBoolean(reader["IsHTCal"]),
                 Calculate = Convert.ToBoolean(reader["Calculate"]),
-                BetStatus = reader["betstatus"] != DBNull.Value ? reader["betstatus"].ToString() : string.Empty,
+                BetStatus = reader.GetStringOrDefault("betstatus"),
                 Bettype = int.Parse(reader["homeid2"].ToString())
             };
         }
@@ -246,14 +234,14 @@
                 LeagueId = int.Parse(reader["meetingid"].ToString()),
                 EngineId = reader["HorseId"].ToString(),
                 EngineNo = reader["HorseNo"].ToString(),
-                IsFavor = reader["IsFavor"] != DBNull.Value && reader["IsFavor"].ToString().Equals("1"),
-                IsSCR = reader["IsSCR"] != DBNull.Value && reader["IsSCR"].ToString().Equals("1"),
+                IsFavor = reader.GetStringOrDefault("IsFavor").Equals("1"),
+                IsSCR = reader.GetStringOrDefault("IsSCR").Equals("1"),
                 Place = int.Parse(reader["place"].ToString()),
                 PlaceOdds = decimal.Parse(reader["placeodds"].ToString()),
                 WinOdds = decimal.Parse(reader["odds"].ToString()),
-                RaceName = reader["racename"] != DBNull.Value ? int.Parse(reader["racename"].ToString()) : 0,
+                RaceName = reader.GetInt("racename"),
                 KickOffTime = reader["kickofftime"] != DBNull.Value ? DateTime.Parse(reader["kickofftime"].ToString()) : DateTime.MinValue,
-                Favourite = reader["IsFavor"] != DBNull.Value ? reader["IsFavor"].ToString() : string.Empty,
+                Favourite = reader.GetStringOrDefault("IsFavor"),
                 RowCount = int.Parse(reader["rowcount"].ToString()),
                 SCROfMatch = reader["SCR"].ToString(),
                 TFOfMatch = reader["TF"].ToString()
@@ -286,56 +274,18 @@
             }
         }
 
-        private static bool ColumnExisted(IDataReader reader, string columnName)
-        {
-            for (int i = 0; i < reader.FieldCount; i++)
-            {
-                if (reader.GetName(i).Equals(columnName, StringComparison.OrdinalIgnoreCase))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
         private static GameDetail BindGameDetail(IDataReader reader)
         {
-            var resultStatusId = reader["ResultStatusID"];
-            var settlementStatusID = reader["SettlementStatusID"];
-
             return new GameDetail
             {
                 MatchId = int.Parse(reader["matchid"].ToString()),
                 ResourceId = reader["ResourceId"].ToString(),
                 HomeValue = reader["HomeValue"].ToString(),
                 AwayValue = reader["AwayValue"].ToString(),
-                ResultStatusID = resultStatusId == DBNull.Value ? 0 : int.Parse(resultStatusId.ToString()),
-                SettlementStatusID = settlementStatusID == DBNull.Value ? 0 : int.Parse(settlementStatusID.ToString()),
+                ResultStatusID = reader.GetInt("ResultStatusID"),
+                SettlementStatusID = reader.GetInt("SettlementStatusID"),
                 OtherInfo = reader["OtherInfo"].ToString()
             };
-        }
-
-        private static int GetBetTypeFromToken(IDataReader reader)
-        {
-            const string BettypeColumn = "bettype";
-            if (ColumnExisted(reader, BettypeColumn))
-            {
-                return int.Parse(reader[BettypeColumn].ToString());
-            }
-
-            return 0;
-        }
-
-        private static string GetBetIDFromToken(IDataReader reader)
-        {
-            const string BetcheckColumn = "betcheck";
-            if (ColumnExisted(reader, BetcheckColumn))
-            {
-                return reader[BetcheckColumn].ToString();
-            }
-
-            return string.Empty;
         }
     }
 }
