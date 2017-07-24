@@ -11,6 +11,7 @@
 namespace Fanex.Affiliate.WebServices
 {
     using System;
+    using System.Diagnostics.CodeAnalysis;
     using Fanex.Data.Configuration;
 
     /// <summary>
@@ -18,6 +19,7 @@ namespace Fanex.Affiliate.WebServices
     /// </summary>
     public class Global : System.Web.HttpApplication
     {
+        [SuppressMessage("Methods and properties that don't access instance data should be static", "S2325")]
         protected void Application_Start(object sender, EventArgs e)
         {
             DbSettingProviderManager.Current.Start();
