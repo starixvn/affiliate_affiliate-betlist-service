@@ -36,7 +36,7 @@
                 return JsonConvert.SerializeObject(new
                 {
                     Success = true,
-                    Result = GetRngCasinoPopupUrl(result.Token.ToString(), refNo).ToString()
+                    Result = GetRngCasinoPopupUrl(result.Token.ToString(), refNo).OriginalString
                 });
             }
 
