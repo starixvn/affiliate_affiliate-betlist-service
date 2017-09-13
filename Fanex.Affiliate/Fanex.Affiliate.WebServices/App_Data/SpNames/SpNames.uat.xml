@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Functions>
   <Function Name="Aff-Betlist">
-    <Setting Key="Aff_BetList_SelWinLossByDate" SpName="Aff_BetList_SelWinLossByDate_xtest" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
-    <Setting Key="Aff_BetList_SelWinLossByDate_Old" SpName="Aff_BetList_SelWinLossByDate_Old_xtest" DbName="DBARC.bodb_Archive.bodbAdminNet" Plain="0" />
+    <Setting Key="Aff_BetList_SelWinLossByDate" SpName="Aff_BetList_SelWinLossByDate" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
+    <Setting Key="Aff_BetList_SelWinLossByDate_Old" SpName="Aff_BetList_SelWinLossByDate_Old" DbName="DBARC.bodb_Archive.bodbAdminNet" Plain="0" />
     <Setting Key="Aff_BetList_SelParlayByTransID" SpName="Aff_BetList_SelParlayByTransID" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
     <Setting Key="Aff_BetList_SelCombinationParlayDetail" SpName="Aff_BetList_SelCombinationParlayDetail" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
     <Setting Key="Aff_BetList_SelBalanceUpDay" SpName="Aff_BetList_SelBalanceUpDay" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
     <Setting Key="Aff_BetList_SelDummyAccID" SpName="Aff_BetList_SelDummyAccID" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
     <Setting Key="Aff_BetList_RNG_Detail" SpName="Aff_BetList_RNG_Detail" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
     <Setting Key="Aff_BetList_LC_Detail" SpName="Aff_BetList_LC_Detail" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
-    <Setting Key="Aff_BetList_CashOut_Detail" SpName="Aff_BetList_CashOut_Detail_xtest" DbName="DBACC.bodb02.bodbAdminNet" Plain="0" />
+    <Setting Key="Aff_BetList_CashOut_Detail" SpName="Aff_BetList_CashOut_Detail" DbName="DBACC.bodb02.bodbAdminNet" Plain="0" />
   </Function>
 
   <Function Name="Aff-Betlist-Results">
