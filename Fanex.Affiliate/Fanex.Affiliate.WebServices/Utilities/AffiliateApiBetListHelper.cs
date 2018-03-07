@@ -159,22 +159,19 @@
 
         private static void ReadOriginalStakeForCashOut(AffTicket ticket, decimal exchangeRate)
         {
-            if (ticket.BetdaqId != CashOutBetdaqId)
+            if (ticket.BetdaqId == CashOutBetdaqId && !string.IsNullOrEmpty(ticket.ExtraInfo))
             {
-                return;
-            }
+                // if BetdaqId is 0, the ticket has been cashed out => need to get Original Stake from ExtraInfo field
 
-            // if BetdaqId is 0, the ticket has been cashed out => need to get Original Stake from ExtraInfo field
-            decimal originalStake;
+                var extraInfoXml = new XmlDocument();
+                extraInfoXml.LoadXml(ticket.ExtraInfo);
 
-            var extraInfoXml = new XmlDocument();
-            extraInfoXml.LoadXml(ticket.ExtraInfo);
+                var originalStakeNote = extraInfoXml.GetElementsByTagName("p25");
 
-            var originalStakeNote = extraInfoXml.GetElementsByTagName("p25");
-
-            if (originalStakeNote.Count > 0 && originalStakeNote[0].Attributes["s"] != null)
-            {
-                ticket.OriginalStake = decimal.TryParse(originalStakeNote[0].Attributes["s"].Value, out originalStake) ? originalStake * exchangeRate : ticket.OriginalStake;
+                if (originalStakeNote.Count > 0 && originalStakeNote[0].Attributes["s"] != null)
+                {
+                    ticket.OriginalStake = decimal.TryParse(originalStakeNote[0].Attributes["s"].Value, out decimal originalStake) ? originalStake * exchangeRate : ticket.OriginalStake;
+                }
             }
         }
     }
