@@ -170,7 +170,8 @@
 
                 if (originalStakeNote.Count > 0 && originalStakeNote[0].Attributes["s"] != null)
                 {
-                    ticket.OriginalStake = decimal.TryParse(originalStakeNote[0].Attributes["s"].Value, out decimal originalStake) ? originalStake * exchangeRate : ticket.OriginalStake;
+                    decimal originalStake;
+                    ticket.OriginalStake = decimal.TryParse(originalStakeNote[0].Attributes["s"].Value, out originalStake) ? originalStake * exchangeRate : ticket.OriginalStake;
                 }
             }
         }
