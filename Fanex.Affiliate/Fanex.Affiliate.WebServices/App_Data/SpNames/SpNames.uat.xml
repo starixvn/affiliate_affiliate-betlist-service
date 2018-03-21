@@ -13,7 +13,7 @@
   </Function>
 
   <Function Name="Aff-Betlist-Results">
-    <Setting Key="Aff_BetList_SelMatchResult" SpName="Aff_BetList_SelMatchResult" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
+    <Setting Key="Aff_BetList_SelMatchResult" SpName="Aff_BetList_SelMatchResult_xtest" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
     <Setting Key="Aff_BetList_SelMatchResultParlay" SpName="Aff_BetList_SelMatchResultParlay" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
     <Setting Key="Aff_BetList_SelMatchResultNumberGame" SpName="Aff_BetList_SelMatchResultNumberGame" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
   </Function>
