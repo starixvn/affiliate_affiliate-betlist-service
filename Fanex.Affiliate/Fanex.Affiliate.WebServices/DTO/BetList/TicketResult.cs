@@ -19,9 +19,9 @@ namespace Fanex.Affiliate.WebServices.DTO.BetList
             TicketDataList = new List<ITicketData>();
         }
 
-        public IList<AffTicket> MainTicketList { get; set; }
+        public IEnumerable<AffTicket> MainTicketList { get; set; }
 
-        public List<ITicketData> TicketDataList { get; set; }
+        public IEnumerable<ITicketData> TicketDataList { get; set; }
 
         // Sum value
         public int TotalRows { get; set; }
