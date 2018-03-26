@@ -78,7 +78,7 @@ namespace Fanex.Affiliate.WebServices.Services.Result
 
         private IList<Sportsbook> GetSportsbookResults(BetListResultsCriteria criteria)
         {
-            return _resultDataAccess.GetSportsbookResults(criteria).ToList();
+            return _resultDataAccess.GetSportsbookResults(criteria);
         }
 
         private IList<LiveCasino> GetLiveCasinoResults(int matchId)

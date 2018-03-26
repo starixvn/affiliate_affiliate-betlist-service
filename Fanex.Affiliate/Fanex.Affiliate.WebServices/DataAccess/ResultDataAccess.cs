@@ -28,6 +28,7 @@
                         var item = BindSportsbook(reader);
                         item.Bettype = criteria.Bettype;
                         item.BetID = criteria.BetId;
+                        item.Handicap2 = criteria.Handicap2;
                         results.Add(item);
                     }
 

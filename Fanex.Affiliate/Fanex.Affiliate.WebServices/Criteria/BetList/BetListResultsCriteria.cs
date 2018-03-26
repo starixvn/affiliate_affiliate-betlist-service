@@ -36,5 +36,7 @@ namespace Fanex.Affiliate.WebServices.Criteria.BetList
         public DateTime? WinLossDate { get; set; }
 
         public string UserName { get; set; }
+
+        public int Handicap2 { get; set; }
     }
 }

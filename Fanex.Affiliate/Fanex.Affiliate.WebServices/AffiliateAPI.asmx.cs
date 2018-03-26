@@ -42,7 +42,7 @@ namespace Fanex.Affiliate.WebServices
         private readonly IRNGCasinoSingleWalletService _rngCasinoSingleWalletService;
 
         private readonly ICashOutService _cashOutService;
-        
+
         public AffiliateAPI()
         {
             DbSettingProviderManager.Current.Start();
@@ -51,7 +51,7 @@ namespace Fanex.Affiliate.WebServices
             _rngCasinoSingleWalletService = new RNGCasinoSingleWalletService();
             _cashOutService = new CashOutService();
         }
-        
+
         #region Affiliate's Betlist - Web Methods
 
         [WebMethod]
@@ -189,7 +189,7 @@ namespace Fanex.Affiliate.WebServices
         {
             LanguageHelper.SetCulture(language);
 
-            const string spKey = "Aff_BetList_CashOut_Detail";          
+            const string spKey = "Aff_BetList_CashOut_Detail";
             var content = _cashOutService.GetBetListCashOutDetail(criteria, spKey, isCashOut);
 
             if (!content.OriginalTextList.Any())
@@ -200,14 +200,14 @@ namespace Fanex.Affiliate.WebServices
             var templatePath = Server.MapPath("~/Views/CashOutDetail.cshtml");
 
             return AffiliateApiBetListHelper.BindDataToTemplate(templatePath, content, "CashOutDetail");
-        }      
+        }
 
         #endregion Affiliate's Betlist - Web Methods
 
         #region Affiliate's Results - Web Methods
 
         [WebMethod]
-        public string GetBetlistResults(string affiliateName, string sessionLanguage, BetListResultsCriteria criteria, string language = "en-US")
+        public string GetBetlistResults(string affiliateName, string language, BetListResultsCriteria criteria)
         {
             LanguageHelper.SetCulture(language);
             var sportType = (SportType)criteria.SportType;
@@ -217,7 +217,7 @@ namespace Fanex.Affiliate.WebServices
                 IsOutright = criteria.IsOutRight.HasValue && criteria.IsOutRight.Value > 0,
                 IsParlayPopUp = criteria.Bettype == (int)BetType.MixParlay || criteria.Bettype == (int)BetType.CombinationMixParlay,
                 IsPopUp = true,
-                LanguageCode = ResultSupportedLanguages.Any(i => i.Equals(sessionLanguage)) ? sessionLanguage : "en-US",
+                LanguageCode = ResultSupportedLanguages.Any(i => i.Equals(language)) ? language : "en-US",
                 EnableCheckScoreCalculated = true
             };
 
