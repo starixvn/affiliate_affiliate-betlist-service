@@ -51,6 +51,7 @@
             new BetListColumn { Name = "modds", Type = DbType.Decimal, MappingName = "MasterOdds" },
             new BetListColumn { Name = "hdp1", Type = DbType.Decimal, MappingName = "Handicap1" },
             new BetListColumn { Name = "hdp2", Type = DbType.Decimal, MappingName = "Handicap2" },
+            new BetListColumn { Name = "oddsspread", Type = DbType.Decimal, MappingName = "OddsSpread" }
         };
 
         public static IEnumerable<AffTicket> ReadMainAffTickets(DataTable dataTable, string baseCurrency)
