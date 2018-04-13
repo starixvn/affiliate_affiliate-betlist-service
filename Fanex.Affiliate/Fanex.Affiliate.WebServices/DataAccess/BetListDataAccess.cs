@@ -31,10 +31,10 @@ namespace Fanex.Affiliate.WebServices.DataAccess
                 var baseCurrency = string.Empty;
 
                 var mainTable = dataSet.Tables.Count > 0 ? dataSet.Tables[0] : new DataTable();
-                result.MainTicketList = BetListDataAccessHelper.ReadMainAffTickets(mainTable, baseCurrency).ToList();
+                result.MainTicketList = BetListDataAccessHelper.ReadMainAffTickets(mainTable, baseCurrency);
 
                 var referenceTable = dataSet.Tables.Count > 1 ? dataSet.Tables[1] : new DataTable();
-                result.TicketDataList = BetListDataAccessHelper.ReadReferenceTickets(referenceTable, baseCurrency).ToList();
+                result.TicketDataList = BetListDataAccessHelper.ReadReferenceTickets(referenceTable, baseCurrency);
 
                 result.TotalRows = Converter.ToInt(param["totalrows"]);
             }

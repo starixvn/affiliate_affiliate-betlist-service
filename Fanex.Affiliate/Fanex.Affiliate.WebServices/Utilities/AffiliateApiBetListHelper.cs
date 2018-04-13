@@ -51,6 +51,7 @@
                 ticket.ActualStake *= exchangeRate;
                 ReadOriginalStakeForCashOut(ticket, exchangeRate);
 
+                var ticketDataList = ticketResult.TicketDataList.ToList();
                 var ticketText = new TicketText
                 {
                     Index = startIndex++,
@@ -58,9 +59,9 @@
                     SystemId = ticket.UserName,
                     TransTime = builder.BuildTrans(ticket),
                     Status = builder.BuildAffBetListResultStatus(
-                        ticket, ticketHelper, ticketResult.TicketDataList, criteria, username),
-                    Choice = builder.BuildChoice(ticket, ticketHelper, ticketResult.TicketDataList, false),
-                    Odds = builder.BuildOdds(ticket, ticketResult.TicketDataList, CacheRef.GetOddsTypeName),
+                        ticket, ticketHelper, ticketDataList, criteria, username),
+                    Choice = builder.BuildChoice(ticket, ticketHelper, ticketDataList, false),
+                    Odds = builder.BuildOdds(ticket, ticketDataList, CacheRef.GetOddsTypeName),
                     Stake = builder.BuildStake(ticket),
                     WinLoss = builder.BuildCustomerWL(ticket, exchangeRate)
                 };

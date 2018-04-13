@@ -51,6 +51,7 @@
             new BetListColumn { Name = "modds", Type = DbType.Decimal, MappingName = "MasterOdds" },
             new BetListColumn { Name = "hdp1", Type = DbType.Decimal, MappingName = "Handicap1" },
             new BetListColumn { Name = "hdp2", Type = DbType.Decimal, MappingName = "Handicap2" },
+            new BetListColumn { Name = "oddsspread", Type = DbType.Decimal, MappingName = "OddsSpread" }
         };
 
         public static IEnumerable<AffTicket> ReadMainAffTickets(DataTable dataTable, string baseCurrency)
@@ -95,7 +96,7 @@
 
         public static IEnumerable<T> ReadMainTickets<T>(DataTable dataTable, IEnumerable<BetListColumn> additionalColumns) where T : class
         {
-            var columns = GenerateAvailableBetListColumns(dataTable.Columns).Union(additionalColumns);
+            var columns = GenerateAvailableBetListColumns(dataTable.Columns).Concat(additionalColumns);
 
             var ticketType = typeof(T);
             var setters = GetSetterMethods(ticketType);
@@ -117,7 +118,7 @@
                 IsNullable = i.IsNullable,
                 Type = i.Type,
                 MappingName = i.MappingName
-            }).ToList();
+            });
         }
 
         private static IDictionary<string, MethodInfo> GetSetterMethods(Type type)
@@ -180,8 +181,9 @@
                         break;
 
                     case DbType.Int64:
-                        var value = item.IsNullable ? Convert.IsDBNull(columnValue) ? null : new long?(Convert.ToInt64(columnValue))
-                            : Convert.ToInt64(columnValue);
+                        var value = item.IsNullable ?
+                            (Convert.IsDBNull(columnValue) ? null : new long?(Convert.ToInt64(columnValue))) :
+                            Convert.ToInt64(columnValue);
 
                         setter.Invoke(ticket, new object[] { value });
                         break;
