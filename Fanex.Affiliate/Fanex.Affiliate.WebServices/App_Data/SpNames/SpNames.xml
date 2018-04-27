@@ -10,6 +10,7 @@
     <Setting Key="Aff_BetList_RNG_Detail" SpName="Aff_BetList_RNG_Detail_xtest" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
     <Setting Key="Aff_BetList_LC_Detail" SpName="Aff_BetList_LC_Detail" DbName="DBEXT.bodb02.bodbAdminNet" Plain="0" />
     <Setting Key="Aff_BetList_CashOut_Detail" SpName="Aff_BetList_CashOut_Detail" DbName="DBACC.bodb02.bodbAdminNet" Plain="0" />
+    <Setting Key="Aff_BetList_Jackpot_Detail" SpName="Aff_BetList_Jackpot_Detail_xtest" DbName="DBACC.bodb02.bodbAdminNet" Plain="0" />
   </Function>
 
   <Function Name="Aff-Betlist-Results">

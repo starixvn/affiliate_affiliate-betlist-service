@@ -23,5 +23,7 @@ namespace Fanex.Affiliate.WebServices.DataAccess
         CustomerInfoBetList GetPlayerIbcInfo(string affiliateGroup, string playerUsername);
 
         TicketResult GetBetListDetail(BetListDetailCriteria criteria, string spkey);
+
+        TicketResult GetProgressiveJackpotBetListDetail(BetListDetailCriteria criteria);
     }
 }

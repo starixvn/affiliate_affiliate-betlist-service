@@ -170,6 +170,14 @@ namespace Fanex.Affiliate.WebServices
         }
 
         [WebMethod]
+        public string GetProgressiveJackpotBetListDetail(string userName, BetListDetailCriteria criteria)
+        {
+            var ticketResults = _betlistService.GetProgressiveJackpotBetListDetail(criteria);
+
+            return AffiliateApiBetListHelper.GetTicketDetailHtml(ticketResults, criteria, userName);
+        }
+
+        [WebMethod]
         public string GetRngCasinoSingleWalletResult(string refNo)
         {
             return _rngCasinoSingleWalletService.GetRngCasinoSingleWalletResult(refNo);

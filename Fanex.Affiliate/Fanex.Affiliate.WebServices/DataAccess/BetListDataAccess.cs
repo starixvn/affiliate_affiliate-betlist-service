@@ -153,6 +153,24 @@ namespace Fanex.Affiliate.WebServices.DataAccess
             return result;
         }
 
+        public TicketResult GetProgressiveJackpotBetListDetail(BetListDetailCriteria criteria)
+        {
+            var result = new TicketResult();
+
+            using (var objectDb = new ObjectDb("Aff_BetList_Jackpot_Detail"))
+            {
+                objectDb.AddInParameter("TransId", DbType.Int64, criteria.TransId);
+                objectDb.AddInParameter("CustId", DbType.Int32, criteria.CustId);
+                objectDb.AddInParameter("BetType", DbType.Int32, criteria.BetType);
+                var dataSet = objectDb.ExecuteDataSet();
+
+                var mainTable = dataSet.Tables.Count > 0 ? dataSet.Tables[0] : new DataTable();
+                result.MainTicketList = BetListDataAccessHelper.ReadMainAffTickets(mainTable, string.Empty);
+            }
+
+            return result;
+        }
+
         private static IList<ISystemParlaySerial> ReadSystemParlaySerialList(DataTable table)
         {
             var list = new List<ISystemParlaySerial>();

@@ -23,5 +23,7 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
         BetListCriteria GenerateBetlistCriteria(BetlistSOAP betlistSOAP);
 
         void GetBalanceUpMoveBetDate(BalanceUpMoveBetCriteria criteria);
+
+        TicketResult GetProgressiveJackpotBetListDetail(BetListDetailCriteria criteria);
     }
 }

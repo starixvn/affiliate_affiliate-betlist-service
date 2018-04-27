@@ -69,6 +69,12 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
             return _betlistDataAccess.GetBetListDetail(criteria, spkey);
         }
 
+        public TicketResult GetProgressiveJackpotBetListDetail(BetListDetailCriteria criteria)
+        {
+            Check.Argument.IsNotNull(criteria, "criteria");
+            return _betlistDataAccess.GetProgressiveJackpotBetListDetail(criteria);
+        }
+
         public BetListCriteria GenerateBetlistCriteria(BetlistSOAP betlistSOAP)
         {
             var affiliateGroup = betlistSOAP.AffiliateName.Trim() == "12bet" ? "_12bet" : string.Empty;
