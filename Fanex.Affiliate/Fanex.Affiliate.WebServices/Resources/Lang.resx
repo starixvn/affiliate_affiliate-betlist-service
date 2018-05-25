@@ -154,6 +154,9 @@
     <value>Loss</value>
     <comment>#74874</comment>
   </data>
+  <data name="MixParlay" xml:space="preserve">
+    <value>Mix Parlay</value>
+  </data>
   <data name="Odds" xml:space="preserve">
     <value>Odds</value>
   </data>

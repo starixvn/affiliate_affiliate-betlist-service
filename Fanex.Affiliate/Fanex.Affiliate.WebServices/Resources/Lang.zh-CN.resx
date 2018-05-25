@@ -151,6 +151,9 @@
     <value>输</value>
     <comment>#74874</comment>
   </data>
+  <data name="MixParlay" xml:space="preserve">
+    <value>混合过关</value>
+  </data>
   <data name="Odds" xml:space="preserve">
     <value>赔率</value>
   </data>

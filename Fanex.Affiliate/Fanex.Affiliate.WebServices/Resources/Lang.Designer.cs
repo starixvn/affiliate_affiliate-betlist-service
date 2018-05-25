@@ -151,6 +151,15 @@ namespace Fanex.Affiliate.WebServices.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mix Parlay.
+        /// </summary>
+        public static string MixParlay {
+            get {
+                return ResourceManager.GetString("MixParlay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Odds.
         /// </summary>
         public static string Odds {

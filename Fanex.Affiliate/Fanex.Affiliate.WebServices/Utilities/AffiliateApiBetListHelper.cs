@@ -14,6 +14,7 @@
     using Fanex.Affiliate.WebServices.DTO.BetList;
     using RazorEngine;
     using RazorEngine.Templating;
+    using Resources;
 
     public static class AffiliateApiBetListHelper
     {
@@ -142,7 +143,9 @@
         {
             const string FormatDetail = @"showCombMPDetail({0},{1},{2},{3},&quot;{4}&quot;,&quot;{5}&quot;)";
             var comboName = tickerHelper.GetCombinationMPOfferName(ticket.BetTeam);
-            var betTeam = tickerHelper.GetBetTypeNameById(ticket.BetTypeId);
+            var betTeam = (ticket.BetTypeId == 29 && ticket.BetTeam == "1") ?
+                Lang.MixParlay :
+                tickerHelper.GetBetTypeNameById(ticket.BetTypeId);
             if (!string.IsNullOrEmpty(comboName))
             {
                 betTeam += " - " + comboName;
