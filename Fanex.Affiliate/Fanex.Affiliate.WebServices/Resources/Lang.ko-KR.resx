@@ -147,4 +147,7 @@
   <data name="Results" xml:space="preserve">
     <value>결과</value>
   </data>
+  <data name="MixParlay" xml:space="preserve">
+    <value>조합 베팅</value>
+  </data>
 </root>
