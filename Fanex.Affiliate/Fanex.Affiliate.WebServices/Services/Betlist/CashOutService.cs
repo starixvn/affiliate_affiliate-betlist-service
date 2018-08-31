@@ -78,7 +78,7 @@ namespace Fanex.Affiliate.WebServices.Services.Betlist
                     TransTime = builder.BuildTrans(ticket),
                     Status = statusHtml.ToString(),
                     Choice = builder.BuildChoice(ticket, ticketHelper, null, false),
-                    Odds = builder.BuildOdds(ticket, null, CacheRef.GetOddsTypeName),
+                    Odds = builder.BuildOdds(ticket, null, ticketHelper.GetOddsTypeNameById),
                     Stake = builder.BuildStake(ticket),
                     WinLoss = builder.BuildCustomerWL(ticket, criteria.ExchangeRate)
                 };
