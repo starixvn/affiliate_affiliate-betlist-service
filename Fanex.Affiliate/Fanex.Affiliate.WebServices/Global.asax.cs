@@ -17,6 +17,8 @@ namespace Fanex.Affiliate.WebServices
     using BetList.Core.RemotingRef;
     using Fanex.Data.Configuration;
     using RemotingRef;
+    using Result.Core.Base;
+    using Result.Core.RemotingRef;
 
     /// <summary>
     /// Global control of web service.
@@ -33,6 +35,7 @@ namespace Fanex.Affiliate.WebServices
             RefDataTypeContainer.ConnectTo(new Uri(ConfigurationManager.AppSettings["Fanex.RemotingRef.Service"]))
                                 .FromApplication("Fanex.Affiliate.WebServices");
             BetListManager.RegisterRemotingRef(new CacheRef());
+            ResultCoreManager.RegisterRefDataHelper(new RefDataHelper());
         }
     }
 }
