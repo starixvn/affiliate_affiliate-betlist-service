@@ -32,7 +32,7 @@ namespace Fanex.Affiliate.WebServices
 
             log4net.Config.XmlConfigurator.Configure();
             log4net.LogManager.GetLogger("GeneralLog").Info("Start");
-            RefDataTypeContainer.ConnectTo(new Uri(ConfigurationManager.AppSettings["Fanex.RemotingRef.Service"]))
+            RefDataTypeContainer.ConnectTo(new Uri(ConfigurationManager.AppSettings["Fanex.RemotingRef.Service.Url"]))
                                 .FromApplication("Fanex.Affiliate.WebServices");
             BetListManager.RegisterRemotingRef(new CacheRef());
             ResultCoreManager.RegisterRefDataHelper(new RefDataHelper());

@@ -105,7 +105,7 @@ namespace Fanex.Affiliate.WebServices
 
             var cacheRef = new CacheRefAdapter();
             var ticketResult = GetBetListParlay(affiliateName, transactionId);
-            var texts = cacheRef.GetCombinationTypeCombo(betTeam, betCheck, handicap1, handicap2, language);
+            var texts = cacheRef.GetCombinationTypeCombo(betTeam, betCheck, handicap1, handicap2, language).ToArray();
             var tickets = ticketResult.MainTicketList.Where(x => x.Stake != 0).ToList();
 
             const string textRenderPattern = "<p class='system-parlay-ticket-infor'>"
