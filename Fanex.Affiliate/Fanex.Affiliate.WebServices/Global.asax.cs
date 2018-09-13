@@ -11,8 +11,14 @@
 namespace Fanex.Affiliate.WebServices
 {
     using System;
+    using System.Configuration;
     using System.Diagnostics.CodeAnalysis;
+    using BetList.Core;
+    using BetList.Core.RemotingRef;
     using Fanex.Data.Configuration;
+    using RemotingRef;
+    using Result.Core.Base;
+    using Result.Core.RemotingRef;
 
     /// <summary>
     /// Global control of web service.
@@ -26,6 +32,10 @@ namespace Fanex.Affiliate.WebServices
 
             log4net.Config.XmlConfigurator.Configure();
             log4net.LogManager.GetLogger("GeneralLog").Info("Start");
+            RefDataTypeContainer.ConnectTo(new Uri(ConfigurationManager.AppSettings["Fanex.RemotingRef.Service.Url"]))
+                                .FromApplication("Fanex.Affiliate.WebServices");
+            BetListManager.RegisterRemotingRef(new CacheRef());
+            ResultCoreManager.RegisterRefDataHelper(new RefDataHelper());
         }
     }
 }

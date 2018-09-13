@@ -62,7 +62,7 @@
                     Status = builder.BuildAffBetListResultStatus(
                         ticket, ticketHelper, ticketDataList, criteria, username),
                     Choice = builder.BuildChoice(ticket, ticketHelper, ticketDataList, false),
-                    Odds = builder.BuildOdds(ticket, ticketDataList, CacheRef.GetOddsTypeName),
+                    Odds = builder.BuildOdds(ticket, ticketDataList, ticketHelper.GetOddsTypeNameById),
                     Stake = builder.BuildStake(ticket),
                     WinLoss = builder.BuildCustomerWL(ticket, exchangeRate)
                 };
